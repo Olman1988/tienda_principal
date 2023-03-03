@@ -25,10 +25,31 @@ $securityAdmin = $security->isAdmin();
                                 case "sliders":
                                     require_once "../controllers/slidersController.php";
                                     $consultaSliders =  new slidersController();
-                                    $respSliders =  $consultaSliders->getSliders();
+                                    if(isset($_GET['action'])){
+                                        switch ($_GET['action']) {
+                                            case "add":
+                                                require_once 'views/sliders/add-sliders.php'; 
+                                                break;
+                                            case "edit":
+                                                $respConsultaSliders = $consultaSliders->getSliderById($_GET['id']);
+                                                require_once 'views/sliders/edit-sliders.php'; 
+                                                break;
+                                            case "action-add":
+                                             require_once '../controllers/slidersController.php';
+                                             break;
+                                            case "action-edit":
+                                            require_once '../controllers/slidersController.php';
+                                            break;
+                                            default:
+                                                break;
+                                        }
+                                    } else {
+                                         $respSliders =  $consultaSliders->getAllSlidersAdmin();
                                     if(!empty($respSliders)&&count($respSliders)>0){
                                        require_once 'views/sliders.php';  
                                     }
+                                    }
+                                   
                                 break;
                                 case 'dashboard':
                                     echo 'dash';

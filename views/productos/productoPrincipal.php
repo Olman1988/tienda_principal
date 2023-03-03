@@ -78,7 +78,7 @@ input[type="radio"][id^="radioColor"]{
                         <img id="imagePrincipal" style="width:100%;" src="<?=base_url2.$respuestaArticulo['rutaImagen']?>" alt="alt"/>
                     </div>
                         </div>
-<div class="row mx-auto <?=!empty($respuesFin)&&count($respuesFin)>3?'owl-carousel owl-theme':""?>" id="<?=!empty($respuesFin)&&count($respuesFin)>3?'carousel-service':""?>" style="width:90%;">
+<div class="row mx-auto <?=!empty($respuesFin)&&count($respuesFin)>1?'owl-carousel owl-theme':""?>" id="<?=!empty($respuesFin)&&count($respuesFin)>1?'carousel-service':""?>" style="width:90%;">
     <div style="height:120px;margin-right:14px;margin-bottom:20px;cursor:pointer;<?=!empty($respuesFin)&&count($respuesFin)>3?'':'width:120px'?>" onclick="cambiarImagen('<?=$respuestaArticulo['rutaImagen']?>')" class="active">
                             <img style="width:100%; height:100%;object-fit:cover;" src="<?=base_url2.$respuestaArticulo['rutaImagen']?>" alt="Product">
 		</div>
@@ -297,8 +297,8 @@ input[type="radio"][id^="radioColor"]{
         <h5 class="modal-title p-4" id="modalTextProducto"><?=$respuestaArticulo['art_Descripcion']?></h5>
         
       <div class="modal-body center-align mx-auto" style="min-width:100%;">
-          <div class="zoom" id="ex10" style="margin:0px 20px 0px 20px;">
-        <img id="img-modal" style="margin:auto;" src="<?=base_url2.$respuestaArticulo['rutaImagen']?>" alt="alt"/>
+          <div class="" id="" style="margin:0px 20px 0px 20px;overflow:auto;">
+        <img id="img-modal" style="margin:auto;width:100%;" src="<?=base_url2.$respuestaArticulo['rutaImagen']?>" alt="alt"/>
         </div>
       </div>
       <div class="modal-footer">
@@ -342,11 +342,14 @@ $('#carousel-service').owlCarousel({
                     items:3
                 },
                 1200:{
-                    items:5
+                    items:3
                 },
                 
                 1400:{
-                    items:5
+                    items:4
+                },
+                1900:{
+                    items:4
                 }
       }
    });

@@ -54,21 +54,10 @@
                   </tr>
                     <tr>
                     <td class="align-middle">
-                      <input style="width:15px;height:15px;opacity:1" id="transferencia" value="transferencia" type="radio" name="tipoPago"  checked="checked" />
+                      <input style="width:15px;height:15px;opacity:1" id="transferencia" value="transferencia" type="radio" name="tipoPago" value="transferencia" checked="checked" />
                       <img src="<?=base_url?>images/carrito/transfer.png" width="70px" height="70px" alt="alt"/>
                     </td>
                     <td class="align-middle"><span class="text-medium">Transferencia Bancaria</span><br>
-                      
-                    </td>
-                    
-                        
-                  </tr>
-                  <tr>
-                    <td class="align-middle">
-                      <input style="width:15px;height:15px;opacity:1" id="transferencia" value="tarjeta" type="radio" name="tipoPago"checked="checked" />
-                      <img src="<?=base_url?>images/carrito/card.png" width="70px" height="70px" alt="alt"/>
-                    </td>
-                    <td class="align-middle"><span class="text-medium">Tarjeta Crédito/Débito</span><br>
                       
                     </td>
                     

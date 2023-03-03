@@ -55,7 +55,7 @@ class cotizacion{
         require_once '../email/principalController.php';
         require_once '../config/parameters.php';
         
-        $table = !empty($data)?$this->makeTableFromData($data):'';
+        $table = !empty($data)?$this->makeTableFromData($data,true):'';
         $msnData['title'] = "Solicitud Cotizar";
         $msnData['info'] = "Ha recibido una solicitud #".$code." para cotizar con los siguintes datos";
         $intro = '';
@@ -105,19 +105,34 @@ class cotizacion{
         }
         
     }
-    public function makeTableFromData($data){
+    public function makeTableFromData($data,$adminEmail=false){
         $keys = array_keys($data[0]);
         $HTML = '<table><thead><tr>';
         foreach($keys as $keysvalues){
-           $HTML.='<th style="font-size:23px;color:#333333;padding:0 0 20px 0; font-family:sans-serif;text-align:center;padding-top:75px;font-weight:400;">'.$keysvalues.'</th>'; 
-        }
+            if($keysvalues=='Files'){
+                if($adminEmail){
+                 $HTML.='<th style="font-size:23px;color:#333333;padding:0 0 20px 0; font-family:sans-serif;text-align:center;padding-top:75px;font-weight:400;">'.$keysvalues.'</th>'; 
+                }
+            } else {
+                 $HTML.='<th style="font-size:23px;color:#333333;padding:0 0 20px 0; font-family:sans-serif;text-align:center;padding-top:75px;font-weight:400;">'.$keysvalues.'</th>'; 
+
+            }
+           }
         $HTML .='</tr></thead>';
         $HTML .='<tbody>';
         foreach($data as $index =>$datavalues){
            $HTML.='<tr>';
            foreach($keys as $keysvalues){
            //$datavalues
-               $HTML.= '<td style="border:solid 1px gray;padding:30px;background:white;border-collapse:collapse;width:630px;">'.$datavalues[$keysvalues]."</td>";
+               if($keysvalues=='Files'){
+                   if(!empty($datavalues[$keysvalues])&&$adminEmail){
+                        $HTML.= '<td style="border:solid 1px gray;padding:30px;background:white;border-collapse:collapse;width:630px;">'
+                                . '<button style="border-radius:10px;color:#6695FF;width:125px;padding:5px;"><a href="'.base_url."/assets/files/".$datavalues[$keysvalues].'">Ver Adjunto</a></td>';   
+                   }
+                }else{
+                $HTML.= '<td style="border:solid 1px gray;padding:30px;background:white;border-collapse:collapse;width:630px;">'.$datavalues[$keysvalues]."</td>";
+
+               }
            }
            
            $HTML.='</tr>'; 

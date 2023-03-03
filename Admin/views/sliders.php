@@ -5,7 +5,7 @@
 <div class="m-auto" id="myContent">
  
   <div class="" id="profile" style="padding-top:20px;">
-      <button class="btn btn-primary"><a style="text-decoration: none;color:white;" href="<?=base_url?>Admin/?seccion=categories&&action=add">+Agregar</a></button>
+      <button class="btn btn-primary"><a style="text-decoration: none;color:white;" href="<?=base_url?>Admin/?seccion=sliders&&action=add">+Agregar</a></button>
       <table class="table" id='generalTable'>
   <thead>
     <tr>
@@ -84,7 +84,7 @@ $(document).ready(function(){
 function eliminarCategoria(id){
        var parametros = {
         "id": parseInt(id, 10),
-        "action-categories": "delete"
+        "action": "delete"
     };
     
     Swal.fire({
@@ -96,7 +96,7 @@ function eliminarCategoria(id){
         if (result.isConfirmed) {
 
             $.ajax({
-                url: "../controllers/categoriasController.php",
+                url: "../controllers/slidersController.php",
                 type: "POST",
                 datatype: "html",
                 data: parametros,
@@ -105,7 +105,7 @@ function eliminarCategoria(id){
                     if (response.status) {
                         Swal.fire(response.msn, '', 'success');
                         window.setTimeout(function () {
-                            window.location.href = "./?seccion=categories"
+                            window.location.href = "./?seccion=sliders"
                         }, 2000);
                     } else {
                         Swal.fire({

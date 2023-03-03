@@ -52,6 +52,7 @@ class articulosController{
                         })
                         
                         window.setTimeout(function () {history.back()}, 2000)</script>";
+                
             }
             
         }
@@ -408,7 +409,7 @@ public function imagenPorID($id){
             }
             
             if(!$SKUExist){
-                if (isset($archivo) && $archivo != "" && $nombre && $descripcion&&$categoria&&$precio&&$cantidadMinima&&$disponibilidad&&$validateTax) {
+                if (isset($archivo) && $archivo != "" && $nombre && $descripcion&&$categoria) {
                      if (isset($archivo) && $archivo != "" ) {
                     $tipo = $_FILES['file']['type'];
                     $tamano = $_FILES['file']['size'];
@@ -503,7 +504,9 @@ public function imagenPorID($id){
             $disponibilidad = !empty($_POST['disponibleCompraCotizacion'])? $_POST['disponibleCompraCotizacion']:false;
             $destacado = !empty($_POST['destacado'])? 1:0;
             $IDProduct = !empty($_POST['IDProduct'])? $_POST['IDProduct']:false;
+            $cantidadMinima = $_POST['cantidadMinima']<1? $_POST['cantidadMinima']:1;
             $cantidadMinima = !empty($_POST['cantidadMinima'])? $_POST['cantidadMinima']:false;
+            
             $provisionalName = !empty($_POST['filenameImg'])? $_POST['filenameImg']:false;
             $sku  = !empty($_POST['sku'])? filter_var($_POST['sku'],FILTER_SANITIZE_STRING):'';
             $tax = !empty($_POST['tax'])? filter_var($_POST['tax'], FILTER_SANITIZE_NUMBER_INT):0;

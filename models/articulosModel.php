@@ -308,7 +308,10 @@ public function articulosDestacados(){
       return $respuesta;
     }
     public function modificarArticulo($nombre,$descripcion,$estado,$categoria,$precio,$esServicio,$mejorComentario,$masVendido,$destacado,$productoNuevo,$imagen,$disponibleCotizacion,$disponibleCompra,$IDProduct,$cantidadMinima,$sku,$tax,$taxRequired,$littleDescription,$taxIncluded){
-             try {
+        if($cantidadMinima<1){
+               $cantidadMinima = 1;
+           }       
+        try {
             $db = conexion::getConnect();
             $consulta=$db->prepare("UPDATE [dbo].[Articulo] SET cat_CodigoCategoria_FK=:categoria,art_Descripcion=:nombre,art_PrecioUnitario=:precio,art_Minimo=:art_Minimo,art_Maximo=:art_Maximo,art_LlevaImpuesto=:art_LlevaImpuesto,"
                     . "art_Observaciones=:observacion,art_PorcentajeIV=:tax,destacado=:destacado,activo=:estado,"

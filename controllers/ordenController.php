@@ -77,11 +77,9 @@ class ordenController{
     public function calcularTotal(){
         $total=0;
         $parcial=0;
-        if(isset($_SESSION['carrito']) && count($_SESSION['carrito']) > 0){
-            foreach ($_SESSION['carrito'] as $value) {
-                $parcial=$value['art_PrecioUnitario']*$value['cantidad'];
-                $total=$total+$parcial;
-            }
+        foreach ($_SESSION['carrito'] as $value) {
+            $parcial=$value['art_PrecioUnitario']*$value['cantidad'];
+            $total=$total+$parcial;
         }
         return $total;
     }
@@ -101,8 +99,8 @@ class ordenController{
          $personalizacion = json_encode($personalizacion);
             try {
             $db = conexion::getConnect();
-            $consulta=$db->prepare("INSERT INTO OrdenDetalle (idOrden,art_CodigoArticulo,cantidad,art_Descripcion,rutaImagen,id,price,totalPrice) "
-                    . "values(convert(uniqueidentifier,:idOrden),:idarticulo,:cantidad,:nombre,:imagen,convert(uniqueidentifier,:idDetalle),:precio,:total)");
+            $consulta=$db->prepare("INSERT INTO OrdenDetalle (idOrden,art_CodigoArticulo,cantidad,art_Descripcion,rutaImagen,id,price,totalPrice,personalizacion) "
+                    . "values(convert(uniqueidentifier,:idOrden),:idarticulo,:cantidad,:nombre,:imagen,convert(uniqueidentifier,:idDetalle),:precio,:total,:personalizacion)");
             
              $db->beginTransaction(); //inicia la transaccion
            
@@ -115,6 +113,7 @@ class ordenController{
            $consulta->bindValue(':precio', $precio);
             $consulta->bindValue(':nombre', $nombre);
             $consulta->bindValue(':total', $total);        
+            $consulta->bindValue(':personalizacion', $personalizacion);
             $consulta->execute();
              
          $respuesta=$db->commit();

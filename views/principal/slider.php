@@ -7,7 +7,7 @@
       ?>
     <div class="" style="min-height:70vh;">
        
-        <a href="<?=$respuestaSlidervalue['url']?>"><img style="object-fit:cover;min-height:70vh;" src="<?=base_url3.$respuestaSlidervalue['sliderPath']?>" class="d-block w-100" alt="..."></a>
+        <a href="<?=$respuestaSlidervalue['url']?>"><img style="object-fit:cover;min-height:70vh;" src="<?=base_url.$respuestaSlidervalue['sliderPath']?>" class="d-block w-100" alt="..."></a>
     </div>
     
       <?php

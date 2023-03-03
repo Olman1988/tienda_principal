@@ -9,7 +9,6 @@ if(isset($_SESSION)){
 //unset($_SESSION['cotizacion']);
 class carritoController{
     public function agregarCarrito($idArticulo,$nombre,$imagen,$precio,$impuesto,$radioColor,$radioImg,$listAttribute,$cantidadMinima,$cantidadElegida,$IVAIncluido){
-        
      if(isset($_SESSION['carrito'])){
          $cont=0;
          foreach($_SESSION['carrito'] as $valueCarrito){
@@ -484,7 +483,7 @@ if(isset($_POST['action'])){
                        $respCotizacionBusiness = $emailSent->sendEmailQuoteToBusiness($fullname,$email,$code,$respCotizacion,$DNI,$provincia,$canton,$distrito,$direccion,$telefono);
                     }
                     if($respCotizacionBusiness){
-                        //$cotizacion->vaciarCotizacion();
+                        $cotizacion->vaciarCotizacion();
                         $resp['title']="Cotizacion Enviada";
                         $resp['msn']="En breve le estaremos contactando!";
                         $resp['status']=true;   
@@ -534,10 +533,10 @@ if(isset($_POST['action'])){
             if(isset($_POST['radio'])){
                 if($_POST['radio']=='Ubicacion'){
                   $provincia = isset($_POST['provincia']) ? $_POST['provincia'] : false;
-                    $canton = isset($_POST['canton']) ? $_POST['canton'] : false;
-                    $distrito = isset($_POST['distrito']) ? $_POST['distrito'] : false; 
-                    $tipoEnvio = isset($_POST['radio']) ? $_POST['radio'] : false;
-                    $direccion = isset($_POST['direccion']) ? $_POST['direccion'] : false;
+        $canton = isset($_POST['canton']) ? $_POST['canton'] : false;
+        $distrito = isset($_POST['distrito']) ? $_POST['distrito'] : false; 
+        $tipoEnvio = isset($_POST['radio']) ? $_POST['radio'] : false;
+        $direccion = isset($_POST['direccion']) ? $_POST['direccion'] : false;
            if($provincia &&$canton&& $distrito&& $tipoEnvio&&$direccion){
                $_SESSION['orden']['tipoEnvio']=$_POST;
                $respuestaEnvio=true;
@@ -559,9 +558,9 @@ if(isset($_POST['action'])){
         case "carritoTipoPago":
             $respuestaEnvio=true;
             if(isset($_POST['radio'])){
-               $tipoPago = isset($_POST['radio']) ? $_POST['radio'] : false; 
-               if($tipoPago){
-                 $_SESSION['orden']['tipoPago']= $tipoPago; 
+               $direccion = isset($_POST['radio']) ? $_POST['radio'] : false; 
+               if($direccion){
+                 $_SESSION['orden']['tipoPago']= $direccion; 
                  $respuestaEnvio=true;
                } else {
                   $respuestaEnvio=false; 
@@ -635,78 +634,38 @@ if(isset($_POST['action'])){
             require_once'../controllers/ordenController.php';
             $orden=new ordenController();
             $code=$orden->codeGenerator();
-            $respuestaInsertar = $orden->insertarOrdenNueva($code);
-            $TotalOrder = 0;
-            $response = false;
-
+            $respuestaInsertar=$orden->insertarOrdenNueva($code);
             if($respuestaInsertar){
-                if(isset($_SESSION['carrito']) && count($_SESSION['carrito']) > 0){
-                    foreach ($_SESSION['carrito'] as $valueProducto) {
-                       $codeDetalle=$orden->codeGenerator();
-                       $idArticulo=$valueProducto['id'];
-                       $precio=$valueProducto['art_PrecioUnitario'];
-                       $cantidad= $valueProducto['cantidad'];
-                       $nombre= $valueProducto['nombre'];
-                       $imagen=$valueProducto['imagen'];
-                       $radioColor=!empty($valueProducto['radioColor'])?$valueProducto['radioColor']:'0';
-                       $radioImg=!empty($valueProducto['radioImg'])?$valueProducto['radioImg']:'0';
-                       $listAttribute=!empty($valueProducto['listAttribute'])?$valueProducto['listAttribute']:'0';
-                       $personalizacion = Array(
-                           "radioImg"=>$radioImg,
-                           "radioColor"=>$radioColor,
-                           "listAttribute"=>$listAttribute
-                       );
-                       $total = $cantidad*$precio;
-                       $orden->insertarDetalles($code,$idArticulo, $cantidad,$nombre, $imagen, $codeDetalle, $precio,$total,$personalizacion);
-                       $TotalOrder = $TotalOrder + $total;
-                    }
-                  
-                    if(isset($_SESSION['orden']['tipoEnvio'])){
-                        if($_SESSION['orden']['tipoEnvio'] != 'Oficina'){
-                            $provincia = (isset($_SESSION['orden']['tipoEnvio']['provincia'])) ? $_SESSION['orden']['tipoEnvio']['provincia']: 'No definido';
-                            $canton = (isset($_SESSION['orden']['tipoEnvio']['canton'])) ? $_SESSION['orden']['tipoEnvio']['canton']: 'No definido';
-                            $distrito = (isset($_SESSION['orden']['tipoEnvio']['distrito'])) ? $_SESSION['orden']['tipoEnvio']['distrito']: 'No definido';
-                            $direccion = (isset($_SESSION['orden']['tipoEnvio']['direccion'])) ? $_SESSION['orden']['tipoEnvio']['direccion']: 'No definido';
-                            
-                            $respuestaInsertar = $orden->insertarEnvioOrdenEntrega($code,$_SESSION['orden']['tipoEnvio']['radio'],$provincia,$canton,$distrito,$direccion);   
-                        } else {
-                            $respuestaInsertar = $orden->insertarEnvioOrdenEntrega($code,$_SESSION['orden']['tipoEnvio']);  
-                        }
-                    }
-    
-                    require_once('../payment/tilopay/class.tilopay.php');
-                    $payment = new Tilopay();
+                foreach ($_SESSION['carrito'] as $valueProducto) {
+                   $codeDetalle=$orden->codeGenerator();
+                   $idArticulo=$valueProducto['id'];
+                   $precio=$valueProducto['art_PrecioUnitario'];
+                   $cantidad= $valueProducto['cantidad'];
+                   $nombre= $valueProducto['nombre'];
+                   $imagen=$valueProducto['imagen'];
+                   $radioColor=!empty($valueProducto['radioColor'])?$valueProducto['radioColor']:'0';
+                   $radioImg=!empty($valueProducto['radioImg'])?$valueProducto['radioImg']:'0';
+                   $listAttribute=!empty($valueProducto['listAttribute'])?$valueProducto['listAttribute']:'0';
+                   $personalizacion = Array(
+                       "radioImg"=>$radioImg,
+                       "radioColor"=>$radioColor,
+                       "listAttribute"=>$listAttribute
+                   );
+                   $total = $cantidad*$precio;
+                   $orden->insertarDetalles($code,$idArticulo, $cantidad,$nombre, $imagen, $codeDetalle, $precio,$total,$personalizacion);
                     
-                    $direccion = (!empty($_SESSION['direccion'])) ? filter_var($_SESSION['direccion'], FILTER_SANITIZE_STRING) : 'No Definido';
-                    $distrito  = (!empty($_SESSION['distrito'])) ? filter_var($_SESSION['distrito'], FILTER_SANITIZE_STRING) : 'No Definido';
-                    $canton    = (!empty($_SESSION['canton'])) ? filter_var($_SESSION['canton'], FILTER_SANITIZE_STRING) : 'No Definido';
-                    $provincia = (!empty($_SESSION['provincia'])) ? filter_var($_SESSION['provincia'], FILTER_SANITIZE_STRING) : 'No Definido';
-                    
-                    $pay = $payment->processPayment(
-                        array(
-                            "amount"=> $TotalOrder,
-                            "currency"=> "CRC",
-                            "billToFirstName"=> $_SESSION['nombre'],
-                            "billToLastName"=> $_SESSION['apellido'],
-                            "billToAddress"=> $direccion,
-                            "billToAddress2"=> $distrito,
-                            "billToCity"=> $canton,
-                            "billToState"=> $provincia,
-                            "billToZipPostCode"=> "10061",
-                            "billToCountry"=> "CR",
-                            "billToTelephone"=> $_SESSION['telefono'],
-                            "billToEmail"=> $_SESSION['email'],
-                            "orderNumber"=> $code
-                        )
-                    );
-                    
-                    if($pay['result']){
-                        $response = $pay['url'];
-                    }
                 }
+              
+                if($_SESSION['orden']['tipoEnvio']!='Oficina'){
+                 $respuestaInsertar = $orden->insertarEnvioOrdenEntrega($code,$_SESSION['orden']['tipoEnvio']['radio'],$_SESSION['orden']['tipoEnvio']['provincia'],$_SESSION['orden']['tipoEnvio']['canton'],$_SESSION['orden']['tipoEnvio']['distrito'],$_SESSION['orden']['tipoEnvio']['direccion']);   
+                 
+                } else {
+                  $respuestaInsertar = $orden->insertarEnvioOrdenEntrega($code,$_SESSION['orden']['tipoEnvio']);  
+                }
+            }else {
+                echo 0;
             }
-
-            echo $response;
+            echo $respuestaInsertar;
             break;
         default:
             

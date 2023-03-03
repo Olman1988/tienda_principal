@@ -8,8 +8,8 @@
                 <div class="col-6"> 
                    <div class="form-group">
                         <label for="reg-fn">Nombre</label>
-                        <input name="nombre" type="text" id="nombre" class="form-control"  />
-                        <span data-val-controltovalidate="" data-val-errormessage="" data-val-display="Dynamic" id="ContentPlaceHolder1_ctl00" class="text-danger" data-val="true" data-val-evaluationfunction="RequiredFieldValidatorEvaluateIsValid" data-val-initialvalue="" style="display:none;">Requerido.</span>
+                        <input name="nombre" type="text" id="nombre" class="form-control" />
+                        <span class='msnAlert' style='font-size:10px;color:red;font-style:italic;margin-left:20px;display:none'>**Requerido</span>
                     </div>
                 </div>
                 <div class="col-6">
@@ -20,7 +20,7 @@
                                 <option  style="border-radius:15px;" value='1'>Activo</option>
                                 <option  style="border-radius:15px;" value='0'>Inactivo</option>
                             </select>
-                            <span  class="text-danger" style="display:none;">Requerido.</span>
+                            <span class='msnAlert' style='font-size:10px;color:red;font-style:italic;margin-left:20px;display:none'>**Requerido</span>
                     </div>
                 </div>
                 <div class="col-6">
@@ -40,7 +40,7 @@
                                      }
                                ?>
                                  </select>
-                                      <span  class="text-danger" style="display:none;">Requerido.</span>
+                                   <span class='msnAlert' style='font-size:10px;color:red;font-style:italic;margin-left:20px;display:none'>**Requerido</span>
 
                     </div>
                 </div>
@@ -54,6 +54,7 @@
                         <div class="form-group">
                           <label for="reg-fn">Cantidad Mínima</label>
                           <input name="cantidadMinima" type="number" id="cantidadMinima" class="form-control"  />
+                         <span class='msnAlert' style='font-size:10px;color:red;font-style:italic;margin-left:20px;display:none'>**Requerido</span>
                         </div>
                       </div>
                       <div class="col-6"> 
@@ -71,7 +72,6 @@
                                       <option  style="border-radius:15px;" value='4'>4%</option>
                                       <option  style="border-radius:15px;" value='13'>13%</option>
                                   </select>
-                                <span  class="text-danger" style="display:none;">Requerido.</span>
                             </div>  
                        </div>
                        <div class="row">
@@ -101,11 +101,12 @@
                                 <div class="form-group">
                                     <label for="reg-ln">Imagen</label>   
                                     <div class="container-input">
-                                    <input type="file" name="file" id="file-1" value="" class="inputfile inputfile-1" data-multiple-caption="{count} archivos seleccionados" multiple />
+                                    <input type="file"  name="file" id="file-1" value="" class="inputfile inputfile-1" data-multiple-caption="{count} archivos seleccionados" multiple />
                                     <label for="file-1" style='max-width:200px;' class="btn btn-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="iborrainputfile" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path></svg>
                                     <span class="iborrainputfile " id="iborrainputfile">Subir Imagen</span>
                                     </label>
+                                     <span class='msnAlert' style='font-size:10px;color:red;font-style:italic;margin-left:20px;display:none'>**Requerido</span>
                                     </div>
                                 </div>
                            </div>
@@ -116,6 +117,7 @@
                             <div class="form-group">
                               <label for="reg-ln">Descripción Ampliada</label>
                               <textarea class='form-control' id="editor" name="descripcion" rows="5" cols="10"></textarea>
+                              <span class='msnAlert' style='font-size:10px;color:red;font-style:italic;margin-left:20px;display:none'>**Requerido</span>
                             </div>
                         </div>
                         
@@ -172,12 +174,23 @@
                         </div>
                         
                         </div>
+                      <span class='msnAlert' style='font-size:15px;color:red;font-style:italic;margin-left:20px;display:none'>**Hay valores requeridos pendientes</span>
+
                   <input class="btn btn-primary mt-4" type="submit" value="Guardar">
+
            </form>
     </section>
 
 <script>
-    
+     $("#formularioRegistro").on('submit', function(evt){
+    evt.preventDefault();  
+    console.log($("#editor").val());
+        if($("#nombre").val()!==''&&$("#estadoProducto").val()!==-1&&$("#categoria").val()!==-1&&$("#file-1").val()!==''&&$("#editor").val()!==''){
+            document.getElementById('formularioRegistro').submit();
+        }else {
+            $(".msnAlert").css("display","block");
+        }
+ });
     $(document).ready(function(){
         ;( function ( document, window, index )
 {

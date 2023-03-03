@@ -17,6 +17,7 @@
       <th scope="col">Categoria</th>
       <th scope="col">Precio</th>      
       <th scope="col">Tipo</th>    
+      <th scope="col">SKU</th>   
       <th scope="col">Acciones</th>
     </tr>
   </thead>
@@ -43,7 +44,7 @@
                 
                 ?> 
       </td>
-      
+      <td><?=$respuestaProductos['sku']?></td>
       
       <td style="min-width:120px;" class="">
           <a href='<?=base_url?>/Admin/?seccion=products&&action=edit&&id=<?=$respuestaProductos['art_CodigoArticulo']?>'><i class="fa-solid fa-pen-to-square" style="cursor:pointer;color:white;font-size:20px;" ></i></a>
