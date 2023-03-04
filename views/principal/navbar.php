@@ -47,10 +47,12 @@ $cantidadArticulos=$cantidadArticulos+count($_SESSION['carrito']);
 }
  class validacionMenu{
      public function esPadre($todasCategoriasPadre,$categoria){
+         if(is_array($todasCategoriasPadre)&&count($todasCategoriasPadre)>0){
          for($i=0;$i<count($todasCategoriasPadre);$i++){
                if($todasCategoriasPadre[$i]['categoriaPadre']==$categoria){
                    return true;
                }
+        }
      }
  }
 
@@ -108,15 +110,14 @@ $cantidadArticulos=$cantidadArticulos+count($_SESSION['carrito']);
 <div class='info-up' id="info-up"> 
     <div><a href="mailto:<?=$profile->infoEmail?>"><i class="fa-regular fa-envelope "></i><span style='margin-left:10px;'><?=$profile->infoEmail?></span></a></div>
     <div><a href="tel:+506<?=$profile->phone?>"><i class="fa-solid fa-mobile-screen-button "></i><span style='margin-left:10px;'>+506 <?=$profile->phone?></span></a></div>
-    <?php
-                  echo "<div>".$evaluar->evaluarInfo($profile->whatsApp, 'whatsApp')."</div>";
-                  echo "<div>".$evaluar->evaluarInfo($profile->facebook, 'facebook')."</div>";
-                  echo "<div>".$evaluar->evaluarInfo($profile->instagram, 'instagram')."</div>";
-                  echo "<div>".$evaluar->evaluarInfo($profile->twitter, 'twitter')."</div>";
-                  echo "<div>".$evaluar->evaluarInfo($profile->pinterest, 'pinterest')."</div>";
-                  echo "<div>".$evaluar->evaluarInfo($profile->linkedin, 'linkedin')."</div>";
-                  echo "<div>".$evaluar->evaluarInfo($profile->youtube, 'youtube')."</div>";
-    ?>
+   
+                 <?=$evaluar->evaluarInfo($profile->whatsApp, 'whatsApp')!=''?'<div>'.$evaluar->evaluarInfo($profile->whatsApp, 'whatsApp').'</div>':'';?>
+                 <?=$evaluar->evaluarInfo($profile->facebook, 'facebook')!=''?'<div>'.$evaluar->evaluarInfo($profile->facebook, 'facebook').'</div>':'';?>
+                 <?=$evaluar->evaluarInfo($profile->instagram, 'instagram')!=''?'<div>'.$evaluar->evaluarInfo($profile->instagram, 'instagram').'</div>':'';?>
+                 <?=$evaluar->evaluarInfo($profile->twitter, 'twitter')!=''?'<div>'.$evaluar->evaluarInfo($profile->twitter, 'twitter').'</div>':'';?>
+                 <?=$evaluar->evaluarInfo($profile->pinterest, 'pinterest')!=''?'<div>'.$evaluar->evaluarInfo($profile->pinterest, 'pinterest').'</div>':'';?>
+                 <?=$evaluar->evaluarInfo($profile->linkedin, 'linkedin')!=''?'<div>'.$evaluar->evaluarInfo($profile->linkedin, 'linkedin').'</div>':'';?>
+                 <?=$evaluar->evaluarInfo($profile->youtube, 'youtube')!=''?'<div>'.$evaluar->evaluarInfo($profile->youtube, 'youtube').'</div>':'';?>
 </div>
  
 <nav class="navbar navbar-prin navbar-expand-lg navbar-light bg-light" id="nav-fix" style="flex-wrap: nowrap! important;background:<?=$respuestaLAF['colorNavbar']?> !important;border:solid 1px <?=$respuestaLAF['colorSecundario']?>">
@@ -379,7 +380,3 @@ $("#search-icon").on("click",function(){
     $("#site-search").css("visibility","visible");
 });
 </script>
-
-<?php
-
-?>

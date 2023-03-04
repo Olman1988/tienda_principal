@@ -45,9 +45,9 @@ $securityAdmin = $security->isAdmin();
                                         }
                                     } else {
                                          $respSliders =  $consultaSliders->getAllSlidersAdmin();
-                                    if(!empty($respSliders)&&count($respSliders)>0){
+                                    
                                        require_once 'views/sliders.php';  
-                                    }
+                                    
                                     }
                                    
                                 break;

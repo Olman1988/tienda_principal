@@ -4,7 +4,7 @@ class socialMedia{
    public function evaluarInfo($infoProfile,$tipo){
        
        if(empty($infoProfile)){
-           return " ";
+           return "";
        }else {
            switch ($tipo) {
                case "whatsApp":

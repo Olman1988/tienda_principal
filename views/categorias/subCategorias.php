@@ -51,7 +51,7 @@ if(isset($_GET['nombre'])){
             <div class="card mb-30">
                 <a class="card-img-tiles" href="<?=base_url?>?pag=categorias&&id=<?=$value['cat_CodigoCategoria']?>&&nombre=<?=$value['cat_Descripcion']?>">
                 <div class="inner">
-                  <div class="main-img" id="" ><img src="<?=base_url3.$value['rutaImagen']?>" alt="Categoria"></div>
+                  <div class="main-img" id="" ><img src="<?=base_url.$value['rutaImagen']?>" alt="Categoria"></div>
                   
                 </div></a>
               <div class="card-body text-center">

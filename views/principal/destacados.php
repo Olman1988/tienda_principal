@@ -20,7 +20,7 @@ if($value['masVendido']==1){
      
      <section class="container" style="padding-top:20px; padding-bottom:20px;">
         <?php
-        if(count($destacados)>0){
+        if(isset($destacados)&&count($destacados)>0){
         ?>
          <h3 class="text-center mb-30 tbs">Productos Destacados</h3>
         <div class="row">

@@ -1,0 +1,4 @@
+Agregar a la columna de 'detallesCotizacion ' las columnas
+1. observacion varchar(250)
+1. archivos varchar(250)
+1. personalizacion varchar(550)

@@ -65,7 +65,7 @@ if(isset($_GET['nombre'])){
                         <img class="fluid" src="<?=base_url2.$value['rutaImagen']?>" alt="Producto">
                        </div> -->
                          <div class="main-img" id="">
-                        <img src="<?=base_url2.$value['rutaImagen']?>" alt="Producto">
+                        <img src="<?=base_url.$value['rutaImagen']?>" alt="Producto">
                        </div>
                         </a>
                       </div>

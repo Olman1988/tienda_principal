@@ -52,7 +52,7 @@ if(isset($_GET['nombre'])){
                   <div class="col-xl-6 col-sm-12">
                     <a class="product-thumb" href="">
                     <div class="zoom" id="">
-                        <img style="max-height:250px;" class="fluid" src="<?=base_url3.$value['rutaImagen']?>" alt="Producto">
+                        <img style="max-height:250px;" class="fluid" src="<?=base_url.$value['rutaImagen']?>" alt="Producto">
                        </div> 
                         </a>
                       </div>

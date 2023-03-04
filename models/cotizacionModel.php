@@ -6,7 +6,7 @@ public function crearCotizacion($code,$email,$nombre,$apellidos,$DNI,$provincia,
         try {
             $db = conexion::getConnect(); //inicia la conexion
             $db->beginTransaction(); //inicia la transaccion
-            $consulta = $db->prepare("insert into [atheneal_AdminBordados].[Cotizacion] (idCliente,nombre,apellido,DNI,provincia,canton,distrito,"
+            $consulta = $db->prepare("insert into [dbo].[Cotizacion] (idCliente,nombre,apellido,DNI,provincia,canton,distrito,"
                     . "direccion,email,telefono,fecha,codigo)"
                     . " values (:idCliente,:nombre,:apellido,:DNI,:provincia,:canton,:distrito,:direccion,:email,"
                     . ":telefono,:fecha,:codigo)");
@@ -56,9 +56,9 @@ public function crearDetalles($idProducto,$cantidad,$code,$file=1,$observacion=1
              try {
                 $db = conexion::getConnect(); //inicia la conexion
                 $db->beginTransaction(); //inicia la transaccion
-                $consulta = $db->prepare("insert into [atheneal_AdminBordados].[detallesCotizacion] (idProducto,cantidad,codCotizacion,observacion,archivos,personalizacion)"
+                $consulta = $db->prepare("insert into [dbo].[detallesCotizacion] (idProducto,cantidad,codCotizacion,observacion,archivos,personalizacion)"
                         . " values (:idProducto,:cantidad,:codCotizacion,:observacion,:archivos,:personalizacion)");
-
+       
                 $consulta->bindValue(':idProducto',$idProducto);
                 $consulta->bindValue(':cantidad', $cantidad);
                 $consulta->bindValue(':codCotizacion', $code);
@@ -84,7 +84,7 @@ public function crearDetalles($idProducto,$cantidad,$code,$file=1,$observacion=1
         $respuesta=[];
         try {
                 $db = conexion::getConnect();
-               $consulta =$db->prepare("SELECT a.art_Descripcion AS Producto, dc.cantidad AS Cantidad, dc.observacion AS Nota, dc.archivos AS Files FROM [atheneal_AdminBordados].[detallesCotizacion] dc INNER JOIN [dbo].[Articulo] a ON dc.idProducto = a.art_CodigoArticulo WHERE dc.codCotizacion = '$code'");
+               $consulta =$db->prepare("SELECT a.art_Descripcion AS Producto, dc.cantidad AS Cantidad, dc.observacion AS Nota, dc.archivos AS Files FROM [dbo].[detallesCotizacion] dc INNER JOIN [dbo].[Articulo] a ON dc.idProducto = a.art_CodigoArticulo WHERE dc.codCotizacion = '$code'");
                 $consulta->execute();
                 foreach($consulta->fetchAll(PDO::FETCH_ASSOC) as $value){
                         $respuesta[]=$value;
