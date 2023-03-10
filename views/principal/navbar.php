@@ -174,7 +174,10 @@ $cantidadArticulos=$cantidadArticulos+count($_SESSION['carrito']);
            }
            $contadorCat++;
            if(!$respCategorias[$contadorNuevo]['esServicio']){
-           $esPadre=$objetoPadre->esPadre($todasCategoriasPadre,$respCategorias[$i]['cat_CodigoCategoria']);
+           if(!empty($todasCategoriasPadre)){
+              $esPadre=$objetoPadre->esPadre($todasCategoriasPadre,$respCategorias[$i]['cat_CodigoCategoria']);
+
+           }  
            
            if(!$esPadre){
            ?>

@@ -45,6 +45,7 @@ $evaluar=new socialMedia();
 <?php
 require_once 'controllers/categoriasController.php';
 $categorias= new categoriasController();
+$todasCategoriasPadre=Array();
 $todasCategoriasPadre=$categorias->todasCategoriasPadre();
 
 $respCategorias=$categorias->todasCategoriasParaMenu();
@@ -248,21 +249,22 @@ if(isset($_GET['pag'])){
                 $respuestaSession=$consultarSesion::sessionIniciada();
                 if($respuestaSession==true){
                 switch ($_GET['step']) {
+                     case 'resultTransaction':
+                        require_once 'views/carritoCompras/resultTransaction.php';
+                        break;
                     case 'general':
-if(isset($_SESSION['cotizacion'])){
-    require_once 'views/carritoCompras/checkoutCotizar.php';
-}else{
-    require_once 'views/carritoCompras/checkout.php';
-}
+                        if(isset($_SESSION['cotizacion'])){
+                            require_once 'views/carritoCompras/checkoutCotizar.php';
+                        }else{
+                            require_once 'views/carritoCompras/checkout.php';
+                        }
 
                         break;
                     case 'shipping':
-
-require_once 'views/carritoCompras/shipping.php';
+                        require_once 'views/carritoCompras/shipping.php';
                         break;
                     case 'payment':
-
-require_once 'views/carritoCompras/payment.php';
+                        require_once 'views/carritoCompras/payment.php';
                         break;
                     case "review":
                         require_once 'views/carritoCompras/checkInformation.php';

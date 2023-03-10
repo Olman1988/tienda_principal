@@ -135,7 +135,7 @@
           <!--<!-- GORRAS Y OTROS -->
           <?php
            $cont=1;
-            
+         if(!empty($todasCategoriasPadre)){  
        foreach ($todasCategoriasPadre as $value) {
            
           ?>
@@ -165,6 +165,7 @@
       </ul>
        <?php
            $cont++;
+       }
        }
           ?>
                      <ul class="col-lg-4 col-md-4 col-sm-4 col-4 lista-secundaria" id='lista-secundaria<?=$cont?>' style="transition:all 0.3s ease-in-out;">
@@ -204,6 +205,7 @@
        <?php
        $esPadre=false;
        $contador=5;
+       if(!empty($respCategorias)){
        for ($i=0;$i<count($respCategorias)-1;$i++){
            $esPadre=$objetoPadre->esPadre($todasCategoriasPadre,$respCategorias[$i]['cat_CodigoCategoria']);
            if(!$esPadre){
@@ -221,6 +223,7 @@
       </li>
       <?php
           $contador++; 
+       }
        }
        }
           if(isset($respCategorias['servicios'])){

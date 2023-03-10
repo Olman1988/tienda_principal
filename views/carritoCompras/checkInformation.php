@@ -4,7 +4,6 @@ $lugar="";
 $radioColor="";
 $radioImg="";
 $listAttribute="";
-var_dump($_SESSION['orden']['tipoEnvio']['radio']);
 if($_SESSION['orden']['tipoEnvio']['radio']=='Oficina'){
     $envio=$_SESSION['orden']['tipoEnvio']['radio'];
     $lugar='Oficina';
@@ -24,7 +23,6 @@ if(isset($_SESSION['carrito'][0]['radioImg'])&&!empty($_SESSION['carrito'][0]['r
 if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][0]['listAttribute'])){
    $listAttribute = $_SESSION['carrito'][0]['listAttribute']; 
 }
- error_log(print_r($_SESSION,true),3,"C:/xampp/htdocs/proyectos_2021/errores/devlog");
 ?>
 <div class="page-title" id='page-title'>
         <div class="container">
@@ -202,7 +200,7 @@ if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][
             </div>-->
               <div class="row padding-top-1x mt-3">
                   <div class="col-sm-12">
-                      <input id="terminosCondiciones" type="checkbox" name="" /> Al hacer click en "Completar Orden" aceptas las <a href="<?=base_url?>?pag=nosotros&&cod=POLITICAS">Políticas y Restricciones</a>  
+                      <input id="terminosCondiciones" type="checkbox" name="" /> Acepto las <a href="<?=base_url?>?pag=nosotros&&cod=POLITICAS">Políticas y Restricciones</a>  
                   </div>
               </div>
 <div class="alert alert-danger alert-dismissible" id="contenedor-mensaje" style="display:none;height:auto;">
@@ -231,30 +229,41 @@ if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][
     type : 'POST',
     url : './carritoCompras/carritoController.php',
     data : data,
+    beforeSend:function(){
+                Swal.fire({
+                title: 'Por favor espere !',
+                html: 'procesando su orden',// add html attribute if you want or remove
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                },
+            });
+             $("#btnCompletar").prop('disabled', true);
+            },
    success:function(dat){
-     
-            if(dat!=false){
-                Swal.fire({
-                                                   icon: 'success',
-                                                   title: 'Enviado',
-                                                   text: 'Información de envío'
-
-                                                 });
-                                              vaciarCarrito2();
-               
-              window.setTimeout(function () {
-                            window.location.href = "./?pag=checkout&&step=review"
-                    }, 2000);
-                            
-    
-            } else {
-                Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Datos incorrectos'
-              
-              })
-            }
+if(dat!=false){
+						if(dat != 'denied'){
+							//vaciarCarrito2();
+							window.setTimeout(function () {
+								window.location.href = dat;
+							}, 500);
+                                                        
+						}else{
+                                                    Swal.fire({
+							icon: 'error',
+							title: 'Oops...',
+							text: 'Datos incorrectos'
+						});
+                                                setTimeout(window.location.href = "./?pag=checkout&&step=payment", 2000);
+						}
+					} else {
+						Swal.fire({
+							icon: 'error',
+							title: 'Oops...',
+							text: 'Datos incorrectos'
+						
+						});
+					}
         }
             });
         } else {
