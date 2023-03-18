@@ -24,16 +24,16 @@ class cotizacion{
       
         $mail = new PHPMailer();
         $mail->isSMTP();
-        $mail->SMTPDebug = SMTP::DEBUG_OFF;  // SMTP::DEBUG_OFF = off;
+        $mail->SMTPDebug = SMTP::DEBUG_OFF;//SMTP::DEBUG_SERVER;  // SMTP::DEBUG_OFF = off;
         $mail->SMTPAutoTLS = false;
         $mail->SMTPSecure = false;
         $mail->Host = 'tecnosula.com';
         $mail->Port = 25;
         $mail->SMTPAuth = true;
         $mail->isHTML(true);
-        $mail->Username = 'contacto@tecnosula.com';
+        $mail->Username = 'info@tecnosula.com';
         $mail->Password = 'C0nt@ct0/2022';
-        $mail->setFrom('contacto@tecnosula.com', 'Balloons');
+        $mail->setFrom('info@tecnosula.com', 'Tienda');
 
 
             $mail->addAddress($email, 'Cliente');
@@ -86,10 +86,10 @@ class cotizacion{
         $mail->Port = 25;
         $mail->SMTPAuth = true;
         $mail->isHTML(true);
-        $mail->Username = 'contacto@tecnosula.com';
+        $mail->Username = 'info@tecnosula.com';
         $mail->Password = 'C0nt@ct0/2022';
-        $mail->setFrom('contacto@tecnosula.com', 'Balloons');
-
+        $mail->setFrom('info@tecnosula.com', 'Balloons');
+https://localhost/new_projects/tienda_principal/assets/files/641407733E261Tarea%20%234.pdf
 
             $mail->addAddress("olman1000@gmail.com", 'Cliente');
             $mail->Subject = 'Cotizacion '.$code;

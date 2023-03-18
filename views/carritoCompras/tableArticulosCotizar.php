@@ -21,6 +21,7 @@
     <div class="">
     <a class="btn btn-sm btn-outline-danger mb-3" style="float:right;" onclick="vaciarCotizacion()">LIMPIAR COTIZACIÓN</a>
 </div>
+    <div class="container overflow-auto">
 <table class="table table-striped table-bordered" cellspacing="0" cellpadding="4" rules="cols" border="1" id="ContentPlaceHolder1_CartList" style="border-collapse:collapse;">
 		<tr>
 			<th scope="col">&nbsp;</th><th scope="col">Nombre</th><th scope="col">Cantidad</th><th scope="col">Acciones</th>
@@ -67,6 +68,7 @@
                 ?>
                 
 	</table>
+        </div>
     <div class="pb-4">
         <a class="btn btn-outline-secondary" href="<?=base_url?>">SEGUIR COTIZANDO</a>
         <hr class="mb-4 pb-2">
@@ -280,9 +282,9 @@ function vaciarCarrito2(){
                                 });
                             
                             
-//                          window.setTimeout(function () {
-//                            window.location.href = "<?=base_url?>?pag=checkout&&step=general"
-//                        }, 1000);  
+                          window.setTimeout(function () {
+                            window.location.href = "<?=base_url?>?pag=checkout&&step=general"
+                        }, 1000);  
                         }
                      
     

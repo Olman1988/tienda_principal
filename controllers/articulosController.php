@@ -409,7 +409,7 @@ public function imagenPorID($id){
             }
             
             if(!$SKUExist){
-                if (isset($archivo) && $archivo != "" && $nombre && $descripcion&&$categoria) {
+                if (isset($archivo) && $archivo != "" && $nombre &&$categoria) {
                      if (isset($archivo) && $archivo != "" ) {
                     $tipo = $_FILES['file']['type'];
                     $tamano = $_FILES['file']['size'];
@@ -464,7 +464,7 @@ public function imagenPorID($id){
                           echo "<script>Swal.fire({
                                      icon: 'error',
                                      title: 'Oops...',
-                                     text: 'No fue posible eliminar los datos, intente nuevamente!',
+                                     text: 'No fue posible agregar los datos, intente nuevamente!',
                                      footer: '',
 
                                  })
@@ -497,6 +497,7 @@ public function imagenPorID($id){
             $estado = !empty($_POST['estado'])&&$_POST['estado']!=-1? $_POST['estado']:false;
             $categoria = !empty($_POST['categoria'])&&$_POST['categoria']!=-1? $_POST['categoria']:false;
             $precio = !empty($_POST['precio'])? $_POST['precio']:0;
+           
             $esServicio = !empty($_POST['esServicio'])? 1:0;
             $productoNuevo= !empty($_POST['productoNuevo'])? 1:0;
             $mejorComentario = !empty($_POST['mejorComentario'])? 1:0;

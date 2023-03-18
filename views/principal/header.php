@@ -390,12 +390,12 @@ margin-left:15px;
 }
 .navbar ul .li-active{
 padding-top:16px;
-    border-top:solid 2px <?=$respuestaLAF['colorPrincipal']?>;
+    border-top:solid 2px <?=$respuestaLAF['colorHoverNavbar']?>;
       
 }
 .navbar ul .li-active .nav-link{
 
-  color: <?=$respuestaLAF['colorPrincipal']?> ;
+  color: <?=$respuestaLAF['colorHoverNavbar']?> ;
 }
 .navbar .navbar-nav .nav-link {
   color: <?=$respuestaLAF['colorFuenteNavbar']?>;
@@ -408,7 +408,7 @@ padding-top:16px;
   letter-spacing: 2px;
 }
 .navbar .navbar-nav .nav-link:hover {
-  color: <?=$respuestaLAF['colorPrincipal']?>;
+  color: <?=$respuestaLAF['colorHoverNavbar']?>;
  
 }
 @media (max-width: 575px) {

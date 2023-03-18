@@ -17,14 +17,15 @@
       </div>
 
 <div class="container" style="width:90%;min-width:300px;margin-bottom:50px;">
-    <div >
+    <div>
     <a class="btn btn-sm btn-outline-danger mb-3" style="float:right" onclick="vaciarCarrito2()">VACIAR CARRITO</a>
    
 </div>
+    <div class="container overflow-auto">
 <table class="table table-striped table-bordered" cellspacing="0" cellpadding="4" rules="cols" border="1" id="ContentPlaceHolder1_CartList" style="border-collapse:collapse;">
 		<tr>
-			<th scope="col">&nbsp;</th><th scope="col">Nombre</th><th scope="col">Cantidad</th><th>Precio</th>
-                        <th scope="col">Impuesto</th>
+			<th scope="col">&nbsp;</th><th scope="col">Nombre</th><th scope="col">Cantidad</th><th>Precio Unitario</th>
+                        <th scope="col">Impuesto Unitario</th>
                         <th scope="col">Total</th>
                         <th scope="col">Acciones</th>
                         
@@ -36,20 +37,24 @@
                       $impuesto = 0;  
                       $subTotal = 0 ;
                       $total = 0;
-                      $subTotal =  $carritoTabla['art_PrecioUnitario']*$carritoTabla['cantidad'];
+                      $llevaimpuesto= isset($carritoTabla["llevaimpuesto"])&&$carritoTabla["llevaimpuesto"]!=0?$carritoTabla["llevaimpuesto"]:0;
+                      $impuesto = intval($carritoTabla['impuesto']);
                             if($carritoTabla['impuesto']!=''){
-                                $impuesto = intval($carritoTabla['impuesto']);
+                                
                                 $impuesto=round($impuesto,2);   
                             }
-                         $subTotal = $subTotal+(($subTotal * ($impuesto/100)));  
-                       
-                              $subTotal=round($subTotal,2);  
+                         
 //                    if(!is_null($impuesto)){
 //                        $impuesto=number_format(intval($impuesto),2);
 //                    } else {
 //                        $impuesto = 0;
 //                    }            
-                            
+                 //$carritoTabla['IVAIncluido']=0;
+                              $precioIni =round($carritoTabla['art_PrecioUnitario'],2);
+                              $precio = $llevaimpuesto==1?$carritoTabla['IVAIncluido']==1&&$impuesto!=0?round(($precioIni/(1+($impuesto/100))),2):round($precioIni,2):round($precioIni,2); 
+                              $impMonto=$llevaimpuesto==1?$impuesto!=0?$carritoTabla['IVAIncluido']==1?$precioIni-$precio:$precio*($impuesto/100):0:0;
+                              $subTotal =  ($precio+$impMonto)*$carritoTabla['cantidad'];
+                              
                 ?>
                 
                 <tr>
@@ -64,18 +69,22 @@
                                     
                                 </td>
                                 <td>
-                                    <span id="precio_Un"><?=round($carritoTabla['art_PrecioUnitario'],2)?></span>
+                                    <input type="hidden" id="precio_Un" value="<?=round($carritoTabla['art_PrecioUnitario'],2)?>">
+                                    <span id="precio"><?=$precio?></span>
                                 </td>
                                 <td>
-                                    %<input type="hidden" id="impuestos" value="<?=$carritoTabla['IVAIncluido']==1?0:$impuesto?>"><?=$impuesto?>
-                                    <br/><span style="color:gray;font-size:10px;font-style:italic"><?=$carritoTabla['IVAIncluido']?"***Precio incluye el IVA":""?></span>
+                                    <input type="hidden" id="impuestos" value="<?=$impuesto?>">
+                        <input id="ivaIncluido" type="hidden" name="ivaIncluido" value="<?=$carritoTabla['IVAIncluido']?>">
+                        <input id="llevaimpuesto" type="hidden" name="llevaimpuesto" value="<?=$carritoTabla['llevaimpuesto']?>">
+                        <?=$impMonto?>
+                                    <br/>
                                 </td>
                                 <td>
                                     <span id="subTotalConImp"><?=$subTotal?></span>
                                 </td>
                                 
                                 <td>
-                                   <a onclick ="removerProductoCoarrito(<?=$carritoTabla['id']?>);" class="btn btn-outline-warning-2">Eliminar</a>
+                                   <a onclick ="removerProductoCoarrito(<?=$carritoTabla['id']?>)" class="btn btn-outline-danger">Eliminar</a>
                                 </td>
 		</tr>
                 
@@ -111,24 +120,25 @@
                 ?>
                 
 	</table>
+</div>
     <hr>
    
     <div class="pb-4">
         <a class="btn btn-outline-secondary" href="<?=base_url?>">SEGUIR COMPRANDO</a>
         <hr class="mb-4 pb-2">
         <div class="row justify-content-end">
-        <h4 class="col-3" style="">Subtotal: </h4>
-        <span style="font-size:20px;font-weight:400;" class="ml-1 col-1">₡</span><span style="font-size:20px;font-weight:400;" class="col-2 text-right" id="subTotalFinal">0</span>
+        <h4 class="col-4" style="">Subtotal: </h4>
+        <span style="font-size:20px;font-weight:400;" class="ml-1 col-1">₡</span><span style="font-size:20px;font-weight:400;" class="col-3 text-right" id="subTotalFinal">0</span>
         </div>
         <hr>
         <div class="row justify-content-end">
-        <h4 class="col-3" style="">Impuesto Total: </h4>
-        <span style="font-size:20px;font-weight:400;" class="ml-1 col-1">₡</span><span style="font-size:20px;font-weight:400;" class="col-2 text-right" id="impuestoFinal">0</span>
+        <h4 class="col-4" style="">Impuesto Total: </h4>
+        <span style="font-size:20px;font-weight:400;" class="ml-1 col-1">₡</span><span style="font-size:20px;font-weight:400;" class="col-3 text-right" id="impuestoFinal">0</span>
         </div>
         <hr>
                  <div class="row justify-content-end">
-        <h4 class="col-3" style="">Total: </h4>
-        <span style="font-size:20px;font-weight:400;" class="ml-1 col-1">₡</span><span style="font-size:20px;font-weight:400;" class="col-2 text-right" id="TotalFinal">0</span>
+        <h4 class="col-4" style="">Total: </h4>
+        <span style="font-size:20px;font-weight:400;" class="ml-1 col-1">₡</span><span style="font-size:20px;font-weight:400;" class="col-3 text-right" id="TotalFinal">0</span>
         </div>
  <hr>
     </div>
@@ -158,22 +168,24 @@
          let precioUnitario = document.querySelectorAll("td #precio_Un");
          let impuestos = document.querySelectorAll("td #impuestos");
          let subTotalConImp = document.querySelectorAll("td #subTotalConImp");
+         let ivaIncluido = document.querySelectorAll("td #ivaIncluido");
+         let llevaimpuesto = document.querySelectorAll("td #llevaimpuesto");
          let subtotal = Array();
          let totalImp = Array();
          var subTotalFinal = 0
          var totalimpFinal = 0;
          var TotalFinal = 0;
          for(let i = 0; i < cantidades.length; i++){
-             let precioUn = parseInt($(precioUnitario[i]).text());
+             let precioUn = parseInt($(precioUnitario[i]).val());
              if(!isNaN(precioUn)){
-                let sub =  $(cantidades[i]).val()*parseInt($(precioUnitario[i]).text());
-                let impuestoPorc = (parseInt($(impuestos[i]).val())!==0)?parseInt($(impuestos[i]).val()):0;
-                let impValue = (sub*impuestoPorc)/100;
-                let subPrecio = impuestoPorc==0?0:impValue;
-                let TotalPrecio = sub + subPrecio;
+                let precioSinImp =  $(llevaimpuesto[i]).val()==1?$(ivaIncluido[i]).val()!=1?$(cantidades[i]).val()*precioUn:$(cantidades[i]).val()*(precioUn/(1+($(impuestos[i]).val()/100))):$(cantidades[i]).val()*precioUn;
+                let impuestoPorc = $(llevaimpuesto[i]).val()==1?$(impuestos[i]).val()!==0?parseInt($(impuestos[i]).val()):0:0;
+                let impValue = parseInt($(llevaimpuesto[i]).val())==1?impuestoPorc!=0?((precioSinImp*impuestoPorc)/100):0:0;
+                let TotalPrecio = impValue + precioSinImp;
+                
                 totalImp.push(impValue);
-                $(subTotalConImp[i]).text(TotalPrecio);
-                subtotal.push(sub);
+                $(subTotalConImp[i]).text(TotalPrecio.toFixed(2));
+                subtotal.push(precioSinImp);
                 total.push(TotalPrecio);
             } else {
                 subtotal.push(0); 
@@ -185,9 +197,9 @@
             TotalFinal = TotalFinal + total[i];
             totalimpFinal = totalimpFinal+totalImp[i];
         }
-        $("#impuestoFinal").text(totalimpFinal);
-        $("#subTotalFinal").text(subTotalFinal);
-        $("#TotalFinal").text(TotalFinal);
+        $("#impuestoFinal").text(totalimpFinal.toFixed(2));
+        $("#subTotalFinal").text(subTotalFinal.toFixed(2));
+        $("#TotalFinal").text(TotalFinal.toFixed(2));
     }
             $("#btnContinuar").on('click', function(event){
         event.preventDefault();

@@ -308,6 +308,7 @@ public function articulosDestacados(){
       return $respuesta;
     }
     public function modificarArticulo($nombre,$descripcion,$estado,$categoria,$precio,$esServicio,$mejorComentario,$masVendido,$destacado,$productoNuevo,$imagen,$disponibleCotizacion,$disponibleCompra,$IDProduct,$cantidadMinima,$sku,$tax,$taxRequired,$littleDescription,$taxIncluded){
+       
         if($cantidadMinima<1){
                $cantidadMinima = 1;
            }       

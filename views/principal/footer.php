@@ -5,7 +5,7 @@
 <footer class="site-footer" id='site-footer'>
         <div class="container">
           <div class="row principal-section">
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-4 col-md-6">
               <!-- Contact Info-->
               <section class="widget mb-4">
 <h3 class="widget-title">Mantente en contacto</h3>

@@ -39,6 +39,10 @@
             <a class="nav-link" href="<?=base_url?>Admin/?seccion=orders"><i class="fa-solid fa-truck-fast icon-admin"></i>Órdenes</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="<?=base_url?>Admin/?seccion=quotes"><i class="fa-solid fa-file-invoice-dollar icon-admin"></i>Cotizaciones</a>
+        </li>
+        
+        <li class="nav-item">
             <a class="nav-link" href="<?=base_url?>Admin/?seccion=categories"><i class="fa-solid fa-boxes-stacked icon-admin"></i>Categorías</a>
         </li>
         <li class="nav-item">
@@ -82,7 +86,7 @@
         </ul>
         <!-- End of Sidebar -->
         <div style="z-index:1;height:50px;background:white;width:100%;position:absolute;top:0;left:0;box-shadow:2px 5px 20px rgb(200,200,200); ">
-            <i id="icon_bar" class="fa-solid fa-bars float-left" onclick="ocultar();" style="transition:all 0.3s ease;color:black;cursor:pointer;margin-left:250px;margin-top:10px;font-size:30px"></i>
+            <i id="icon_bar" class="fa-solid fa-bars float-left" onclick="ocultar();" style="transition:all 0.3s ease;color:black;cursor:pointer;margin-left:260px;margin-top:10px;font-size:30px"></i>
         </div>
          
         <script>
@@ -94,7 +98,7 @@
             posicion=false;
             }else {
                 $("#menu_sidebar").css("margin-left","0px");
-            $("#icon_bar").css("margin-left","250px");
+            $("#icon_bar").css("margin-left","260px");
             posicion=true;
                 
             }

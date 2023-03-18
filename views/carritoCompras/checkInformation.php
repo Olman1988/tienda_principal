@@ -4,13 +4,14 @@ $lugar="";
 $radioColor="";
 $radioImg="";
 $listAttribute="";
+$shippingCost = 0;
 if($_SESSION['orden']['tipoEnvio']['radio']=='Oficina'){
     $envio=$_SESSION['orden']['tipoEnvio']['radio'];
     $lugar='Oficina';
 }else {
-    $envio=$_SESSION['orden']['tipoEnvio']['provincia']."/".$_SESSION['orden']['tipoEnvio']['canton']."/".$_SESSION['orden']['tipoEnvio']['distrito']."/".$_SESSION['orden']['tipoEnvio']['direccion'];
+$envio=$_SESSION['orden']['tipoEnvio']['provincia']."/".$_SESSION['orden']['tipoEnvio']['canton']."/".$_SESSION['orden']['tipoEnvio']['distrito']."/".$_SESSION['orden']['tipoEnvio']['direccion'];
 $lugar="Ubicacion";
-    
+$shippingCost = isset($_SESSION['orden']['tipoEnvio']["ShippingCost"])?$_SESSION['orden']['tipoEnvio']["ShippingCost"]:0;
 }
 if(isset($_SESSION['carrito'][0]['radioColor'])&&!empty($_SESSION['carrito'][0]['radioColor'])){
    $radioColor = $_SESSION['carrito'][0]['radioColor']; 
@@ -73,20 +74,30 @@ if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][
                     $totalFinal = 0;
                     $impuestosFinal = 0;
                     foreach($_SESSION['carrito'] as $valueCarrito){
-                      $impuesto = 0;  
-                      $total = 0;
+                        
+                        
+                                      $impuesto = 0;  
                       $subTotal = 0 ;
-                    $subTotal =  $valueCarrito['art_PrecioUnitario']*$valueCarrito['cantidad'];
-              
-                            if($valueCarrito['impuesto']!=''){
-                                $impuesto = intval($valueCarrito['impuesto']);
-                                $impuesto = $subTotal * $impuesto/100;
-                                $impuestosFinal = $impuestosFinal + $impuesto;
+                      $total = 0;
+                     
+                            if(intval($valueCarrito['impuesto'])!=''){
+                                
+                                $impuesto=round(intval($valueCarrito['impuesto']),2);   
                             }
-                            $total = $subTotal+$impuesto;
-                              $subTotal=round($subTotal,2);   
+                            //Calcular el precio si llevaimpuesto, si tiene IVa y el porcentaje
+                              $precioIni =round($valueCarrito['art_PrecioUnitario'],2);
+                              $precio = $valueCarrito['llevaimpuesto']==1?$valueCarrito['IVAIncluido']==1&&$impuesto!=0?($precioIni/(1+($impuesto/100))):$precioIni:$precioIni; 
+                              $impMonto=$valueCarrito['llevaimpuesto']==1?$impuesto!=0?$valueCarrito['IVAIncluido']==1?$precioIni-$precio:$precio*($impuesto/100):0:0;
+                              $subTotal =  $precio*$valueCarrito['cantidad'];
+                              $impTotal = $valueCarrito['llevaimpuesto']==1?round($impMonto*$valueCarrito['cantidad'],2):0;
+                              
+                                //Parciales
+                              $total = ($precio+$impMonto)*$valueCarrito['cantidad'];
                               $total=round($total,2); 
+                              $subTotal=round($subTotal,2);   
                               $impuesto=round($impuesto,2); 
+                              //Totales
+                              $impuestosFinal = $impuestosFinal + $impTotal;
                               $subtotalFinal = $subtotalFinal + $subTotal;
                               $totalFinal = $totalFinal + $total;
                     ?>
@@ -103,7 +114,7 @@ if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][
                         <?=$subTotal?>
                     </td>
                     <td class="text-center text-lg text-medium">
-                        <?=$impuesto?>
+                        <?=$impTotal?>
                     </td>
                     <td class="text-center text-lg text-medium">
                         <?=$total?>
@@ -113,7 +124,12 @@ if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][
                   </tr>
                     <?php
                     }
-                  
+                    //Adicionar el costo de entrega
+                  if($shippingCost!=0){
+                        $impuestosFinal = $impuestosFinal + ($shippingCost*0.13);    
+                        $subtotalFinal = $subtotalFinal + $shippingCost;
+                        $totalFinal = $impuestosFinal + $subtotalFinal;
+                    }
                     ?>
                 </tbody>
               </table>
@@ -152,7 +168,7 @@ if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][
                 <h5>Método de pago:</h5>
                 <ul class="list-unstyled">
                     
-                  <li><span class="text-muted">SINPE/Transferencia:</span> <?=$_SESSION['orden']['tipoPago']?></li>
+                  <li><span class="text-muted"></span> <?=$_SESSION['orden']['tipoPago']?></li>
                     
                 </ul>
               </div>
@@ -210,7 +226,7 @@ if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][
             <div class="checkout-footer margin-top-1x">
               <div class="column hidden-xs-down"><a class="btn btn-outline-secondary" href="checkout-payment"><i class="icon-arrow-left"></i>&nbsp;Regresar</a></div>
               <div class="column">
-                  <input type="button" name="" style="font-size:15px;text-transform: uppercase"  value="Completar Orden" id="btnCompletar" class="btn btn-outline-primary-2" />
+                  <input type="button" name="" style="font-size:15px;text-transform: uppercase"  value="Ordenar" id="btnCompletar" class="btn btn-outline-primary-2" />
               </div>
             </div>
               
@@ -241,6 +257,7 @@ if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][
              $("#btnCompletar").prop('disabled', true);
             },
    success:function(dat){
+       console.log(dat);
 if(dat!=false){
 						if(dat != 'denied'){
 							//vaciarCarrito2();

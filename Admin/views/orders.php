@@ -2,7 +2,7 @@
 
 
 ?>
-<div style="width:80%;margin:auto;margin-top:100px; min-width:320px;min-height:90vh;margin-bottom:100px;padding:15px;padding-top:50px;border-radius:15px;background:white;box-shadow:2px 2px 10px gray;">
+<div style="width:95%;margin:auto;margin-top:100px; min-width:320px;min-height:90vh;margin-bottom:100px;padding:15px;padding-top:50px;border-radius:15px;background:white;box-shadow:2px 2px 10px gray;">
     <h2 class="text-center">Órdenes</h2>
 
           <div class="col-lg-12 m-auto">
@@ -14,11 +14,14 @@
                   <tr>
                     <th>Orden #</th>
                     <th>Cliente</th>
-                    <th>Email</th>
+                    <th>Contacto</th>
                     <th>Tipo Pago</th>
                      <th>Dirección de Entrega</th>
                     <th>Fecha</th>
-                   <th style="min-width:100px;">Total</th>
+                    <th style="min-width:80px;">SubTotal</th>
+                    <th style="min-width:80px;">Costo de Envío</th>
+                    <th style="min-width:80px;">Total Impuesto</th>
+                   <th style="min-width:80px;">Total</th>
                     <th>Detalles</th>
                 
                     
@@ -47,7 +50,10 @@
                     <?php
                     }
                   ?>
-                    <td><?=$ordenesValue['fecha']?></td>
+                    <td><?=$ordenesValue['creationdate']?></td>
+                    <td>₡ <?=round($ordenesValue['SubTotal'],2)?></td>
+                     <td>₡ <?=round($ordenesValue['Shipping'],2)?></td>
+                      <td>₡ <?=round($ordenesValue['TotalTax'],2)?></td>
                    <td>₡ <?=intval($ordenesValue['Total'])?></td>
                     <td><button class="btn btn-outline-secondary" onclick="mostrarDetalles('<?=$ordenesValue['codigo']?>')">Ver</button></td>
                     
@@ -96,11 +102,10 @@
       <table class="table table-hover mt-4">
   <thead>
     <tr>
-      <th scope="col">Artículo Id</th>
       <th scope="col">Nombre Artículo</th>
       
        <th scope="col">Cantidad</th>
-              <th scope="col">Precio</th>
+              <th scope="col">SubTotal</th>
               <th scope="col">IVA</th>
                <th scope="col">Total</th>
 
@@ -126,6 +131,7 @@
         paging: true,
         ordering: true,
         info: true,
+        order: [[6, 'desc']]
     });
     });
 function cont(){
@@ -151,10 +157,6 @@ console.log(code);
                        let iva=0;
                        var hilera = document.createElement("tr");
                        
-                          var celda = document.createElement("td");
-                          var textoCelda = document.createTextNode(objetoJson[i]['art_CodigoArticulo']);
-                          celda.appendChild(textoCelda);
-                           hilera.appendChild(celda);
                            var celda = document.createElement("td");
                            var textoCelda = document.createTextNode(objetoJson[i]['art_Descripcion']);
                           celda.appendChild(textoCelda);
@@ -165,7 +167,7 @@ console.log(code);
                            hilera.appendChild(celda);
                            let cantidad=parseInt(objetoJson[i]['cantidad'], 10);
                            var celda = document.createElement("td");
-                            let precioN = parseInt(objetoJson[i]['art_PrecioUnitario'],10);
+                            let precioN = parseFloat(objetoJson[i]['price'],10);
                             if(isNaN(precioN)){
                                precioN=0;
                            }
@@ -173,32 +175,28 @@ console.log(code);
                           celda.appendChild(textoCelda);
                            hilera.appendChild(celda);
                            var celda = document.createElement("td");
-                           iva=parseInt(objetoJson[i]['taxAmount'], 10);
+                           iva=parseFloat(objetoJson[i]['taxAmount'], 10);
                            if(isNaN(iva)){
                                iva=0;
                            }
-                          
-                           let totaliva=iva*cantidad;
-                           var textoCelda = document.createTextNode(totaliva);
+                           var textoCelda = document.createTextNode(iva);
                           celda.appendChild(textoCelda);
                            hilera.appendChild(celda);
                            
-                           var celda = document.createElement("td");
-                       
-                       let precio=parseInt(objetoJson[i]['art_PrecioUnitario'], 10);
-                       if(isNaN(precio)){
-                               precio=0;
+                           
+                          var celda = document.createElement("td");
+                          let totalItem=parseFloat(objetoJson[i]['totalPrice'], 10);
+                           if(isNaN(iva)){
+                               totalItem=0;
                            }
-                       let total=cantidad*precio;
-                       let totalFinal=total+totaliva;
-                             var textoCelda = document.createTextNode(totalFinal);
+                          var textoCelda = document.createTextNode(totalItem);
                           celda.appendChild(textoCelda);
-                           hilera.appendChild(celda);
+                          hilera.appendChild(celda);
                        
                        tblBody.appendChild(hilera);
-                       totalfactura=totalfactura+totalFinal;
+                       totalfactura=totalfactura+totalItem;
                    }
-                    $("#textTotal").text(totalfactura);
+                    $("#textTotal").text("₡"+totalfactura);
                    $("#modalDetalles").appendTo("body").modal('show');
                    if(response!=0){
                        

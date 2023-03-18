@@ -22,6 +22,12 @@ $securityAdmin = $security->isAdmin();
                         if(isset($_GET['seccion'])){
 
                             switch ($_GET['seccion']) {
+                                case "quotes":
+                                    require_once "../controllers/cotizacionesController.php";
+                                    $consultaQuotes=  new cotizacionesController();
+                                    $respQuote = $consultaQuotes-> getAllQuotes();
+                                    require_once 'views/quotes.php';
+                                    break;
                                 case "sliders":
                                     require_once "../controllers/slidersController.php";
                                     $consultaSliders =  new slidersController();

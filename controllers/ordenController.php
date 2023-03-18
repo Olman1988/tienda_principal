@@ -93,14 +93,13 @@ class ordenController{
  $code=  strtoupper(uniqid());
  return $code;
       }
-      public function insertarDetalles($code,$idArticulo, $cantidad,$nombre, $imagen, $idDetalle, $precio,$total,$personalizacion){
+      public function insertarDetalles($code,$idArticulo, $cantidad,$nombre, $imagen, $idDetalle, $precio,$total,$personalizacion,$impTotal,$subTotal){
          $precio=!empty($precio)?$precio:1;
-         
          $personalizacion = json_encode($personalizacion);
             try {
             $db = conexion::getConnect();
-            $consulta=$db->prepare("INSERT INTO OrdenDetalle (idOrden,art_CodigoArticulo,cantidad,art_Descripcion,rutaImagen,id,price,totalPrice,personalizacion) "
-                    . "values(convert(uniqueidentifier,:idOrden),:idarticulo,:cantidad,:nombre,:imagen,convert(uniqueidentifier,:idDetalle),:precio,:total,:personalizacion)");
+            $consulta=$db->prepare("INSERT INTO OrdenDetalle (idOrden,art_CodigoArticulo,cantidad,art_Descripcion,rutaImagen,id,price,totalPrice,taxAmount,personalizacion) "
+                    . "values(convert(uniqueidentifier,:idOrden),:idarticulo,:cantidad,:nombre,:imagen,convert(uniqueidentifier,:idDetalle),:precio,:total,:taxamount,:personalizacion)");
             
              $db->beginTransaction(); //inicia la transaccion
            
@@ -110,10 +109,12 @@ class ordenController{
             $consulta->bindValue(':cantidad', $cantidad);
             $consulta->bindValue(':imagen', $imagen);
            $consulta->bindValue(':idDetalle', $idDetalle);
-           $consulta->bindValue(':precio', $precio);
+           $consulta->bindValue(':precio', $subTotal);
             $consulta->bindValue(':nombre', $nombre);
             $consulta->bindValue(':total', $total);        
             $consulta->bindValue(':personalizacion', $personalizacion);
+            $consulta->bindValue(':taxamount', $impTotal);
+            $consulta->bindValue(':total', ($subTotal+$impTotal));
             $consulta->execute();
              
          $respuesta=$db->commit();
@@ -133,7 +134,7 @@ class ordenController{
     try {
             $db = conexion::getConnect();//Aqui se conecta a la base de datos
                // $consulta =$db->prepare("SELECT i.id, i.nombre, i.modelo, i.marca, i.descripcion, i.cantidad, i.precio, ci.nombre AS categoria, cs.nombre AS subcategoria, i.image, e.nombre AS estado FROM tbl_productos i INNER JOIN tbl_categorias ci ON i.id_categoria = ci.id INNER JOIN tbl_subcategorias cs ON i.id_subcategoria = cs.id INNER JOIN tbl_estados e ON i.estado = e.id ORDER BY id");
-           $consulta =$db->prepare("SELECT * FROM OrdenDetalle od INNER JOIN Orden o ON o.id= od.idOrden INNER JOIN Articulo a ON od.art_CodigoArticulo = a.art_CodigoArticulo where o.codigo"
+           $consulta =$db->prepare("SELECT od.cantidad,od.art_Descripcion,od.price, od.taxAmount,od.totalPrice FROM OrdenDetalle od INNER JOIN Orden o ON o.id= od.idOrden INNER JOIN Articulo a ON od.art_CodigoArticulo = a.art_CodigoArticulo where o.codigo"
                    . "='$code'");
            $consulta->execute();
             
@@ -147,6 +148,35 @@ class ordenController{
         }
         
         return $respuesta;  
+        }
+        public function updateOrden($impuestosFinal,$subtotalFinal,$totalFinal,$respCosto,$id){
+            $respCostoN = isset($respCosto[0]['generalShipping'])?($respCosto[0]['generalShipping']):0;
+            
+            
+            $impuestosFinal = $impuestosFinal+($respCostoN*0.13);
+            $subtotalFinal = $subtotalFinal;
+            $totalFinal = $impuestosFinal+$subtotalFinal+$respCostoN;
+            $resp = false;
+            try {
+            $db = conexion::getConnect();
+            $consulta=$db->prepare("UPDATE Orden SET Total = :totalFinal, TotalTax = :impuestosFinal, SubTotal = :subtotalFinal, Shipping = :shipping where id = :id");
+            
+             $db->beginTransaction(); //inicia la transaccion
+           
+            $consulta->bindValue(':totalFinal',$totalFinal); 
+            $consulta->bindValue(':impuestosFinal',$impuestosFinal);
+            $consulta->bindValue(':subtotalFinal',$subtotalFinal);
+            $consulta->bindValue(':shipping',$respCostoN); 
+            $consulta->bindValue(':id',strtoupper($id));
+            $consulta->execute();
+         $respuesta=$db->commit();
+        } catch (PDOException $e) {
+            echo "se ha presentado un error " . $e->getMessage();
+            throw $e;
+           
+        }
+        
+      return $respuesta;
         }
     
 }

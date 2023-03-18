@@ -1,13 +1,9 @@
 <?php
 $loadedDetails = [true,true,true];
 
-if(isset($_SESSION)){
-   
-    
-} else {
+if(!isset($_SESSION)){
    session_start(); 
    if(isset($_SESSION['carrito'])){
-        
     }
 }
 $observaciones= '';
@@ -31,12 +27,10 @@ $archivoCotizacion = 'Elegir Archivo';
 require_once './controllers/articulosController.php';
 $respuestaImagen= new articulosController();
 $respuesFin=$respuestaImagen->todosImagenesPorId($respuestaArticulo['art_CodigoArticulo']);
-
 //Habilitar precio
 $habilitarPrecio = false;
 if($respuestaArticulo['disponibleCompra']==1){
 $habilitarPrecio=true;
-
 }
 $minimoArticulo = $respuestaArticulo['art_Minimo']!=0?intval($respuestaArticulo['art_Minimo']):1;
 ?>
@@ -74,7 +68,7 @@ input[type="radio"][id^="radioColor"]{
                     <div class="border-1 rounded" style="position:relative;border:solid 1px gray;">
                         <i class="fa-solid fa-magnifying-glass-plus" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor:pointer;font-size:25px;color:rgb(100,100,100);position:absolute;top:20px;right:20px;border-radius:50%;padding:10px;border:solid 1px rgb(200,200,200)"></i>
                         <div>
-                    <div class="gallery-wrapper zoom" id="ex9" style="margin:20px;margin-top:80px;" >
+                    <div class="gallery-wrapper" id="" style="margin:20px;margin-top:80px;" >
                         <img id="imagePrincipal" style="width:100%;" src="<?=base_url2.$respuestaArticulo['rutaImagen']?>" alt="alt"/>
                     </div>
                         </div>
@@ -85,6 +79,7 @@ input[type="radio"][id^="radioColor"]{
     <?php
     if(count($respuesFin)>0){
         foreach ($respuesFin as $valueRespuesta) {
+            
      ?>
     <div style="height:120px;margin-right:14px;cursor:pointer;<?=!empty($respuesFin)&&count($respuesFin)>3?'':'width:120px'?>" onclick="cambiarImagen('<?=$valueRespuesta['rutaImagen']?>')" class="">
                             <img style="width:100%; height:100%;object-fit:cover;" src="<?=base_url2?><?=$valueRespuesta['rutaImagen']?>" alt="Product">
@@ -110,11 +105,10 @@ input[type="radio"][id^="radioColor"]{
 <!--                <div class="rating-stars">
                     <span class='fa fa-star '></span><span class='fa fa-star '></span><span class='fa fa-star '></span><span class='fa fa-star '></span><span class='fa fa-star '></span>
                 </div>-->
-               
                 <h2 class="padding-top-1x text-justify"><?=$respuestaArticulo['art_Descripcion']?></h2>
                 <?php if($habilitarPrecio){ ?>
                 <h4>Precio Unitario<br><span class="mr-1">₡</span> <?=number_format($respuestaArticulo['art_PrecioUnitario'],2)?>
-                    <span style="color:gray;font-style:italic;font-size:10px;">***<?=$respuestaArticulo['IVAIncluido']==1?'Este precio incluye el IVA':'Precio no incluye IVA'?></span>
+                    <span style="color:gray;font-style:italic;font-size:17px;">***<?=$respuestaArticulo['art_LlevaImpuesto']!=0?$respuestaArticulo['IVAIncluido']==1?'Este precio incluye el IVA':'+IVA':'';?></span>
                 </h4>
                 <?php }?>
                 <p>
@@ -124,7 +118,6 @@ input[type="radio"][id^="radioColor"]{
                 <div class="pt-1 mb-2" style="display:<?=$respuestaArticulo['sku']!=''?'block':'none'?>"><span class="text-medium">SKU:</span> #<?=$respuestaArticulo['sku']?></div>
                 <?php
                 if(count($respuestaAtributosGrupo)>0){
-               //     var_dump($respuestaAtributosGrupo);
                     //$counterId=1;
                      error_log(print_r($respuestaAtributosGrupo,true),3,"C:/xampp/htdocs/proyectos_2021/errores/devlog");
                     foreach ($respuestaAtributosGrupo as $atributos) {
@@ -250,7 +243,7 @@ input[type="radio"][id^="radioColor"]{
                             $habilitarPrecio=true;
                             
                         ?>
-                        <input type="button" name="" style='text-transform: uppercase;font-size:12px;' value="Agregar" onclick="agregarCarrito(<?=$respuestaArticulo['art_CodigoArticulo']?>,'agregarCarrito','<?=$respuestaArticulo['art_Descripcion']?>','<?=$respuestaArticulo['rutaImagen']?>','<?=$respuestaArticulo['art_PrecioUnitario']?>','<?=$respuestaArticulo['art_PorcentajeIV']?>')" id="" class="btn-outline-primary" />
+                        <input type="button" name="" style='text-transform: uppercase;font-size:12px;' value="Agregar" onclick="agregarCarrito(<?=$respuestaArticulo['art_CodigoArticulo']?>,'agregarCarrito','<?=$respuestaArticulo['art_Descripcion']?>','<?=$respuestaArticulo['rutaImagen']?>','<?=$respuestaArticulo['art_PrecioUnitario']?>','<?=$respuestaArticulo['art_PorcentajeIV']?>','<?=$respuestaArticulo['IVAIncluido']?>','<?=$respuestaArticulo['art_LlevaImpuesto']?>')" id="" class="btn-outline-primary" />
                       <script>
                         </script>
                         <?php
@@ -296,7 +289,7 @@ input[type="radio"][id^="radioColor"]{
       
         <h5 class="modal-title p-4" id="modalTextProducto"><?=$respuestaArticulo['art_Descripcion']?></h5>
         
-      <div class="modal-body center-align mx-auto" style="min-width:100%;">
+      <div class="modal-body center-align mx-auto" style="">
           <div class="" id="" style="margin:0px 20px 0px 20px;overflow:auto;">
         <img id="img-modal" style="margin:auto;width:100%;" src="<?=base_url2.$respuestaArticulo['rutaImagen']?>" alt="alt"/>
         </div>
@@ -427,7 +420,7 @@ function validarCantidad(data){
 });
 
 $('#exampleModal').appendTo("body");
-function agregarCarrito(idArticulo,action,nombre,imagen,precio,impuesto){
+function agregarCarrito(idArticulo,action,nombre,imagen,precio,impuesto,IVAIncluido,llevaimpuesto){
     let radioColor = $('input:radio[name=radioColor]:checked').val();
    let radioImg = $('input:radio[name=radioImg]:checked').val();
     let listSelection  = $("#selectAtribute").val();
@@ -443,14 +436,12 @@ function agregarCarrito(idArticulo,action,nombre,imagen,precio,impuesto){
       
     }else {
            form_data.append("radioColor", radioColor);
-                console.log("diferentes");
 
     }
        if(typeof radioImg ==='undefined'){
         
     }else {
            form_data.append("radioImg", radioImg);
-                console.log("diferentes");
 
     }
     
@@ -458,7 +449,6 @@ function agregarCarrito(idArticulo,action,nombre,imagen,precio,impuesto){
       
     }else {
            form_data.append("listAttr", listSelection);
-                console.log("diferentes");
 
     }
 
@@ -481,7 +471,9 @@ function agregarCarrito(idArticulo,action,nombre,imagen,precio,impuesto){
      form_data.append("nombre", nombre);
      form_data.append("imagen", imagen);
      form_data.append("precio", precio);
+     form_data.append("llevaimpuesto", llevaimpuesto);
      form_data.append("impuesto", impuesto);
+     form_data.append("IVAIncluido", IVAIncluido);
      
      
    
@@ -570,9 +562,9 @@ function agregarCarrito(idArticulo,action,nombre,imagen,precio,impuesto){
                                 });
                             
                             
-//                          window.setTimeout(function () {
-//                            window.location.href = "./?pag=carrito"
-//                        }, 1000);  
+                          window.setTimeout(function () {
+                            window.location.href = "./?pag=carrito"
+                        }, 1000);  
                         }
                       })
         }
@@ -589,7 +581,6 @@ function agregarCarrito(idArticulo,action,nombre,imagen,precio,impuesto){
 }
 function cambiarImagen(src){
    
-    console.log($("#img-modal"));
     $("#imagePrincipal").attr("src","<?=base_url2?>"+src);
     $("#img-modal").attr("src","<?=base_url2?>"+src);
     $("#imagePrincipal").next().attr("src","<?=base_url2?>"+src);
@@ -597,7 +588,6 @@ function cambiarImagen(src){
 }
 
 function validateSelectionRadio(data){
-   console.log(data);
 
    let radio = $('input:radio[name=radioColor]:checked').val();
    $("#radioColorText").text("Color: "+radio)
@@ -607,7 +597,6 @@ function validateSelectionRadio(data){
    
 }
 function validateSelectionImg(data){
-   console.log(data);
    
    let radio = $('input:radio[name=radioImg]:checked').val();
    $("#radioImgText").text("Imagen: "+radio)

@@ -8,7 +8,7 @@ if(isset($_SESSION)){
 //unset($_SESSION['carrito']);
 //unset($_SESSION['cotizacion']);
 class carritoController{
-    public function agregarCarrito($idArticulo,$nombre,$imagen,$precio,$impuesto,$radioColor,$radioImg,$listAttribute,$cantidadMinima,$cantidadElegida,$IVAIncluido){
+    public function agregarCarrito($idArticulo,$nombre,$imagen,$precio,$impuesto,$radioColor,$radioImg,$listAttribute,$cantidadMinima,$cantidadElegida,$IVAIncluido,$llevaimpuesto){
      if(isset($_SESSION['carrito'])){
          $cont=0;
          foreach($_SESSION['carrito'] as $valueCarrito){
@@ -28,12 +28,13 @@ class carritoController{
          "art_PrecioUnitario"=>$precio,
          "impuesto"=>$impuesto,
          "cantidad"=>1,
-           "radioColor"=>$radioColor,
+         "radioColor"=>$radioColor,
          "radioImg"=>  $radioImg,
          "listAttribute"=>$listAttribute,
          "cantidad"=>$cantidadElegida,
          "cantidadMinima"=>$cantidadMinima,
-         "IVAIncluido" =>$IVAIncluido    
+         "IVAIncluido" =>$IVAIncluido,
+         "llevaimpuesto"=>$llevaimpuesto
      );
        
      $nuevoProducto[]=$nuevoarray;
@@ -122,11 +123,17 @@ class carritoController{
    }
 
     public function vaciarCarrito(){
-       unset($_SESSION['carrito']);
+        if(isset($_SESSION['carrito'])){
+       unset($_SESSION['carrito']);  
+        }
+      
         return true;
     }
     public function vaciarCotizacion(){
-        unset($_SESSION['cotizacion']);
+        if(isset($_SESSION['cotizacion'])){
+           unset($_SESSION['cotizacion']);
+        }
+        
         return true;
     }
     public function codeGenerator() {
@@ -182,7 +189,7 @@ class carritoController{
                 }
                   
                 $resp=$respuesta->crearDetalles($value['id'],$value['cantidad'],$code,$file,$observacion,json_encode($personalizacion));
-
+                
             }
          }
        return $resp;
@@ -236,7 +243,6 @@ class carritoController{
            if(isset($_SESSION['carrito'])){
                foreach ($_SESSION['carrito'] as $index => $valueCarrito) {
                    $respArticuloRequest = $articuloRequest->articuloForIdForCart($valueCarrito['id']);
-                   
                    if($valueCarrito['art_PrecioUnitario']!=$respArticuloRequest['art_PrecioUnitario']){
                       $Result['msn'] = "Algunos datos han cambiado, la información será actualizada";
                       $Result['status']= "Change";
@@ -247,7 +253,6 @@ class carritoController{
                       $Result['status']= "Change";
                       $_SESSION['carrito'][$index]['cantidadMinima'] = $respArticuloRequest['art_Minimo'];
                    }
-                   
                    if($valueCarrito['impuesto']!=intval($respArticuloRequest['art_PorcentajeIV'])){
                       $Result['msn'] = "Algunos datos han cambiado, la información será actualizada";
                       $Result['status']= "Change";
@@ -262,6 +267,7 @@ class carritoController{
                        $this->removerProductoCarrito($valueCarrito['id']);
                    }
                }
+               
            }
            return $Result;
        }
@@ -283,6 +289,7 @@ if(isset($_POST['action'])){
             $IVAIncluido = '';
             $cantidadElegidad=0;
             $cantidadMinima = 0;
+            $llevaimpuesto = 0;
             if(!is_null($_POST['impuesto'])||!empty($_POST['impuesto'])){
                 $impuesto = $_POST['impuesto'];
             }
@@ -310,10 +317,12 @@ if(isset($_POST['action'])){
             if(isset($_POST['IVAIncluido']) && !empty($_POST['IVAIncluido'])){
             $IVAIncluido=$_POST['IVAIncluido'];
             } 
-            
+            if(isset($_POST['llevaimpuesto']) && !empty($_POST['llevaimpuesto'])){
+            $llevaimpuesto=$_POST['llevaimpuesto'];
+            } 
             $idArticulo = filter_var($_POST['idArticulo'], FILTER_SANITIZE_NUMBER_INT);
             $carrito= new carritoController();
-            $respuesta=$carrito->agregarCarrito($idArticulo,$_POST['nombre'],$_POST['imagen'],$_POST['precio'],$impuesto,$radioColor,$radioImg,$listAttribute,$cantidadMinima,$cantidadElegida,$IVAIncluido);
+            $respuesta=$carrito->agregarCarrito($idArticulo,$_POST['nombre'],$_POST['imagen'],$_POST['precio'],$impuesto,$radioColor,$radioImg,$listAttribute,$cantidadMinima,$cantidadElegida,$IVAIncluido,$llevaimpuesto);
             echo $respuesta;
             break;
         case 'agregarCotizacion':
@@ -461,15 +470,14 @@ if(isset($_POST['action'])){
              
             if($nombre&&$apellidos&&$DNI&&$provincia&&$canton&&$distrito&&$direccion&&$telefono&&$email){
                 $respuesta=$carrito->crearCotizacion($code,$email,$nombre,$apellidos,$DNI,$provincia,$canton,$distrito,$direccion,$telefono);
-               
                 if($respuesta){
                    $respDetails=$carrito->crearDetalles($code); 
-                    
                 }else {
                  $resp['title']="Error al ingresar datos";
                  $resp['msn']="Intente de nuevo mas tarde o contacte al administrador!";
                  $resp['status']=false;
                  }
+                 
                 if($respDetails){
                     $respCotizacionBusiness='';
                     $cotizacion = new carritoController();
@@ -538,7 +546,11 @@ if(isset($_POST['action'])){
         $tipoEnvio = isset($_POST['radio']) ? $_POST['radio'] : false;
         $direccion = isset($_POST['direccion']) ? $_POST['direccion'] : false;
            if($provincia &&$canton&& $distrito&& $tipoEnvio&&$direccion){
+                 require_once '../controllers/generalController.php';
+            $general = new generalController();
+            $respGeneral = $general->getGeneralShippingCost();
                $_SESSION['orden']['tipoEnvio']=$_POST;
+               $_SESSION['orden']['tipoEnvio']['ShippingCost'] = isset($respGeneral[0]['generalShipping'])?$respGeneral[0]['generalShipping']:0;
                $respuestaEnvio=true;
            }else{
                $respuestaEnvio=false;
@@ -637,14 +649,47 @@ if(isset($_POST['action'])){
             $code=$orden->codeGenerator();
             $respuestaInsertar = $orden->insertarOrdenNueva($code);
             $TotalOrder = 0;
+            $subtotalFinal = 0;
+                    $totalFinal = 0;
+                    $impuestosFinal = 0;
             $response = false;
 
             if($respuestaInsertar){
                 if(isset($_SESSION['carrito']) && count($_SESSION['carrito']) > 0){
-                    foreach ($_SESSION['carrito'] as $valueProducto) {
+                    require_once '../controllers/articulosController.php';
+                    $articulos = new articulosController();
+                    require_once '../controllers/generalController.php';
+                    $general = new generalController();
+                      
+                    foreach ($_SESSION['carrito'] as $key =>$valueProducto) {
+                      $impuesto = 0;  
+                      $subTotal = 0 ;
+                      $total = 0;
+                      $respCosto = 0;
+                      
                        $codeDetalle=$orden->codeGenerator();
                        $idArticulo=$valueProducto['id'];
-                       $precio=$valueProducto['art_PrecioUnitario'];
+                       //calcular precio de la base de datos ESTE ES SOLO UN PRODUCTO
+                       $respArticulo = $articulos->articuloForIdForCart($idArticulo);
+                       $_SESSION['carrito'][$key]['art_PrecioUnitario'] = $respArticulo['art_PrecioUnitario'];
+                       if(intval($respArticulo['art_PorcentajeIV'])!=''){
+                                
+                                $impuesto=round(intval($respArticulo['art_PorcentajeIV']),2);   
+                            }
+                            
+                        $precioIni =round($respArticulo['art_PrecioUnitario'],2);
+                        $precio = $respArticulo['art_LlevaImpuesto']==1?$respArticulo['IVAIncluido']==1&&$impuesto!=0?($precioIni/(1+($impuesto/100))):$precioIni:$precioIni; 
+                        $impMonto=$respArticulo['art_LlevaImpuesto']==1?$impuesto!=0?$respArticulo['IVAIncluido']==1?$precioIni-$precio:$precio*($impuesto/100):0:0;
+                        $subTotal =  $precio*$valueProducto['cantidad'];
+                        $impTotal = $respArticulo['art_LlevaImpuesto']==1?round($impMonto*$valueProducto['cantidad'],2):0;
+                        $impuestosFinal = $impuestosFinal + $impTotal;
+                        $total = ($precio+$impMonto)*$valueProducto['cantidad'];
+                        $subTotal=round($subTotal,2);   
+                        $total=round($total,2); 
+                        $impuesto=round($impuesto,2); 
+                        $subtotalFinal = $subtotalFinal + $subTotal;
+                        $totalFinal = $totalFinal + $total;     
+                       $precio=$respArticulo['art_PrecioUnitario'];
                        $cantidad= $valueProducto['cantidad'];
                        $nombre= $valueProducto['nombre'];
                        $imagen=$valueProducto['imagen'];
@@ -656,11 +701,17 @@ if(isset($_POST['action'])){
                            "radioColor"=>$radioColor,
                            "listAttribute"=>$listAttribute
                        );
+                       
+                       
+                       
                        $total = $cantidad*$precio;
-                       $respuestaInsertar=$orden->insertarDetalles($code,$idArticulo, $cantidad,$nombre, $imagen, $codeDetalle, $precio,$total,$personalizacion);
+                       $respuestaInsertar=$orden->insertarDetalles($code,$idArticulo, $cantidad,$nombre, $imagen, $codeDetalle, $precio,$total,$personalizacion,$impTotal,$subTotal);
                        $TotalOrder = $TotalOrder + $total;
                     }
-                  
+                    $respCosto = $general->getGeneralShippingCost();
+                  if($respuestaInsertar){
+                      $respuestaInsertar=$orden->updateOrden($impuestosFinal,$subtotalFinal,$totalFinal,$respCosto,$code);
+                  }
                     if(isset($_SESSION['orden']['tipoEnvio'])){
                         if($_SESSION['orden']['tipoEnvio'] != 'Oficina'){
                             $provincia = (isset($_SESSION['orden']['tipoEnvio']['provincia'])) ? $_SESSION['orden']['tipoEnvio']['provincia']: 'No definido';
@@ -673,6 +724,7 @@ if(isset($_POST['action'])){
                             $respuestaInsertar = $orden->insertarEnvioOrdenEntrega($code,$_SESSION['orden']['tipoEnvio']);  
                         }
                     }
+                    $carrito = new carritoController();
                     
                     if($_SESSION['orden']['tipoPago']=='tarjeta'){
                         require_once('../payment/tilopay/class.tilopay.php');
@@ -700,7 +752,7 @@ if(isset($_POST['action'])){
                                 "orderNumber"=> $code
                             )
                         );
-                        $carrito = new carritoController();
+                        
                         if($pay['result']){
                             if(isset($pay['url'])){
                                 $carrito->vaciarCarrito();
@@ -710,11 +762,12 @@ if(isset($_POST['action'])){
                             }
                         }
                     }else{
+                        require_once '../config/parameters.php';
                          if($respuestaInsertar){
                              $carrito->vaciarCarrito();
-                                $response = base_url."pag=checkout&&step=resultTransaction&&descrip=success";
+                                $response = base_url."?pag=checkout&&step=resultTransaction&&descrip=success";
                             } else {
-                                $response = base_url."pag=checkout&&step=resultTransaction&&descrip=error";
+                                $response = base_url."?pag=checkout&&step=resultTransaction&&descrip=error";
                             }
             
                     }

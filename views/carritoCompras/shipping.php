@@ -42,12 +42,20 @@
                   </tr>
                 </thead>
                 <tbody>
+                    <?php
+                    if(isset($respLogistic[0]['entregaOficina'])&& $respLogistic[0]['entregaOficina']==1){
+                    ?>
                   <tr style="cursor:pointer;">
                     <td class="align-middle" style="width:50px;">
                         <input style="width:15px;height:15px;opacity:1"  class="radioForm" id="" type="radio" name="modoEnvio" value="Oficina" checked="checked" />
                     </td>
-                    <td class="align-middle" " style=""><span class="text-medium">Oficinas</span><br><span class="text-muted text-sm">Recoger en local</span></td>
+                    <td class="align-middle" style=""><span class="text-medium">Oficinas</span><br><span class="text-muted text-sm">Recoger en local</span></td>
+                  <td>-</td>
                   </tr>
+                  <?php
+                  }
+                  if(isset($respLogistic[0]['entregaOficina'])&& $respLogistic[0]['entregaDomicilio']==1){
+                  ?>
                     <tr style="cursor:pointer;">
                         
                     <td class="align-middle" id="radio_row" style="width:50px;cursor:pointer">
@@ -92,9 +100,15 @@
                     </div>
                       </form>      
                     </td>
-                    
+                    <td class="align-middle">
+                        <button class="btn btn-outline-primary-2" onclick="calculateCost()">Calcular Costo</button>
+                        <div id="container_cost" class ="text-center mt-2" style="display:none;font-size:20px;font-weight:600"><span id="cost_envio"></span></div>
+                    </td>
                     
                   </tr>
+                  <?php
+                  }
+                  ?>
                 </tbody>
               </table>
             </div>
@@ -113,11 +127,59 @@
     <script src="./assets/js/formulario.js"></script>
     
     <script>
-      
+        var existsCost = false;
+      function calculateCost(){
+          let province = $("#slt-provincias").val();
+          let canton = $("#slt-cantones").val();
+          let district = $("#slt-distritos").val();
+          let address = $("#direccion").val();
+          let datos = {
+              "action":"calcularCCosto",
+              "province":province,
+              "canton":canton,
+              "district":district,
+              "address":address
+          }
+          
+          if(province!=''&&canton!=''&&district!=''&&address!=''){
+          $.ajax({
+    type : 'POST',
+    url : './controllers/generalController.php',
+    data : datos,
+   success:function(dat){
+           existsCost= true;
+            if(dat!=false){
+                $("#container_cost").css("display","block");
+                $("#cost_envio").text("₡"+dat)
+            } else {
+                Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'No ha sido posible calcular el costo de envío,póngase en contacto con la administración'
+              
+              })
+            }
+        }
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Formulario Incompleto...',
+                text: 'Debe completar el formulario de ubicación'
+              
+              })
+        }
+      }
          $("#table-shipping tr").click(function(e){
-           e.preventDefault();
-           e.currentTarget.firstElementChild.firstElementChild.checked=true
-           console.log(e.currentTarget.firstElementChild.firstElementChild);
+         //  e.preventDefault();
+           
+           if(e.currentTarget.firstElementChild.firstElementChild.value=='Ubicacion'){
+               $('input:radio[name=modoEnvio]')[1].checked = true;
+           }else {
+               $('input:radio[name=modoEnvio]')[0].checked = true;
+           }
+           //e.currentTarget.firstElementChild.firstElementChild.checked=true
+           console.log(e.currentTarget.firstElementChild.firstElementChild.value);
          });
      
         //href="<?=base_url?>?pag=checkout&&step=payment"
@@ -126,46 +188,51 @@
        let radio=$("input[name=modoEnvio]:checked").val();
        let dataFormulario;
         if(radio=="Ubicacion"){
-            dataFormulario=$('#formMetodo').serialize()
+            if(existsCost){
+                dataFormulario=$('#formMetodo').serialize()
+            } else {
+                dataFormulario = false;   
+            }
         } else {
             dataFormulario={
              "radio":radio,
              "action":"carritoEnvio"
             };
         }
-        console.log(dataFormulario);
+        if(dataFormulario!=false){
           $.ajax({
-    type : 'POST',
-    url : './carritoCompras/carritoController.php',
-    data : dataFormulario,
-   success:function(dat){
-           
-            if(dat!=false){
-       
-            
-    
-                Swal.fire({
-                                                   icon: 'success',
-                                                   title: 'Enviado',
-                                                   text: 'Información de pago guardada'
+          type : 'POST',
+          url : './carritoCompras/carritoController.php',
+          data : dataFormulario,
+          success:function(dat){
+              console.log(dat);
+                    if(dat!=false){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Costo de envío',
+                            text: 'Información de costo de envío guardada'
+                            });
+                       window.setTimeout(function () {
+                                    window.location.href = "./?pag=checkout&&step=payment"
+                                }, 2000);
+                    } else {
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Datos incorrectos'
 
-                                                 });
-               
-               window.setTimeout(function () {
-                            window.location.href = "./?pag=checkout&&step=payment"
-                        }, 2000);
-                            
-    
-            } else {
-                Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Datos incorrectos'
-              
-              })
-            }
-        }
+                      })
+                    }
+                }
             });
+        } else {
+            Swal.fire({
+                        icon: 'error',
+                        title: 'Error en los datos requeridos',
+                        text: 'Si ha seleccionado la opción de entrega a domicilio, debe calcular el costo de envío'
+
+                      })
+        }
          
 });
        

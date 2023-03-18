@@ -248,6 +248,7 @@ if(isset($_GET['pag'])){
                 $consultarSesion= new accesos();
                 $respuestaSession=$consultarSesion::sessionIniciada();
                 if($respuestaSession==true){
+                    if (isset($_SESSION['carrito'])|| isset($_SESSION['cotizacion'])){
                 switch ($_GET['step']) {
                      case 'resultTransaction':
                         require_once 'views/carritoCompras/resultTransaction.php';
@@ -261,9 +262,13 @@ if(isset($_GET['pag'])){
 
                         break;
                     case 'shipping':
+                        require_once 'controllers/logisticController.php';
+                        $logistic = new logisticController();
+                        $respLogistic = $logistic->getGeneralLogistic();
                         require_once 'views/carritoCompras/shipping.php';
                         break;
                     case 'payment':
+                        $respuestaMetodos = $consultaGeneral ->consultarMetodos();
                         require_once 'views/carritoCompras/payment.php';
                         break;
                     case "review":
@@ -277,6 +282,13 @@ if(isset($_GET['pag'])){
                         </script>";
                         break;
                 }
+                    }else{
+                       echo "<div style='height:60vh'></div><script>
+                            window.setTimeout(function () {
+                            window.location.href ='./?pag=carrito'
+                            }, 0);              
+                            </script>"; 
+                    }
                 } else {
                     echo "<div style='height:60vh'></div><script>Swal.fire({
                             icon: 'error',

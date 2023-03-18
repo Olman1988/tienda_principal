@@ -33,7 +33,7 @@ foreach ( $fonts as $k => $v ) {
     
 </style>
 
-<div class="container" style="overflow:hidden;width:80%;background:white;border-radius:15px;height:auto;margin-top:100px;padding:20px;">
+<div class="container" style="overflow:hidden;width:90%;background:white;border-radius:15px;height:auto;margin-top:100px;padding:20px;">
     <h1>Diseño e Imagen</h1>
     <form id="formInfoDiseno" action="action">
         <?php
@@ -138,7 +138,7 @@ foreach ( $fonts as $k => $v ) {
 </div>
          <hr>
         <h3>Menú de Navegación</h3>
-        <div class="col-6">
+        <div class="col-4">
         <div class="form-group">
             <label for="font">Fuente de Menú de Navegación</label>
             <select id="navbarFont" name="navbarFont"  class="form-control selectpicker show-tick">
@@ -163,7 +163,7 @@ foreach ( $fonts as $k => $v ) {
         </div>
 
 </div>
-        <div class="col-3">
+        <div class="col-2">
          <div class="form-group">
             <label for="exampleColorInput" class="form-label">Color de Fondo</label>
             <?php
@@ -181,7 +181,7 @@ foreach ( $fonts as $k => $v ) {
         </div>
 
 </div>
-        <div class="col-3">
+        <div class="col-2">
          <div class="form-group">
             <label for="exampleColorInput" class="form-label">Color de Fuente</label>
             <?php
@@ -192,6 +192,24 @@ foreach ( $fonts as $k => $v ) {
             }else{
             ?>
                         <input name="colorFuenteNavbar" type="color" class="form-control form-control-color colorTitulo" id="colorFuenteNavbar" title="Choose your color">
+
+             <?php
+            }
+            ?>
+        </div>
+
+</div>
+        <div class="col-2">
+         <div class="form-group">
+            <label for="exampleColorInput" class="form-label">Color de Realse Fuente</label>
+            <?php
+            if(isset($respuestaLAF['colorHoverNavbar'])){
+            ?>
+            <input name="colorHoverNavbar" type="color" class="form-control form-control-color colorTitulo" id="colorHoverNavbar" value="<?=$respuestaLAF['colorHoverNavbar']?>" title="Choose your color">
+            <?php
+            }else{
+            ?>
+                        <input name="colorHoverNavbar" type="color" class="form-control form-control-color colorTitulo" id="colorHoverNavbar" title="Choose your color">
 
              <?php
             }

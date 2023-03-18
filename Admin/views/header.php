@@ -174,5 +174,11 @@ h3{
 #generalTable_filter {
     float:right;
 }
+.sidebar{
+    min-width:250px;
+}
+.sidebar .nav-item .nav-link{
+    min-width:250px;
+}
   </style>
-  <body style="" onbeforeunload="abandonar()">
+  <body style="">

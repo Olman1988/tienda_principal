@@ -25,7 +25,7 @@ $mail->SMTPAuth = true;
 $mail->isHTML(true);
 $mail->Username = 'contacto@tecnosula.com';
 $mail->Password = 'C0nt@ct0/2022';
-$mail->setFrom('contacto@tecnosula.com', 'Transol');
+$mail->setFrom('contacto@tecnosula.com', 'Tienda');
 
  
     $mail->addAddress('olman1000@gmail.com', 'Cliente');

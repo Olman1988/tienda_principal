@@ -83,7 +83,11 @@ public function consultarMetodos(){
    $respuestaGeneral = $consultaGeneral -> consultarMetodos();
    return $respuestaGeneral;
 }
-
+public function getGeneralShippingCost(){
+    $general = new generalModel();
+    $respShippingCost = $general ->getGeneralShippingCost();
+    return $respShippingCost;
+}
 
     
     
@@ -220,6 +224,12 @@ if(isset($_POST['action'])){
             $borrarPromo = new generalController();
             $respuestaPromo=$borrarPromo -> borrarPromo($_POST['idPromo']);
             echo $respuestaPromo;
+            break;
+        case "calcularCCosto":
+            $general = new generalController();
+            $respCosto = $general->getGeneralShippingCost();
+            $resp = isset($respCosto[0]["generalShipping"])&& !is_null($respCosto[0]["generalShipping"])?$respCosto[0]["generalShipping"]:false;
+            echo $resp;
             break;
         default:
             break;

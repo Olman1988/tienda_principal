@@ -15,13 +15,13 @@ class lookandfeelModel{
         }
         return $resultado;
     }
-      public function insertarLAF($secundaryColor,$principalColor,$fontSub,$font,$navbarColor,$navbarFont,$navbarColorFont,$sidebarFont,$sidebarColor,$buttonFont,$buttonColor,$footerColor,$footerTextoColor,$footerTituloColor,$colorFuenteSidebar){
+      public function insertarLAF($secundaryColor,$principalColor,$fontSub,$font,$navbarColor,$navbarFont,$navbarColorFont,$sidebarFont,$sidebarColor,$buttonFont,$buttonColor,$footerColor,$footerTextoColor,$footerTituloColor,$colorFuenteSidebar,$colorHoverNavbar){
           $respuesta = '';
          
                 try {
             $db = conexion::getConnect();
             $consulta=$db->prepare("INSERT INTO [atheneal_Tecnosula].[lookAndFeel] values(:fuenteTitulo,:fuenteSubTitulo,:colorPrincipal,"
-                    . ":colorSecundario,:navbarFont,:navbarColor,:sidebarFont,:sidebarColor,:buttonFont,:buttonColor,:footerColor,:navbarColorFont,:footerTextoColor,:footerTituloColor,:colorFuenteSidebar)");
+                    . ":colorSecundario,:navbarFont,:navbarColor,:sidebarFont,:sidebarColor,:buttonFont,:buttonColor,:footerColor,:navbarColorFont,:footerTextoColor,:footerTituloColor,:colorFuenteSidebar,:colorHoverNavbar)");
             
              $db->beginTransaction(); //inicia la transaccion
             $consulta->bindValue(':fuenteTitulo', $font);
@@ -39,6 +39,7 @@ class lookandfeelModel{
             $consulta->bindValue(':footerTextoColor', $footerTextoColor);
             $consulta->bindValue(':footerTituloColor', $footerTituloColor);
             $consulta->bindValue(':colorFuenteSidebar', $colorFuenteSidebar);
+            $consulta->bindValue(':colorHoverNavbar', $colorHoverNavbar);
             //$colorFuenteSidebar
             $consulta->execute();
          $respuesta=$db->commit();
@@ -53,18 +54,15 @@ class lookandfeelModel{
       return $respuesta;
     }
     
-public function modificarLAF($secundaryColor,$principalColor,$fontSub,$font,$navbarColor,$navbarFont,$navbarColorFont,$sidebarFont,$sidebarColor,$buttonFont,$buttonColor,$footerColor,$footerTextoColor,$footerTituloColor,$colorFuenteSidebar,$id){
+public function modificarLAF($secundaryColor,$principalColor,$fontSub,$font,$navbarColor,$navbarFont,$navbarColorFont,$sidebarFont,$sidebarColor,$buttonFont,$buttonColor,$footerColor,$footerTextoColor,$footerTituloColor,$colorFuenteSidebar,$colorHoverNavbar,$id){
                       try {
             $db = conexion::getConnect();
           
             $consulta=$db->prepare("UPDATE [dbo].[lookAndFeel] SET fuenteTitulo = :font, fuenteSubTitulo = :fontSub,colorPrincipal = :principalColor,colorSecundario = :secundaryColor,"
                     . " fuenteNavbar = :navbarFont,colorNavbar= :navbarColor,fuenteSideBar= :sidebarFont,colorSideBar= :sidebarColor,"
-                    . " fuenteBotones= :buttonFont,colorBotones= :buttonColor,colorFooter= :footerColor,colorFuenteNavbar= :navbarColorFont,footerTextoColor= :footerTextoColor, footerTituloColor = :footerTituloColor, colorFuenteSidebar = :colorFuenteSidebar where id = :id");
+                    . " fuenteBotones= :buttonFont,colorBotones= :buttonColor,colorFooter= :footerColor,colorFuenteNavbar= :navbarColorFont,footerTextoColor= :footerTextoColor, footerTituloColor = :footerTituloColor, colorFuenteSidebar = :colorFuenteSidebar, colorHoverNavbar =:colorHoverNavbar where id = :id");
             
              $db->beginTransaction(); //inicia la transaccion
-            
-            
-     
             $consulta->bindValue(':fontSub', $fontSub);
             $consulta->bindValue(':font', $font);
             $consulta->bindValue(':secundaryColor', $secundaryColor);
@@ -80,6 +78,8 @@ public function modificarLAF($secundaryColor,$principalColor,$fontSub,$font,$nav
               $consulta->bindValue(':footerTextoColor', $footerTextoColor);
             $consulta->bindValue(':footerTituloColor', $footerTituloColor);
              $consulta->bindValue(':colorFuenteSidebar', $colorFuenteSidebar);
+             $consulta->bindValue(':colorHoverNavbar', $colorHoverNavbar);
+             //
             $consulta->bindValue(':id', $id);
             $consulta->execute();
            

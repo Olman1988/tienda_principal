@@ -3,7 +3,7 @@
 <div class="page-title" id='page-title'>
         <div class="container">
           <div class="column">
-            <h1>Costo de Envío</h1>
+            <h1>Tipo de Pago</h1>
           </div>
           <div class="column">
             <ul class="breadcrumbs">
@@ -42,38 +42,22 @@
                   </tr>
                 </thead>
                 <tbody>
+                    <?php 
+                    foreach ($respuestaMetodos as $respuestaMetodosValue) {
+                    ?>
                   <tr>
-                    <td class="align-middle" >
-                        <input style="width:15px;height:15px;opacity:1" id="sinpe" value="sinpe" type="radio" name="tipoPago" value="sinpe" onclick="" />
-                        <img src="<?=base_url?>images/carrito/sinpem.png" width="70px" height="70px" alt="alt"/>
+                    <td class="align-middle" style="width:150px">
+                        <input style="width:15px;height:15px;opacity:1" id="sinpe" value="sinpe" type="radio" name="tipoPago" value="<?=strtolower($respuestaMetodosValue['descripcion'])?>" onclick="" />
+                        <img src="<?=base_url?>assets/imagenesPagos/<?=$respuestaMetodosValue['rutaImagen']?>" width="85px" height="" alt="alt"/>
                       
                     </td>
-                    <td class="align-middle"><span class="text-medium">Sinpe Móvil</span><br></td>
+                    <td class="align-middle"><span class="text-medium"><?=$respuestaMetodosValue['alias']?></span> - <span class="text-medium" style="font-style: italic;font-size: 12px"><?=$respuestaMetodosValue['info']?></span></td>
                     
                       
                   </tr>
-                    <tr>
-                    <td class="align-middle">
-                      <input style="width:15px;height:15px;opacity:1" id="transferencia" value="transferencia" type="radio" name="tipoPago"  checked="checked" />
-                      <img src="<?=base_url?>images/carrito/transfer.png" width="70px" height="70px" alt="alt"/>
-                    </td>
-                    <td class="align-middle"><span class="text-medium">Transferencia Bancaria</span><br>
-                      
-                    </td>
-                    
-                        
-                  </tr>
-                  <tr>
-                    <td class="align-middle">
-                      <input style="width:15px;height:15px;opacity:1" id="tarjeta" value="tarjeta" type="radio" name="tipoPago"checked="checked" />
-                      <img src="<?=base_url?>images/carrito/card.png" width="70px" height="70px" alt="alt"/>
-                    </td>
-                    <td class="align-middle"><span class="text-medium">Tarjeta Crédito/Débito</span><br>
-                      
-                    </td>
-                    
-                        
-                  </tr>
+                  <?php
+                  }
+                  ?>
                 </tbody>
               </table>
             </div>
@@ -90,7 +74,6 @@
 <script>
     
         $("#table-payment tr").click(function(e){
-           e.preventDefault();
            e.currentTarget.firstElementChild.firstElementChild.checked=true
            console.log(e.currentTarget.firstElementChild.firstElementChild);
          });
@@ -101,22 +84,16 @@
              "radio":radio,
              "action":"carritoTipoPago"
             };
-        
-        console.log(dataFormulario);
           $.ajax({
     type : 'POST',
     url : './carritoCompras/carritoController.php',
     data : dataFormulario,
    success:function(dat){
-           
             if(dat!=false){
-       
-            
-    
                 Swal.fire({
                                                    icon: 'success',
-                                                   title: 'Enviado',
-                                                   text: 'Información de envío'
+                                                   title: 'Tipo de Pago',
+                                                   text: 'Información de pago guardada'
 
                                                  });
                

@@ -2,3 +2,74 @@ Agregar a la columna de 'detallesCotizacion ' las columnas
 1. observacion varchar(250)
 1. archivos varchar(250)
 1. personalizacion varchar(550)
+
+version 1.4 
+1. Bases de datos
+a. ALTER TABLE [dbo].[store_StoreConfiguration] ADD generalShipping INT NULL DEFAULT 0
+b. update costo de envio
+
+version 1.5
+
+CREATE TABLE [dbo].EstadosCotizacion (
+    ID int NOT NULL IDENTITY(1,1),
+    Descrpcion varchar (100),
+    PRIMARY KEY (ID)
+);
+
+insert into EstadosCotizacion (Descrpcion)
+values
+  ('Pendiente'),
+  ('Enviada'),
+  ('Rechazada');
+
+ALTER TABLE [dbo].[Cotizacion] ADD Estado int SET DEFAULT 1
+
+  ALTER TABLE [dbo].[Cotizacion]
+ADD FOREIGN KEY (Estado) REFERENCES EstadosCotizacion(ID);
+
+ALTER TABLE [atheneal_tienda].[dbo].[store_PaymentType] ADD alias varchar(100) null
+ALTER TABLE [atheneal_tienda].[dbo].[store_PaymentType] ADD alias varchar(100) null
+///seguyn se requiera
+  update [atheneal_tienda].[dbo].[store_PaymentType] SET alias ='Tarjeta', info ='Pago con tarjetas Visa, MasterCard y AMEX' where id = 5
+
+ALTER TABLE [dbo].[lookAndFeel] ADD colorHoverNavbar varchar (50) null
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////
+/****** Object:  Table [dbo].[generalLogistic]    Script Date: 18/3/2023 02:44:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[generalLogistic](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[entregaOficina] [bit] NULL,
+	[direccion] [nvarchar](300) NULL,
+	[entregaDomicilio] [bit] NULL,
+	[maps] [nchar](300) NULL,
+ CONSTRAINT [PK_generalLogistic] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+USE [atheneal_tienda]
+GO
+
+INSERT INTO [dbo].[generalLogistic]
+           ([entregaOficina]
+           ,[direccion]
+           ,[entregaDomicilio]
+           ,[maps])
+     VALUES
+           (1
+           ,'{"provincia":"San Jose","canton":"Desamparados","Distrito":"Desamparados","barrio":"Calle Fallas","direccion":"200 mts sur de cruz roja"}'
+           ,1
+           ,'https://goo.gl/maps/UVXGBo8pQF39NCD96')
+GO
