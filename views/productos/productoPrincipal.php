@@ -79,12 +79,10 @@ input[type="radio"][id^="radioColor"]{
     <?php
     if(count($respuesFin)>0){
         foreach ($respuesFin as $valueRespuesta) {
-            
      ?>
     <div style="height:120px;margin-right:14px;cursor:pointer;<?=!empty($respuesFin)&&count($respuesFin)>3?'':'width:120px'?>" onclick="cambiarImagen('<?=$valueRespuesta['rutaImagen']?>')" class="">
                             <img style="width:100%; height:100%;object-fit:cover;" src="<?=base_url2?><?=$valueRespuesta['rutaImagen']?>" alt="Product">
 		</div>
-                       
     <?php
         }
     }
@@ -99,7 +97,6 @@ input[type="radio"][id^="radioColor"]{
                 </div>
             </div>
                 </div>
-
                 <div class="col-md-6">
                 <div class="padding-top-2x mt-2 hidden-md-up"></div>
 <!--                <div class="rating-stars">
@@ -116,13 +113,22 @@ input[type="radio"][id^="radioColor"]{
                 </p>
 
                 <div class="pt-1 mb-2" style="display:<?=$respuestaArticulo['sku']!=''?'block':'none'?>"><span class="text-medium">SKU:</span> #<?=$respuestaArticulo['sku']?></div>
-                <?php
+                <div class="row ">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="quantity">Cantidad</label>
+                            <input name="cantidadMinima" type="number" onchange="validarCantidad(<?=$minimoArticulo?>)" value='<?=$minimoArticulo?>' id="cantidadMinima" class="form-control"  />
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                    
+                    <?php
                 if(count($respuestaAtributosGrupo)>0){
+                    echo "<h5>Personalización de Producto</h5>";
                     //$counterId=1;
-                     error_log(print_r($respuestaAtributosGrupo,true),3,"C:/xampp/htdocs/proyectos_2021/errores/devlog");
                     foreach ($respuestaAtributosGrupo as $atributos) {
                         echo "<h6 class='mt-4'>".$atributos['nombre']."</h6>";
-                       
                         switch ($atributos['idTipoControl']) {
                                 case "SQUARECOLORS":
                                     if($loadedDetails[0]){
@@ -153,7 +159,7 @@ input[type="radio"][id^="radioColor"]{
                                     <div class="col-4 m-auto" style ="width:100px;height:100px;">
                                         <label class='img-rd' style ="cursor:pointer;box-shadow:1px'img-rd 1px 3px;border:solid 5px white;width:40px;height:40px;background:<?=$detalles['cuadroColorRgb']?>">
                                             <input type="radio" onchange="validateSelectionImg(this)" id="radioImg" name="radioImg" value="<?=$detalles['valor']?>">
-                                            <img style='width:100%;' src="<?=base_url3.$detalles['foto']?>" alt="alt"/>
+                                            <img style='width:100%;' src="<?=base_url.$detalles['foto']?>" alt="alt"/>
                                         </label>
                                     </div>
                                     
@@ -191,10 +197,10 @@ input[type="radio"][id^="radioColor"]{
                             }
                      
                     }
-                }
-                ?>
-<!--                Personalización escogida:-->
-                <div id="seleccion" style="padding:15px;">
+                    echo'<hr>
+                    <h6>Personalización Elegida:</h6>
+                    <div id="seleccion" style="padding:15px;">
+                    
                     <p id="radioColorText">
                         <div id="radioColorTextContainer" class="col-4 " style ="width:60px;height:60px;display:none;">
                                          <label style ="cursor:pointer;box-shadow:1px 1px 3px;border:solid 5px white;width:40px;height:40px;">
@@ -204,15 +210,13 @@ input[type="radio"][id^="radioColor"]{
                     </p>
                     <p id="radioImgText"></p>
                     <p id="selectedList"></p>
-                </div>
-                <div class="row ">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="quantity">Cantidad</label>
-                            <input name="cantidadMinima" type="number" onchange="validarCantidad(<?=$minimoArticulo?>)" value='<?=$minimoArticulo?>' id="cantidadMinima" class="form-control"  />
-                        </div>
-                    </div>
-                </div>
+                </div>';
+                }
+                ?>
+                   
+<!--                Personalización escogida:-->
+                
+                
                 <?php
                         if($respuestaArticulo['disponibleCompra']!=1){
                        
@@ -231,7 +235,7 @@ input[type="radio"][id^="radioColor"]{
                 <?php
                         }   
                 ?>
-                <div class="padding-bottom-1x mb-2"><span class="text-medium">Categoría:&nbsp;</span><?=$respuestaArticulo['categoria']?></div>
+<!--                <div class="padding-bottom-1x mb-2"><span class="text-medium">Categoría:&nbsp;</span><?=$respuestaArticulo['categoria']?></div>-->
                 <hr class="mb-3">
                 <div class="d-flex flex-wrap justify-content-between">
                     

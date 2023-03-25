@@ -35,7 +35,6 @@ $todasCategoriasPadre=$categorias->todasCategoriasPadre();
         require_once 'models/categoriasModel.php'; 
         $categorias= new categoriasModel();
         $respuestaCategorias=$categorias->todasCategorias();
-       
         require_once "views/principal/categorias.php";
     }
     
@@ -98,7 +97,7 @@ $todasCategoriasPadre=$categorias->todasCategoriasPadre();
         
         $categorias= new categoriasModel();
         $respuestaCategorias=$categorias->getCategoryById($id);
-        return $respuestaCategorias;
+        require_once 'views/categories/edit-categories.php'; 
     }
     public function codeGenerator() {
                   $code=  strtoupper(uniqid());

@@ -124,7 +124,7 @@ class carritoController{
 
     public function vaciarCarrito(){
         if(isset($_SESSION['carrito'])){
-       unset($_SESSION['carrito']);  
+       //unset($_SESSION['carrito']);  
         }
       
         return true;
@@ -647,7 +647,9 @@ if(isset($_POST['action'])){
             require_once'../controllers/ordenController.php';
             $orden=new ordenController();
             $code=$orden->codeGenerator();
-            $respuestaInsertar = $orden->insertarOrdenNueva($code);
+            $codeSmall=$orden->codeGeneratorSmallCode();
+            $total=$orden->calcularTotal();
+            $respuestaInsertar = $orden->insertarOrdenNueva($code,$codeSmall,$total);
             $TotalOrder = 0;
             $subtotalFinal = 0;
                     $totalFinal = 0;
@@ -712,6 +714,37 @@ if(isset($_POST['action'])){
                   if($respuestaInsertar){
                       $respuestaInsertar=$orden->updateOrden($impuestosFinal,$subtotalFinal,$totalFinal,$respCosto,$code);
                   }
+                  
+                  $nombreCliente = $_SESSION['nombre'];
+                  $apellidos = $_SESSION['apellido'];
+                  $email = $_SESSION['email'];
+                  $DNI = $_SESSION['DNI'];
+                  $provincia = $_SESSION['provincia'];
+                  $canton = $_SESSION['canton'];
+                  $distrito = $_SESSION['distrito'];
+                  $direccion = $_SESSION['direccion'];
+                  $telefono = $_SESSION['telefono'];
+                   require_once'../controllers/ordenController.php';
+                     $orderDetails = new ordenController();
+                    $respOrden = $orderDetails->mostrarDetalles($codeSmall);
+                    $newArray = Array();
+                    foreach ($respOrden as $index=>$valuesOrder) {
+                        $newArray[$index]['Cantidad']= $valuesOrder['cantidad'];
+                        $newArray[$index]['Descripcion']= $valuesOrder['art_Descripcion'];
+                        $newArray[$index]['Precio']= $valuesOrder['price'];
+                        $newArray[$index]['Impuesto']= $valuesOrder['taxAmount'];
+                        $newArray[$index]['Total']= $valuesOrder['totalPrice'];
+                        
+                    }
+                    $respOrden = $newArray;
+                    $respCotizacionBusiness='';
+                    require_once '../email/ordenes.php';
+                    $emailSent = new ordenes();
+                    $fullname = $nombreCliente." ".$apellidos;
+                    $respEmaiSent = $emailSent->sendEmailOrder($fullname,$email,$codeSmall,$respOrden);
+                    if($respEmaiSent){
+                       $respCotizacionBusiness = $emailSent->sendEmailOrderToBusiness($fullname,$email,$codeSmall,$respOrden,$DNI,$provincia,$canton,$distrito,$direccion,$telefono);
+                    }
                     if(isset($_SESSION['orden']['tipoEnvio'])){
                         if($_SESSION['orden']['tipoEnvio'] != 'Oficina'){
                             $provincia = (isset($_SESSION['orden']['tipoEnvio']['provincia'])) ? $_SESSION['orden']['tipoEnvio']['provincia']: 'No definido';
@@ -724,6 +757,10 @@ if(isset($_POST['action'])){
                             $respuestaInsertar = $orden->insertarEnvioOrdenEntrega($code,$_SESSION['orden']['tipoEnvio']);  
                         }
                     }
+                    
+                   
+                    
+                    
                     $carrito = new carritoController();
                     
                     if($_SESSION['orden']['tipoPago']=='tarjeta'){

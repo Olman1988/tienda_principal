@@ -1,56 +1,39 @@
 <?php
 ?>
 <div style="width:80%;margin-top:100px; min-width:320px;min-height:90vh;margin-bottom:100px;">
-    <h2 class="text-center">Productos</h2>
+    <h2 class="text-center">Grupos de Atributos</h2>
     <div class="col-lg-8 m-auto">
 
 <div class="m-auto" id="myContent">
  
   <div class="" id="profile" style="padding-top:20px;">
-      <button class="btn btn-primary"><a style="text-decoration: none;color:white;" href="<?=base_url?>/Admin/?seccion=products&&action=add">+Agregar</a></button>
+      <button class="btn btn-primary"><a style="text-decoration: none;color:white;" href="<?=base_url?>Admin/?seccion=attributesGroup&&action=add">+Agregar</a></button>
       <table class="table" id='generalTable'>
   <thead>
     <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Nombre</th>
-      <th scope="col">Imagen</th>
-      <th scope="col">Categoria</th>
-      <th scope="col">Precio</th>      
-      <th scope="col">Tipo</th>    
-      <th scope="col">SKU</th>   
-      <th scope="col" style='min-width:150px'>Acciones</th>
+      <th scope="col">Grupo</th>
+      
+      <th scope="col">Acciones</th>
     </tr>
   </thead>
   <tbody>
       <?php
-      if(isset($respuestaProductos)&&count($respuestaProductos)>0){
-          foreach ($respuestaProductos as $respuestaProductos) {
+      if(isset($respAttribute)&&count($respAttribute)>0){
+          foreach ($respAttribute as $respAttributeValues) {
               
           
       ?>
        <tr class="table-active" style="">
-      <th scope="row"><?=$respuestaProductos['art_CodigoArticulo']?></th>
+      <th scope="row"><?=$respAttributeValues['nombre']?></th>
       
-      <td><?=$respuestaProductos['art_Descripcion']?></td>
-      <td><img style='width:100px' src="<?=base_url?><?=$respuestaProductos['rutaImagen']?>" alt="alt"/></td>
-      <td><?=$respuestaProductos['categoria']?></td>
-      <td><?=intval($respuestaProductos['art_PrecioUnitario'])?></td>
-      <td>
-        <?php if($respuestaProductos['esServicio']){
-            echo "Servicio";
-        } else {
-            echo "Producto";
-        }
-                
-                ?> 
-      </td>
-      <td><?=$respuestaProductos['sku']?></td>
+    
+      
       
       <td style="min-width:120px;" class="">
-          <a href='<?=base_url?>Admin/?seccion=products&&action=edit&&id=<?=$respuestaProductos['art_CodigoArticulo']?>'><i class="fa-solid fa-pen-to-square" style="cursor:pointer;color:white;font-size:20px;" ></i></a>
-          <i class="fa-solid fa-trash" style="cursor:pointer;color:white;font-size:20px; margin-left:10px;" onclick="eliminarPromo('<?=$respuestaProductos['art_CodigoArticulo']?>')"></i>
-           <a style="margin-left:10px;" href="<?=base_url?>Admin/?seccion=images&&id=<?=$respuestaProductos['art_CodigoArticulo']?>&&Articulo=<?=$respuestaProductos['art_Descripcion']?>"><i class="fa-solid fa-image" style="cursor:pointer;color:white;font-size:20px;"></i></a>
-      <a style="margin-left:10px;" href="<?=base_url?>Admin/?seccion=attributesGroup&&action=asociate-product&&id=<?=$respuestaProductos['art_CodigoArticulo']?>&&desc=<?=$respuestaProductos['art_Descripcion']?>"><i class="fa-solid fa-list-check" style="cursor:pointer;color:white;font-size:20px;"></i></a>
+          <a href='<?=base_url?>Admin/?seccion=attributesGroup&&action=edit&&id=<?=$respAttributeValues['id']?>'><i class="fa-solid fa-pen-to-square" style="cursor:pointer;color:white;font-size:20px;" ></i></a>
+          <a class='delete-link'  href='<?=base_url?>Admin/?seccion=attributesGroup&&action=delete&&id=<?=$respAttributeValues['id']?>'><i class="fa-solid fa-trash" style="cursor:pointer;color:white;font-size:20px; margin-left:10px;"></i></a>
+          <a href='<?=base_url?>Admin/?seccion=attributesGroup&&action=asociate&&id=<?=$respAttributeValues['id']?>&&description=<?=$respAttributeValues['nombre']?>'><i class="fa-solid fa-list-ol ml-2" style="cursor:pointer;color:white;font-size:20px;" ></i></a>
+
       </td>
       
     </tr>
@@ -69,6 +52,25 @@
 </div>
 
 <script>
+    $(".delete-link").click(
+            function(event){
+               event.preventDefault();
+               Swal.fire({
+        title: '¿Desea desea eliminar este atributo?',
+        showCancelButton: true,
+        denyButtonText: `Cancelar`,
+    }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+             var href = $(this).attr('href');
+             
+             window.location.href = href
+            console.log(href);
+        } else if (result.isDenied) {
+            Swal.fire('Cambio no realizado', '', 'info')
+        }
+    })
+            });
      var imagenNombre = '';
      var IDProduct = '';
 $(document).ready(function(){
@@ -99,10 +101,10 @@ $(document).ready(function(){
 
 
 
-function eliminarPromo(id){
+function eliminarCategoria(id){
        var parametros = {
-        "idPromo": parseInt(id, 10),
-        "action": "borrar"
+        "id": parseInt(id, 10),
+        "action-categories": "delete"
     };
     
     Swal.fire({
@@ -114,21 +116,22 @@ function eliminarPromo(id){
         if (result.isConfirmed) {
 
             $.ajax({
-                url: "../controllers/articulosController.php",
+                url: "../controllers/categoriasController.php",
                 type: "POST",
                 datatype: "html",
                 data: parametros,
                 success: function (response) {
-                    if (response) {
-                        Swal.fire('Elemento eliminado con éxito!', '', 'success');
+                    console.log(response);
+                    if (response.status) {
+                        Swal.fire(response.msn, '', 'success');
                         window.setTimeout(function () {
-                            window.location.href = "./?seccion=products"
+                            window.location.href = "./?seccion=categories"
                         }, 2000);
                     } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: 'No fue posible eliminar los datos, intente nuevamente!',
+                            text: response.msn,
                             footer: '',
 
                         })
@@ -145,7 +148,6 @@ function eliminarPromo(id){
 }
 $(document).ready( function () {
        var editorAdded = false;
-    
         $('#modalAgregar')
         .on('shown.bs.modal', (e) => {
             if(!editorAdded){
@@ -153,7 +155,6 @@ $(document).ready( function () {
               editorAdded = true;
              }
         }); 
-     
     $('#generalTable').DataTable({
         paging: true,
         ordering: true,
@@ -167,3 +168,5 @@ $(document).ready( function () {
 
     
 </div>
+
+

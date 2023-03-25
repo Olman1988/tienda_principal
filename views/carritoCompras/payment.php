@@ -47,7 +47,7 @@
                     ?>
                   <tr>
                     <td class="align-middle" style="width:150px">
-                        <input style="width:15px;height:15px;opacity:1" id="sinpe" value="sinpe" type="radio" name="tipoPago" value="<?=strtolower($respuestaMetodosValue['descripcion'])?>" onclick="" />
+                        <input style="width:15px;height:15px;opacity:1" id="<?=strtolower($respuestaMetodosValue['alias'])?>" value="<?=strtolower($respuestaMetodosValue['alias'])?>" type="radio" name="tipoPago" value="<?=strtolower($respuestaMetodosValue['descripcion'])?>" onclick="" />
                         <img src="<?=base_url?>assets/imagenesPagos/<?=$respuestaMetodosValue['rutaImagen']?>" width="85px" height="" alt="alt"/>
                       
                     </td>

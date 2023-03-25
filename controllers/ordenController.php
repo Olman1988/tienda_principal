@@ -35,12 +35,8 @@ class ordenController{
         
     }
     
-    public function insertarOrdenNueva($code){
-        $orden= new ordenController();
+    public function insertarOrdenNueva($code,$codeSmall,$total){
         
-        $codeSmall=$orden->codeGeneratorSmallCode();
-        
-        $total=$orden->calcularTotal();
             try {
             $db = conexion::getConnect();
 

@@ -1,31 +1,31 @@
 <?php
 require_once '../models/cotizacionModel.php';
 class cotizacionesController{
+    private $quote;
+    public function __construct() {
+        $this->quote = new cotizacionModel();
+    }
     public function getAllQuotes(){
-        $quote = new cotizacionModel();
-        $respQuote = $quote->getAllQuotes();
-        
-        return $respQuote;
+        $respQuote = $this->quote->getAllQuotes();
+        require_once 'views/quotes.php';
     }
     public function getQuoteDetails($code){
-        $quote = new cotizacionModel();
-        $respQuote = $quote->getDataQuoteByCode($code);
+        $respQuote = $this->quote->getDataQuoteByCode($code);
         return $respQuote;
     }
     public function updateStatusQuote($code,$status){
-        $quote = new cotizacionModel();
-        $respQuote = $quote->updateStatusQuote($code,$status);
+        $respQuote = $this->quote->updateStatusQuote($code,$status);
         return $respQuote;
     }
 }
 if(isset($_POST['action'])){
+    $quote = new cotizacionesController();
     switch ($_POST['action']) {
         case "mostrarDetalles":
             $respQuote=Array();
             $result = Array();
             $code= !empty($_POST['code'])?filter_var($_POST['code'], FILTER_SANITIZE_STRING):0;
            if($code!=0){
-              $quote = new cotizacionesController();
               $respQuote = $quote->getQuoteDetails($code); 
               if(!empty($respQuote)){
                  $result['data']=$respQuote;
@@ -48,7 +48,6 @@ if(isset($_POST['action'])){
             $code= !empty($_POST['code'])?filter_var($_POST['code'], FILTER_SANITIZE_STRING):0;
             $status= !empty($_POST['status'])?filter_var($_POST['status'], FILTER_SANITIZE_NUMBER_INT):0;
             if($code!=0&&$status!=0){
-              $quote = new cotizacionesController();
               $respQuote = $quote->updateStatusQuote($code,$status); 
               if(!empty($respQuote)){
                  $result['msn']="Cotización actualizada con éxito";

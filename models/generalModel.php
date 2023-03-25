@@ -335,9 +335,6 @@ class generalModel{
             $consulta=$db->prepare("UPDATE [dbo].[promociones] SET nombre = :nombre, descripcion = :descripcion,".$AddToQuery." estado = :estado where ID = :id");
             
              $db->beginTransaction(); //inicia la transaccion
-            
-           
-     
             $consulta->bindValue(':nombre', $nombre);
             $consulta->bindValue(':descripcion', $descripcion);
             if($imagen!=''){
@@ -345,10 +342,6 @@ class generalModel{
                    }
             $consulta->bindValue(':estado', $estado);
             $consulta->bindValue(':id',$id);
-        
-          
-            
-
             $consulta->execute();
          $respuesta=$db->commit();
         }
@@ -380,23 +373,23 @@ class generalModel{
 }
     public function getGeneralShippingCost(){
         $respuesta=[];
-    try {
-            $db = conexion::getConnect();//Aqui se conecta a la base de datos
-               // $consulta =$db->prepare("SELECT i.id, i.nombre, i.modelo, i.marca, i.descripcion, i.cantidad, i.precio, ci.nombre AS categoria, cs.nombre AS subcategoria, i.image, e.nombre AS estado FROM tbl_productos i INNER JOIN tbl_categorias ci ON i.id_categoria = ci.id INNER JOIN tbl_subcategorias cs ON i.id_subcategoria = cs.id INNER JOIN tbl_estados e ON i.estado = e.id ORDER BY id");
-           $consulta =$db->prepare("select top 1 generalShipping from [dbo].[store_StoreConfiguration] order by ID desc");
-           //$consulta->bindValue(':id', $idCategoria);
-            $consulta->execute();
-            
-            foreach($consulta->fetchAll(PDO::FETCH_ASSOC) as $value){
-                    $respuesta[]=$value;
-                }
-            
-        } catch (PDOException $e) {
-            echo "se ha presentado un error " . $e->getMessage();
-            throw $e;
-        }
-        
-        return $respuesta; 
+        try {
+                $db = conexion::getConnect();//Aqui se conecta a la base de datos
+                   // $consulta =$db->prepare("SELECT i.id, i.nombre, i.modelo, i.marca, i.descripcion, i.cantidad, i.precio, ci.nombre AS categoria, cs.nombre AS subcategoria, i.image, e.nombre AS estado FROM tbl_productos i INNER JOIN tbl_categorias ci ON i.id_categoria = ci.id INNER JOIN tbl_subcategorias cs ON i.id_subcategoria = cs.id INNER JOIN tbl_estados e ON i.estado = e.id ORDER BY id");
+               $consulta =$db->prepare("select top 1 generalShipping from [dbo].[store_StoreConfiguration] order by ID desc");
+               //$consulta->bindValue(':id', $idCategoria);
+                $consulta->execute();
+
+                foreach($consulta->fetchAll(PDO::FETCH_ASSOC) as $value){
+                        $respuesta[]=$value;
+                    }
+
+            } catch (PDOException $e) {
+                echo "se ha presentado un error " . $e->getMessage();
+                throw $e;
+            }
+
+            return $respuesta; 
     }
 
 }

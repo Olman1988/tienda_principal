@@ -155,6 +155,3 @@ if($profile->infoEmail!=''){
     });  
 });
 </script>
-    
-
-<
