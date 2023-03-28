@@ -23,6 +23,18 @@
         <li class="nav-item">
             <a class="nav-link" href="<?=base_url?>Admin/?seccion=promociones"><i class="fa-solid fa-percent"></i>Promociones</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="<?=base_url?>Admin/?seccion=datos_generales"><i class="fa-solid fa-id-card"></i>Datos Generales</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="<?=base_url?>Admin/?seccion=config_general"><i class="fa-solid fa-wrench"></i>Configuración Generales</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="<?=base_url?>Admin/?seccion=faq_section"><i class="fa-solid fa-question"></i>FAQ</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="<?=base_url?>Admin/?seccion=blog_section"><i class="fa-brands fa-microblog"></i>BLOG</a>
+        </li>
          <li class="nav-item">
             <a class="nav-link" href="<?=base_url?>Admin/?seccion=paginaAterrizaje"><i class="fa-solid fa-globe"></i>Página de Aterrizaje</a>
         </li>

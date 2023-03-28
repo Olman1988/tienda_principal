@@ -4,6 +4,10 @@ session_start();
 require_once '../config/parameters.php';
 require_once "../config/conexion.php";
 require_once "../models/generalModel.php";
+require_once "../models/faqModel.php";
+require_once "../models/blogModel.php";
+require_once "../models/datosGeneralesModel.php";
+require_once "../models/configModel.php";
 require_once "../models/articulosModel.php";
 require_once "../models/landingModel.php";
 require_once "../models/categoriasModel.php";
@@ -590,7 +594,84 @@ $securityAdmin = $security->isAdmin();
                                     $consultarPromociones = new generalModel();
                                     $respuestaPromos = $consultarPromociones -> consultarPromociones();
                                     require_once 'views/promociones.php';  
-                                    break;
+                                break;
+                                case 'faq_section':
+                                    $_FAQ = new faqModel();
+
+                                    if(isset($_GET['action'])){
+                                        switch ($_GET['action']) {
+                                            case "add":
+                                                 require_once 'views/faq/add-faq.php'; 
+                                                break;
+                                            case "edit":
+                                                if(isset($_GET['id'])){
+                                                    //$_POST['action'] es encesario para usar la direccion de directorio de model correcta
+                                                    $modelNotRequired = true;
+                                                    require_once '../controllers/faqController.php';
+                                                    $oneFAQ = $_FAQ->getFaqById($_GET['id']);
+                                                    require_once 'views/faq/edit-faq.php'; 
+                                                }
+                                            break;
+                                            case "action-add":
+                                                require_once '../controllers/faqController.php';
+                                            break;
+                                            case "action-edit":
+                                                require_once '../controllers/faqController.php';
+                                            break;
+                                            default:
+                                                break;
+                                        }
+        
+                                    } else {
+                                        $respuestaFAQ = $_FAQ->consultarFAQ();
+                                        require_once 'views/faq.php'; 
+                                    }
+                                break;
+                                case 'datos_generales':
+                                    echo "<div style='margin-top:200px'></div>";
+                                    $GEN = new datosGenModel();
+                                    $respuestaDatos = $GEN->consultarDatos();
+                                    require_once 'views/datosgenerales.php';  
+                                break;
+                                case 'config_general':
+                                    echo "<div style='margin-top:200px'></div>";
+                                    $CONF = new configModel();
+                                    $respuestaConfigs = $CONF->consultarConfigs();
+                                    require_once 'views/configuraciones.php';  
+                                break;
+                                case 'blog_section':
+                                    require_once '../models/blogModel.php';
+                                    $BLOG = new blogModel();
+                                    require_once '../controllers/blogController.php';
+                                    $_BLOG = new blogController();
+
+                                    if(isset($_GET['action'])){
+                                        switch ($_GET['action']) {
+                                            case "add":
+                                                 require_once 'views/blog/add-post.php'; 
+                                                break;
+                                            case "edit":
+                                                if(isset($_GET['id'])){
+                                                    //$_POST['action'] es encesario para usar la direccion de directorio de model correcta
+                                                    $modelNotRequired = true;
+                                                    $onePost = $_BLOG->getPostById($_GET['id']);
+                                                    require_once 'views/blog/edit-post.php'; 
+                                                }
+                                            break;
+                                            case "action-add":
+                                                require_once '../controllers/blogController.php';
+                                            break;
+                                            case "action-edit":
+                                                require_once '../controllers/blogController.php';
+                                            break;
+                                            default:
+                                                break;
+                                        }
+                                    } else {
+                                        $respuestaBlogs = $BLOG->consultarBlogs();
+                                        require_once 'views/blog.php';
+                                    }
+                                break;
                                 case 'categories':
                             if(isset($_GET['action'])){
                                 switch ($_GET['action']) {
