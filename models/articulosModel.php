@@ -78,7 +78,7 @@ class articulosModel{
         return $respuesta;
     }
     public function articuloPorId($idArticulo){
-        $resultado;
+        $resultado = [];
     try {
             $db = conexion::getConnect();
             $consulta = $db->prepare("SELECT a.*,c.cat_Descripcion as categoria,c.cat_CodigoCategoria,c.cat_Descripcion from [dbo].[Articulo] a INNER JOIN [dbo].[Categorias] c ON a.cat_CodigoCategoria_FK=c.cat_CodigoCategoria where a.art_CodigoArticulo=:id AND a.activo = 1");
@@ -92,7 +92,7 @@ class articulosModel{
         return $resultado;
 }
 public function articuloPorIdAdmin($idArticulo){
-        $resultado;
+        $resultado = [];
     try {
             $db = conexion::getConnect();
             $consulta = $db->prepare("SELECT a.*,c.cat_Descripcion as categoria,c.cat_CodigoCategoria,c.cat_Descripcion from [dbo].[Articulo] a INNER JOIN [dbo].[Categorias] c ON a.cat_CodigoCategoria_FK=c.cat_CodigoCategoria where a.art_CodigoArticulo=:id");
@@ -357,7 +357,7 @@ public function articulosDestacados(){
     }
     
         public function borrarPromo($idPromo){
-         $response;
+         $response = [];
         try {
             
             $db = conexion::getConnect();
@@ -424,7 +424,7 @@ public function articulosDestacados(){
       return $respuesta;  
     }
     public function deleteImage($idImagen){
-        $response;
+        $response = [];
         try {
             $db = conexion::getConnect();
             $consulta = $db->prepare("DELETE FROM [dbo].[ArticuloImagenes] WHERE id =:id");
@@ -440,7 +440,7 @@ public function articulosDestacados(){
         return $response;
     }
     public function SKUExist($sku){
-             $resultado;
+             $resultado = [];
     try {
             $db = conexion::getConnect();
             $consulta = $db->prepare("SELECT * FROM [dbo].[Articulo] WHERE sku =:sku");
@@ -455,7 +455,7 @@ public function articulosDestacados(){
     }
     
     public function SKUExistByID($sku,$IDProduct){
-                 $resultado;
+                 $resultado = [];
     try {
             $db = conexion::getConnect();
             $consulta = $db->prepare("SELECT * FROM [dbo].[Articulo] WHERE sku =:sku AND art_CodigoArticulo!=:id");

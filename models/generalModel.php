@@ -66,8 +66,8 @@ class generalModel{
     public function consultaAcercaDe(){
               $respuesta=[];
               $respuestaFAQ=[];
-              $arrayFAQ;
-    try {
+              $arrayFAQ = [];
+        try {
             $db = conexion::getConnect();//Aqui se conecta a la base de datos
                // $consulta =$db->prepare("SELECT i.id, i.nombre, i.modelo, i.marca, i.descripcion, i.cantidad, i.precio, ci.nombre AS categoria, cs.nombre AS subcategoria, i.image, e.nombre AS estado FROM tbl_productos i INNER JOIN tbl_categorias ci ON i.id_categoria = ci.id INNER JOIN tbl_subcategorias cs ON i.id_subcategoria = cs.id INNER JOIN tbl_estados e ON i.estado = e.id ORDER BY id");
            $consulta =$db->prepare("SELECT * FROM base_AcercaDe where activo= :valid order by orden");
@@ -102,8 +102,8 @@ class generalModel{
         return $respuesta;
     }
     public function consultaProfile(){
-              $respuesta;
-    try {
+              $respuesta = '';
+        try {
             $db = conexion::getConnect();//Aqui se conecta a la base de datos
                // $consulta =$db->prepare("SELECT i.id, i.nombre, i.modelo, i.marca, i.descripcion, i.cantidad, i.precio, ci.nombre AS categoria, cs.nombre AS subcategoria, i.image, e.nombre AS estado FROM tbl_productos i INNER JOIN tbl_categorias ci ON i.id_categoria = ci.id INNER JOIN tbl_subcategorias cs ON i.id_subcategoria = cs.id INNER JOIN tbl_estados e ON i.estado = e.id ORDER BY id");
            $consulta =$db->prepare("SELECT * FROM store_StoreProfile");
@@ -140,8 +140,8 @@ class generalModel{
         return $respuesta;
     }
     public function consultarBlogPorId($id){
-           $respuesta;
-    try {
+           $respuesta = '';
+        try {
             $db = conexion::getConnect();//Aqui se conecta a la base de datos
                // $consulta =$db->prepare("SELECT i.id, i.nombre, i.modelo, i.marca, i.descripcion, i.cantidad, i.precio, ci.nombre AS categoria, cs.nombre AS subcategoria, i.image, e.nombre AS estado FROM tbl_productos i INNER JOIN tbl_categorias ci ON i.id_categoria = ci.id INNER JOIN tbl_subcategorias cs ON i.id_subcategoria = cs.id INNER JOIN tbl_estados e ON i.estado = e.id ORDER BY id");
            $consulta =$db->prepare("SELECT * FROM blog_Post where id = $id");
@@ -355,7 +355,7 @@ class generalModel{
     }
     
     public function borrarPromo($idPromo){
-         $response;
+        $response = '';
         try {
             
             $db = conexion::getConnect();

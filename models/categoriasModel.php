@@ -191,7 +191,7 @@ class categoriasModel{
         
     }
     public function getCategoryById($id){
-          $resultado;
+          $resultado = [];
     try {
             $db = conexion::getConnect();
             $consulta = $db->prepare("SELECT c.*,(SELECT cat_Descripcion FROM Categorias WHERE cat_CodigoCategoria = c.categoriaPadre) AS Padre FROM Categorias c WHERE c.cat_CodigoCategoria = :id");
@@ -259,7 +259,7 @@ class categoriasModel{
     }
     
     public function deleteCategory($id){
-         $response;
+         $response = [];
         try {
             
             $db = conexion::getConnect();
