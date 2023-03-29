@@ -34,8 +34,8 @@ class blogController{
 	 * 
 	 * 
 	 */
-	public function updateBlog($titulo, $descripcion, $nombrefinal, $contenido, $id){
-		$respuestaUpdate = $this->_BLOG->updateBlog($titulo, $descripcion, $nombrefinal, $contenido, $id);
+	public function updateBlog($id, $titulo, $descripcion, $nombrefinal, $contenido, $status){
+		$respuestaUpdate = $this->_BLOG->updateBlog($id, $titulo, $descripcion, $nombrefinal, $contenido, $status);
 		return $respuestaUpdate; 
 	}
 	/**
@@ -68,9 +68,10 @@ if(isset($_POST['action-blog'])){
 			$nombrefinal = '';
 
             $id = !empty($_POST['id'])? $_POST['id']:false;
-            $titulo = !empty($_POST['title'])? $_POST['nombre']:false;
+            $titulo = !empty($_POST['title'])? $_POST['title']:false;
             $descripcion = !empty($_POST['description']) ? $_POST['description']: false;
             $contenido = !empty($_POST['content']) ? $_POST['content']: false;
+            $status = ($_POST['status'] == 1) ? 'Active': 'Disabled';
 
 			$provisionalName = !empty($_POST['filenameImg'])? $_POST['filenameImg']: false;
             if(isset($_FILES['file']['name'])&&$_FILES['file']['name']!=''){
@@ -81,7 +82,7 @@ if(isset($_POST['action-blog'])){
                 if (!((strpos($tipo, "gif") || strpos($tipo, "jpeg") || strpos($tipo, "jpg") || strpos($tipo, "png")) && ($tamano < 2000000000))) {
                     $errorimg = true;
 				}else {
-	                $nombrefinal = $idgen.$archivo;
+	                $nombrefinal = $id.$archivo;
 
 					if(!is_dir('../images/admin/blog/')) {
 							mkdir('../images/admin/blog/', 0777, true);
@@ -101,7 +102,7 @@ if(isset($_POST['action-blog'])){
             }
             
             $nombrefinal = "/images/admin/blog/".$nombrefinal;
-            $respuestaActualizar = $BLOG->updateBlog($titulo, $descripcion, $nombrefinal, $contenido, $id);
+            $respuestaActualizar = $BLOG->updateBlog($id, $titulo, $descripcion, $nombrefinal, $contenido, $status);
             
             if($respuestaActualizar){
                 echo"<script>Swal.fire('Elemento modificado con éxito!', '', 'success');";
@@ -121,12 +122,12 @@ if(isset($_POST['action-blog'])){
             $archivo;
             $observacion;
             $validacion = true;
-            $titulo = !empty($_POST['title'])? $_POST['nombre']:false;
+            $titulo = !empty($_POST['title'])? $_POST['title']:false;
             $descripcion = !empty($_POST['description']) ? $_POST['description']: false;
             $contenido = !empty($_POST['content']) ? $_POST['content']: false;
 			
             $provisionalName = !empty($_POST['filenameImg'])? $_POST['filenameImg']:false;
-            if($nombre){
+            if($titulo){
                 if(isset($_FILES['file']['name'])&&$_FILES['file']['name']!=''){
                     $archivo = $_FILES['file']['name'];
                     $tipo = $_FILES['file']['type'];

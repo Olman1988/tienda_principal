@@ -24,7 +24,7 @@
             <a class="nav-link" href="<?=base_url?>Admin/?seccion=promociones"><i class="fa-solid fa-percent"></i>Promociones</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=datos_generales"><i class="fa-solid fa-id-card"></i>Datos Generales</a>
+            <a class="nav-link" href="<?=base_url?>Admin/?seccion=perfil_tienda"><i class="fa-solid fa-id-card"></i>Perfil de Tienda</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="<?=base_url?>Admin/?seccion=config_general"><i class="fa-solid fa-wrench"></i>Configuración Generales</a>
