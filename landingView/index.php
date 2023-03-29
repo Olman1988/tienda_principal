@@ -260,7 +260,7 @@ if(isset($_GET['code'])){
     url : '../email/controllerLandingForm.php',
     data : $('#landingForm').serialize(),
    success:function(dat){
-       
+       console.log(dat);
             if(dat!=false){
           Swal.fire({
                                                    icon: 'success',
@@ -270,7 +270,7 @@ if(isset($_GET['code'])){
                                                  });
                
             window.setTimeout(function () {
-                         window.location.href = "../"
+                   //     window.location.href = "../"
                       }, 2000);
             } else {
                 Swal.fire({

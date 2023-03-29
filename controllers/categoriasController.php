@@ -96,8 +96,8 @@ $todasCategoriasPadre=$categorias->todasCategoriasPadre();
      public function getCategoryById($id){
         
         $categorias= new categoriasModel();
-        $respuestaCategorias=$categorias->getCategoryById($id);
-        require_once 'views/categories/edit-categories.php'; 
+        $oneCategory=$categorias->getCategoryById($id);
+        return $oneCategory;
     }
     public function codeGenerator() {
                   $code=  strtoupper(uniqid());

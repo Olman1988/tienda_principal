@@ -2,17 +2,21 @@
 
 
 ?>
-
-
-          <div class="col-lg-8">
+         <div class="col-lg-8">
             <div class="padding-top-2x mt-2 hidden-lg-up"></div>
             <div class="table-responsive">
-              <table class="table table-hover margin-bottom-none">
+              <table class="table table-hover margin-bottom-none" id="generalTable">
                 <thead>
                   <tr>
                     <th>Orden #</th>
+             
+                    <th>Tipo Pago</th>
+                     <th>Dirección de Entrega</th>
                     <th>Fecha</th>
-                   
+                    <th style="min-width:80px;">SubTotal</th>
+                    <th style="min-width:80px;">Costo de Envío</th>
+                    <th style="min-width:80px;">Total Impuesto</th>
+                   <th style="min-width:80px;">Total</th>
                     <th>Detalles</th>
                 
                     
@@ -24,10 +28,26 @@
                        
                     ?>
                     <tr>
-                    <th><?=$ordenesValue['codigo']?></th>
-                    <th><?=$ordenesValue['fecha']?></th>
-                   
-                    <th><button class="btn btn-outline-primary-2"onclick="mostrarDetalles('<?=$ordenesValue['codigo']?>')">Ver</button></th>
+                    <td><?=$ordenesValue['codigo']?></td>
+                
+                    <td><?=$ordenesValue['idPaymentType']?></td>
+                    <?php
+                    if($ordenesValue['shippingMethod']=='Ubicacion'){
+                    ?>
+                    <td><?=$ordenesValue['provincia']."/".$ordenesValue['canton']."/".$ordenesValue['distrito']."/".$ordenesValue['address']?></td>
+                  <?php
+                    } else {
+                      ?>
+                    <td><?=$ordenesValue['shippingMethod']?></td>
+                    <?php
+                    }
+                  ?>
+                    <td><?=$ordenesValue['creationdate']?></td>
+                    <td>₡ <?=round($ordenesValue['SubTotal'],2)?></td>
+                     <td>₡ <?=round($ordenesValue['Shipping'],2)?></td>
+                      <td>₡ <?=round($ordenesValue['TotalTax'],2)?></td>
+                   <td>₡ <?=intval($ordenesValue['Total'])?></td>
+                    <td><button class="btn btn-outline-secondary" onclick="mostrarDetalles('<?=$ordenesValue['codigo']?>')">Ver</button></td>
                     
                     
                   </tr>
@@ -41,7 +61,7 @@
             
           </div>
         </div>
-      </div>
+     </div>
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
    <div class="modal-content">
@@ -74,11 +94,10 @@
       <table class="table table-hover mt-4">
   <thead>
     <tr>
-      <th scope="col">Artículo Id</th>
       <th scope="col">Nombre Artículo</th>
       
        <th scope="col">Cantidad</th>
-              <th scope="col">Precio</th>
+              <th scope="col">SubTotal</th>
               <th scope="col">IVA</th>
                <th scope="col">Total</th>
 
@@ -96,10 +115,22 @@
        </div>
      </div>
    </div>
-     
 <script>
-function mostrarDetalles(code){
 
+    $(document).ready( function () {
+
+    $('#generalTable').DataTable({
+        paging: true,
+        ordering: true,
+        info: true,
+        order: [[6, 'desc']]
+    });
+    });
+function cont(){
+    alert("hello");
+}
+function mostrarDetalles(code){
+console.log(code);
     let data = {
         "action":"mostrarDetalles",
         "code":code
@@ -118,10 +149,6 @@ function mostrarDetalles(code){
                        let iva=0;
                        var hilera = document.createElement("tr");
                        
-                          var celda = document.createElement("td");
-                          var textoCelda = document.createTextNode(objetoJson[i]['art_CodigoArticulo']);
-                          celda.appendChild(textoCelda);
-                           hilera.appendChild(celda);
                            var celda = document.createElement("td");
                            var textoCelda = document.createTextNode(objetoJson[i]['art_Descripcion']);
                           celda.appendChild(textoCelda);
@@ -132,7 +159,7 @@ function mostrarDetalles(code){
                            hilera.appendChild(celda);
                            let cantidad=parseInt(objetoJson[i]['cantidad'], 10);
                            var celda = document.createElement("td");
-                            let precioN = parseInt(objetoJson[i]['art_PrecioUnitario'],10);
+                            let precioN = parseFloat(objetoJson[i]['price'],10);
                             if(isNaN(precioN)){
                                precioN=0;
                            }
@@ -140,32 +167,28 @@ function mostrarDetalles(code){
                           celda.appendChild(textoCelda);
                            hilera.appendChild(celda);
                            var celda = document.createElement("td");
-                           iva=parseInt(objetoJson[i]['taxAmount'], 10);
+                           iva=parseFloat(objetoJson[i]['taxAmount'], 10);
                            if(isNaN(iva)){
                                iva=0;
                            }
-                          
-                           let totaliva=iva*cantidad;
-                           var textoCelda = document.createTextNode(totaliva);
+                           var textoCelda = document.createTextNode(iva);
                           celda.appendChild(textoCelda);
                            hilera.appendChild(celda);
                            
-                           var celda = document.createElement("td");
-                       
-                       let precio=parseInt(objetoJson[i]['art_PrecioUnitario'], 10);
-                       if(isNaN(precio)){
-                               precio=0;
+                           
+                          var celda = document.createElement("td");
+                          let totalItem=parseFloat(objetoJson[i]['totalPrice'], 10);
+                           if(isNaN(iva)){
+                               totalItem=0;
                            }
-                       let total=cantidad*precio;
-                       let totalFinal=total+totaliva;
-                             var textoCelda = document.createTextNode(totalFinal);
+                          var textoCelda = document.createTextNode(totalItem);
                           celda.appendChild(textoCelda);
-                           hilera.appendChild(celda);
+                          hilera.appendChild(celda);
                        
                        tblBody.appendChild(hilera);
-                       totalfactura=totalfactura+totalFinal;
+                       totalfactura=totalfactura+totalItem;
                    }
-                    $("#textTotal").text(totalfactura);
+                    $("#textTotal").text("₡"+totalfactura);
                    $("#modalDetalles").appendTo("body").modal('show');
                    if(response!=0){
                        
@@ -174,11 +197,11 @@ function mostrarDetalles(code){
                  
                 }else { 
                    
-//                    if (response) {
-//                        Swal.fire('Producto eliminado con éxito!', '', 'success');
-//                        window.setTimeout(function () {
-//                            window.location.href = "./"
-//                        }, 2000);
+                    if (response) {
+                        Swal.fire('Producto eliminado con éxito!', '', 'success');
+                        window.setTimeout(function () {
+                            window.location.href = "./"
+                        }, 2000);
                      
                         Swal.fire({
                             icon: 'error',
@@ -189,13 +212,15 @@ function mostrarDetalles(code){
                         })
                     }
                 } 
-    }); 
-}
+    }
+                }); 
+            }            
+
 function cerrarModal(){
   $("#modalDetalles").modal("hide");  
     
 }
 
 </script>
-       
 
+     

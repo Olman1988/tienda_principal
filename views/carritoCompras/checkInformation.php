@@ -62,6 +62,7 @@ if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][
                 <thead>
                   <tr>
                     <th>Producto</th>
+                    <th>Personalizacion</th>
                     <th class="text-center">Subtotal</th>
                     <th class="text-center">Impuesto</th>
                     <th class="text-center">Total</th>
@@ -109,6 +110,11 @@ if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][
                         </div>
                       </div>
                     </td>
+                    <td>
+                                    <?=isset($valueCarrito['radioColor'])&&!empty($valueCarrito['radioColor'])?'Color: <label style ="cursor:pointer;box-shadow:1px 1px 3px;border:solid 5px white;width:40px;height:40px;background:'.$valueCarrito["radioColor"].'"></label><br>':'';?>
+                                    <?=isset($valueCarrito['radioImg'])&&!empty($valueCarrito['radioImg'])?"Imagen: <img style='width:100px' src ='".base_url."".$valueCarrito['radioImg']."'><br>":'';?>
+                                    <?=isset($valueCarrito['listAttribute'])&&!empty($valueCarrito['listAttribute'])?"Selección: ".$valueCarrito['listAttribute']:'';?>
+                                </td>
                       
                     <td class="text-center text-lg text-medium">
                         <?=$subTotal?>
@@ -172,34 +178,7 @@ if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][
                     
                 </ul>
               </div>
-                <?php
-                if(!empty($radioColor)||!empty($radioImg)||!empty($listAttribute)){
-                ?>
-                <div class="col-sm-6">
-                <h5>Personalización: </h5>
-                <ul class="list-unstyled">
-                    <?php 
-                    if(!empty($radioColor)){
-                        ?>
-                  <li><span class="text-muted">Color elegido:</span> <?=$radioColor?></li>
-                    <?php
-                    }
-                    if(!empty($radioImg)){
-                        ?>
-                  <li><span class="text-muted">Imagen Elegida:</span> <?=$radioImg?></li>
-                    <?php
-                    }
-                    if(!empty($listAttribute)){
-                        ?>
-                  <li><span class="text-muted">Selección:</span> <?=$listAttribute?></li>
-                    <?php
-                    }
-                    ?>
-                </ul>
-              </div>
-                <?php
-                }
-                ?>
+                
             </div>
 
               <div class="row padding-top-1x mt-3">
@@ -242,14 +221,15 @@ if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][
                     Swal.showLoading()
                 },
             });
-             $("#btnCompletar").prop('disabled', true);
+         $("#btnCompletar").prop('disabled', true);
             },
    success:function(dat){
+       console.log(dat);
 if(dat!=false){
 						if(dat != 'denied'){
 							//vaciarCarrito2();
 							window.setTimeout(function () {
-								window.location.href = dat;
+						//window.location.href = dat;
 							}, 500);
                                                         
 						}else{
@@ -258,7 +238,7 @@ if(dat!=false){
 							title: 'Oops...',
 							text: 'Datos incorrectos'
 						});
-                                              setTimeout(window.location.href = "./?pag=checkout&&step=payment", 2000);
+                                     //     setTimeout(window.location.href = "./?pag=checkout&&step=payment", 2000);
 						}
 					} else {
 						Swal.fire({

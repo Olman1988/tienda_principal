@@ -7,7 +7,7 @@ class generalModel{
     try {
             $db = conexion::getConnect();//Aqui se conecta a la base de datos
                // $consulta =$db->prepare("SELECT i.id, i.nombre, i.modelo, i.marca, i.descripcion, i.cantidad, i.precio, ci.nombre AS categoria, cs.nombre AS subcategoria, i.image, e.nombre AS estado FROM tbl_productos i INNER JOIN tbl_categorias ci ON i.id_categoria = ci.id INNER JOIN tbl_subcategorias cs ON i.id_subcategoria = cs.id INNER JOIN tbl_estados e ON i.estado = e.id ORDER BY id");
-           $consulta =$db->prepare("SELECT * FROM Orden where userName='$email' order by fecha desc");
+           $consulta =$db->prepare("SELECT o.codigo,o.Total,o.idPaymentType,o.fecha as creationdate,o.TotalTax,o.Shipping,o.SubTotal,o.userName,u.nombre AS cliente,u.apellido,u.telefono,u.email,oe.provincia,oe.canton,oe.distrito,oe.address,oe.shippingMethod FROM Orden o LEFT JOIN usuarios u on o.userName = u.email LEFT JOIN OrdenEntrega oe ON o.id = oe.idOrden where o.userName='$email' order by o.fecha desc");
            //$consulta->bindValue(':id', $idCategoria);
             $consulta->execute();
             

@@ -54,11 +54,11 @@ class faqController{
     }
 }
 
-if (isset($_POST['action-faq'])) {
+if (isset($_POST['action'])) {
     $FAQ = new faqController();
 
-    switch ($_POST['action-faq']){
-        case 'add':
+    switch ($_POST['action']){
+        case 'agregar':
             $pregunta = !empty($_POST['pregunta']) ? filter_var($_POST['pregunta'], FILTER_SANITIZE_STRING) : '';
             $contenido = !empty($_POST['contenido']) ? filter_var($_POST['contenido'], FILTER_SANITIZE_STRING) : '';
             
@@ -80,7 +80,7 @@ if (isset($_POST['action-faq'])) {
             }
 
         break;
-        case 'edit':
+        case 'modificar':
             $pregunta  = !empty($_POST['pregunta']) ? $_POST['pregunta'] : '';
             $contenido = !empty($_POST['contenido']) ? $_POST['contenido'] : '';
             $id        = !empty($_POST['id']) ? $_POST['id'] : 0;

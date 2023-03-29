@@ -13,7 +13,10 @@ class carritoController{
          $cont=0;
          foreach($_SESSION['carrito'] as $valueCarrito){
      if($valueCarrito['id']==$idArticulo){
-         $_SESSION['carrito'][$cont]['cantidad']=$_SESSION['carrito'][$cont]['cantidad']+1;
+         $_SESSION['carrito'][$cont]['cantidad']=$cantidadElegida;
+         $_SESSION['carrito'][$cont]['radioColor'] = $radioColor;
+         $_SESSION['carrito'][$cont]['radioImg'] = $radioImg;
+         $_SESSION['carrito'][$cont]['listAttribute'] = $listAttribute;
                  return true;
              }
              $cont++;
@@ -36,7 +39,7 @@ class carritoController{
          "IVAIncluido" =>$IVAIncluido,
          "llevaimpuesto"=>$llevaimpuesto
      );
-       
+     
      $nuevoProducto[]=$nuevoarray;
      
    $_SESSION['carrito']=$nuevoProducto;
@@ -124,14 +127,13 @@ class carritoController{
 
     public function vaciarCarrito(){
         if(isset($_SESSION['carrito'])){
-       //unset($_SESSION['carrito']);  
+       unset($_SESSION['carrito']);  
         }
-      
         return true;
     }
     public function vaciarCotizacion(){
         if(isset($_SESSION['cotizacion'])){
-           unset($_SESSION['cotizacion']);
+          unset($_SESSION['cotizacion']);
         }
         
         return true;
@@ -511,7 +513,7 @@ if(isset($_POST['action'])){
                  $resp['status']=false;
              }
              
-            header('Content-Type: application/json');
+            
             echo json_encode($resp);
             break;
         case 'datosCarrito':
@@ -727,10 +729,17 @@ if(isset($_POST['action'])){
                    require_once'../controllers/ordenController.php';
                      $orderDetails = new ordenController();
                     $respOrden = $orderDetails->mostrarDetalles($codeSmall);
-                    $newArray = Array();
+                    $newCostumArray = Array();
                     foreach ($respOrden as $index=>$valuesOrder) {
+                        $costum = json_decode($valuesOrder['personalizacion'],true);
+                        $newCostumArray = Array(
+                            "Imagen"=>$costum['radioImg'],
+                            "Color"=>$costum['radioColor'],
+                            "Seleccion"=>$costum['listAttribute']
+                        );
                         $newArray[$index]['Cantidad']= $valuesOrder['cantidad'];
                         $newArray[$index]['Descripcion']= $valuesOrder['art_Descripcion'];
+                        $newArray[$index]['Personalizacion']= $newCostumArray;
                         $newArray[$index]['Precio']= $valuesOrder['price'];
                         $newArray[$index]['Impuesto']= $valuesOrder['taxAmount'];
                         $newArray[$index]['Total']= $valuesOrder['totalPrice'];

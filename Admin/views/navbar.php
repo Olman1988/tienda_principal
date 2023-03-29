@@ -7,67 +7,113 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fas fa-shield-alt"></i>
+                <div class="sidebar-brand-icon">
+                    <i class="fa-solid fa-store"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Balloons</div>
+                <div class="sidebar-brand-text mx-3">Tienda</div>
             </a>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
-
-           <li class="nav-item">
+            <li class="nav-item">
+          <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+          Administración <i class="fa-solid fa-toolbox"></i>
+        </button>
+                <hr class="sidebar-line my-0">
+            <div class="collapse show" id="home-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li class="nav-item secondary-link">
           
             <a class="nav-link" href="<?=base_url?>Admin/?seccion=dashboard"><i class="fa-solid fa-gauge icon-admin"></i>Dashboard</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=promociones"><i class="fa-solid fa-percent"></i>Promociones</a>
+            <li class="nav-item secondary-link">
+            <a class="nav-link" href="<?=base_url?>Admin/?seccion=datos_generales"><i class="fa-solid fa-id-card"></i>Datos Generales</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=perfil_tienda"><i class="fa-solid fa-id-card"></i>Perfil de Tienda</a>
-        </li>
-        <li class="nav-item">
+        <li class="nav-item secondary-link">
             <a class="nav-link" href="<?=base_url?>Admin/?seccion=config_general"><i class="fa-solid fa-wrench"></i>Configuración Generales</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=faq_section"><i class="fa-solid fa-question"></i>FAQ</a>
+          </ul>
+        </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=blog_section"><i class="fa-brands fa-microblog"></i>BLOG</a>
-        </li>
-         <li class="nav-item">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=paginaAterrizaje"><i class="fa-solid fa-globe"></i>Página de Aterrizaje</a>
-        </li>
-<li class="nav-item">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=lookandfeel"><i class="fa-solid fa-paintbrush"></i>Diseño e Imagen</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=infoLanding"><i class="fa-solid fa-address-card"></i>Clientes</a>
-        </li>
-       <li class="nav-item">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=products"><i class="fa-solid fa-box icon-admin"></i>Productos y Servicios</a>
-        </li>
-         <li class="nav-item">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=orders"><i class="fa-solid fa-truck-fast icon-admin"></i>Órdenes</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=quotes"><i class="fa-solid fa-file-invoice-dollar icon-admin"></i>Cotizaciones</a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=categories"><i class="fa-solid fa-boxes-stacked icon-admin"></i>Categorías</a>
+          <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#costum-collapse" aria-expanded="true">
+          Personalización <i class="fa-solid fa-gear"></i>
+        </button>
+                <hr class="sidebar-line my-0">
+            <div class="collapse" id="costum-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li class="nav-item secondary-link">
+                    <a class="nav-link" href="<?=base_url?>Admin/?seccion=sliders"><i class="fa-solid fa-images icon-admin"></i>Sliders</a>
+               </li>
+               <li class="nav-item secondary-link">
+                    <a class="nav-link" href="<?=base_url?>Admin/?seccion=lookandfeel"><i class="fa-solid fa-paintbrush"></i>Diseño e Imagen</a>
+                </li>
+                <li class="nav-item secondary-link">
+                    <a class="nav-link" href="<?=base_url?>Admin/?seccion=faq_section"><i class="fa-solid fa-question"></i>FAQ</a>
+                </li>
+                <li class="nav-item secondary-link">
+                    <a class="nav-link" href="<?=base_url?>Admin/?seccion=blog_section"><i class="fa-brands fa-microblog"></i>BLOG</a>
+                </li>
+           
+          </ul>
+        </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=sliders"><i class="fa-solid fa-images icon-admin"></i>Sliders</a>
+          <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#sales-collapse" aria-expanded="true">
+          Ventas <i class="fa-solid fa-store"></i>
+        </button>
+                <hr class="sidebar-line my-0">
+            <div class="collapse" id="sales-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li class="nav-item secondary-link">
+                    <a class="nav-link" href="<?=base_url?>Admin/?seccion=promociones"><i class="fa-solid fa-percent"></i>Promociones</a>
+                </li>
+               <li class="nav-item secondary-link">
+                    <a class="nav-link" href="<?=base_url?>Admin/?seccion=paginaAterrizaje"><i class="fa-solid fa-globe"></i>Página de Aterrizaje</a>
+               </li>
+               <li class="nav-item secondary-link">
+                    <a class="nav-link" href="<?=base_url?>Admin/?seccion=orders"><i class="fa-solid fa-truck-fast icon-admin"></i>Órdenes</a>
+              </li>
+              <li class="nav-item secondary-link">
+                  <a class="nav-link" href="<?=base_url?>Admin/?seccion=quotes"><i class="fa-solid fa-file-invoice-dollar icon-admin"></i>Cotizaciones</a>
+              </li>
+              <li class="nav-item secondary-link">
+                   <a class="nav-link" href="<?=base_url?>Admin/?seccion=infoLanding"><i class="fa-solid fa-address-card"></i>Clientes Promociones</a>
+              </li>
+              <li class="nav-item secondary-link">
+                 <a class="nav-link" href="<?=base_url?>Admin/?seccion=orders"><i class="fa-solid fa-truck-fast icon-admin"></i>Órdenes</a>
+             </li>
+            <li class="nav-item secondary-link">
+                <a class="nav-link" href="<?=base_url?>Admin/?seccion=quotes"><i class="fa-solid fa-file-invoice-dollar icon-admin"></i>Cotizaciones</a>
+            </li>
+          </ul>
+        </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=attributesGroup"><i class="fa-solid fa-list-check"></i>Grupos Atributos</a>
+          <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#catalogues-collapse" aria-expanded="true">
+          Catálogos <i class="fa-solid fa-screwdriver-wrench"></i>
+        </button>
+                <hr class="sidebar-line my-0">
+            <div class="accordion-collapse collapse" id="catalogues-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                
+               <li class="nav-item secondary-link">
+                    <a class="nav-link" href="<?=base_url?>Admin/?seccion=products"><i class="fa-solid fa-box icon-admin"></i>Productos y Servicios</a>
+                </li>
+                <li class="nav-item secondary-link">
+                    <a class="nav-link" href="<?=base_url?>Admin/?seccion=categories"><i class="fa-solid fa-boxes-stacked icon-admin"></i>Categorías</a>
+                </li>
+
+                <li class="nav-item secondary-link">
+                    <a class="nav-link" href="<?=base_url?>Admin/?seccion=attributesGroup"><i class="fa-solid fa-list-check"></i>Grupos Atributos</a>
+                </li>
+                 <li class="nav-item secondary-link">
+                    <a class="nav-link" href="<?=base_url?>Admin/?seccion=attributes"><i class="fa-solid fa-square-plus"></i>Atributos</a>
+                </li>
+          </ul>
+        </div>
         </li>
-        
-              
-         <li class="nav-item">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=attributes"><i class="fa-solid fa-square-plus"></i>Atributos</a>
-        </li>
+       
          <li class="nav-item btn btn-secondary">
                   <a class="nav-link" href="<?=base_url?>Admin/?seccion=cerrarSession">Cerrar Sesión</a>
         </li>

@@ -41,13 +41,14 @@ class ordenes{
         $mail->Port = 25;
         $mail->SMTPAuth = true;
         $mail->isHTML(true);
-        $mail->Username = 'info@tecnosula.com';
-        $mail->Password = 'C0nt@ct0/2022';
-        $mail->setFrom('info@tecnosula.com', $this->profile->name);
+         $mail->Username = 'contacto@tecnosula.com';
+        $mail->Password = 'C0ntact0/2022*1';
+        $mail->setFrom('contacto@tecnosula.com', $this->profile->name);
+
 
 
             $mail->addAddress($email, 'Cliente');
-            $mail->Subject = 'Cotizacion '.$code;
+            $mail->Subject = 'Orden '.$code;
             $mail->Body = $respTemplate; 
 
         //ENVIO DE CORREO
@@ -56,9 +57,7 @@ class ordenes{
         } else {
         echo 'Mailer Error: ' . $mail->ErrorInfo;
         return false;
-         
         }
-        
     }
     
     public function sendEmailOrderToBusiness($nombre,$email,$code,$data,$DNI,$provincia,$canton,$distrito,$direccion,$telefono){
@@ -89,20 +88,19 @@ class ordenes{
         date_default_timezone_set('Etc/UTC');
         $mail = new PHPMailer();
         $mail->isSMTP();
-        $mail->SMTPDebug = SMTP::DEBUG_OFF;  // SMTP::DEBUG_OFF = off;
+        $mail->SMTPDebug = SMTP::DEBUG_OFF ;//SMTP::DEBUG_SERVER;  // SMTP::DEBUG_OFF = off;ff;
         $mail->SMTPAutoTLS = false;
         $mail->SMTPSecure = false;
         $mail->Host = 'tecnosula.com';
         $mail->Port = 25;
         $mail->SMTPAuth = true;
         $mail->isHTML(true);
-        $mail->Username = 'info@tecnosula.com';
-        $mail->Password = 'C0nt@ct0/2022';
-        $mail->setFrom('info@tecnosula.com', $this->profile->name);
-https://localhost/new_projects/tienda_principal/assets/files/641407733E261Tarea%20%234.pdf
+        $mail->Username = 'contacto@tecnosula.com';
+        $mail->Password = 'C0ntact0/2022*1';
+        $mail->setFrom('contacto@tecnosula.com', $this->profile->name);
 
             $mail->addAddress($this->profile->infoEmail, 'Cliente');
-            $mail->Subject = 'Cotizacion '.$code;
+            $mail->Subject = 'Orden '.$code;
             $mail->Body = $respTemplate; 
 
         //ENVIO DE CORREO
@@ -118,14 +116,18 @@ https://localhost/new_projects/tienda_principal/assets/files/641407733E261Tarea%
     public function makeTableFromData($data,$adminEmail=false){
         $keys = array_keys($data[0]);
         $HTML = '<table><thead><tr>';
-        foreach($keys as $keysvalues){
-            if($keysvalues=='Files'){
-                if($adminEmail){
+        foreach($keys as $indexKey =>$keysvalues){
+            switch ($keysvalues) {
+                case 'Files':
                  $HTML.='<th style="font-size:23px;color:#333333;padding:0 0 20px 0; font-family:sans-serif;text-align:center;padding-top:75px;font-weight:400;">'.$keysvalues.'</th>'; 
-                }
-            } else {
+                    break;
+              case 'Personalizacion':
                  $HTML.='<th style="font-size:23px;color:#333333;padding:0 0 20px 0; font-family:sans-serif;text-align:center;padding-top:75px;font-weight:400;">'.$keysvalues.'</th>'; 
+                    break;
+                default:
+                    $HTML.='<th style="font-size:23px;color:#333333;padding:0 0 20px 0; font-family:sans-serif;text-align:center;padding-top:75px;font-weight:400;">'.$keysvalues.'</th>'; 
 
+                    break;
             }
            }
         $HTML .='</tr></thead>';
@@ -134,22 +136,60 @@ https://localhost/new_projects/tienda_principal/assets/files/641407733E261Tarea%
            $HTML.='<tr>';
            foreach($keys as $keysvalues){
            //$datavalues
-               if($keysvalues=='Files'){
-                   if(!empty($datavalues[$keysvalues])&&$adminEmail){
-                        $HTML.= '<td style="border:solid 1px gray;padding:30px;background:white;border-collapse:collapse;width:630px;">'
+               switch ($keysvalues) {
+                case 'Files':
+                    if(!empty($datavalues[$keysvalues])&&$adminEmail){
+                           $HTML.= '<td style="border:solid 1px gray;padding:30px;background:white;border-collapse:collapse;width:630px;">'
                                 . '<button style="border-radius:10px;color:#6695FF;width:125px;padding:5px;"><a href="'.base_url."/assets/files/".$datavalues[$keysvalues].'">Ver Adjunto</a></td>';   
-                   }
-                }else{
-                $HTML.= '<td style="border:solid 1px gray;padding:30px;background:white;border-collapse:collapse;width:630px;">'.$datavalues[$keysvalues]."</td>";
+                    }
+                    break;
+                case 'Personalizacion':
+                      $HTML.= '<td style="border:solid 1px gray;padding:30px;background:white;border-collapse:collapse;width:630px;">';
+                     
+                                $HTML.='<div>';
+                                $keysPers = array_keys($datavalues[$keysvalues]);
+                                foreach ($keysPers as $value) {
+                                    
+                                    switch ($value) {
+                                        case 'Imagen':
+                                            if($datavalues[$keysvalues][$value]!=0){
+                                               $HTML.="<label>Imagen: </label><img style='width:150px;' src='".base_url."".$datavalues[$keysvalues][$value]."'>"; 
+                                            }
+                                            break;
+                                        case 'Color':
+                                            if($datavalues[$keysvalues][$value]!=0){
+                                                $HTML.="<label>Color:".$datavalues[$keysvalues][$value]."</label> "; 
+                                            }
+                                            break;
+                                        case 'Seleccion':
+                                            if($datavalues[$keysvalues][$value]!=0){
+                                                $HTML.="<label>Seleccion:".$datavalues[$keysvalues][$value]."</label> "; 
+                                            }
+                                            break;
 
-               }
+                                        default:
+                                            break;
+                                    }
+                               }
+                               
+                                $HTML.='</div>';
+                            
+                       $HTML.= '</td>'; 
+                    break;    
+                default:
+                         $HTML.= '<td style="border:solid 1px gray;padding:30px;background:white;border-collapse:collapse;width:630px;">'.$datavalues[$keysvalues]."</td>";
+ 
+                    break;
+           }
            }
            
            $HTML.='</tr>'; 
         }
         $HTML .='</tbody>';
         $HTML .='</table>';
+        //var_dump($HTML);
         return $HTML;
     }
 }
+
 ?>

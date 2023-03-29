@@ -33,7 +33,7 @@ $ordenesRespuesta=$ordenes->consultarOrdenes($_SESSION['email']);
           </div>
         </div>
       </div>
-<div class="container padding-bottom-3x mb-2">
+<div class=" padding-bottom-3x mx-auto mb-2" style="width:95%;">
         <div class="row">
             
 <div class="col-lg-4 " style="margin-bottom:50px;">

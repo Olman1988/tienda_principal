@@ -36,12 +36,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-4">
-            <div class="form-check form-switch">
-                <input class="form-check-input" value='1' <?=$onePost['status']=='Activo'? ' checked="checked"' : '';?> name='status' type="checkbox" id="status">
-                <label class="form-check-label" for="status">Activo</label>
-            </div>
-        </div>
         <div class="col-12"> 
             <div class="form-group">
                 <label for="content">Contenido</label>

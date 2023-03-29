@@ -132,12 +132,14 @@ input[type="radio"][id^="radioColor"]{
                         switch ($atributos['idTipoControl']) {
                                 case "SQUARECOLORS":
                                     if($loadedDetails[0]){
-                                    echo"<div class='row' style='width:150px'>";
+                                    echo"<div class='row' style='width:250px'>";
+                                    echo '<p id="colorAlert" style="color:red;display:none;">***Esta selección es requerida</p>';
                                    foreach ($atributos['Detalles'] as $detalles) {
                                        
                                    ?>
                                     <div class="col-4 m-auto" style ="width:60px;height:60px;">
-                                         <label style ="cursor:pointer;box-shadow:1px 1px 3px;border:solid 5px white;width:40px;height:40px;background:<?=$detalles['cuadroColorRgb']?>">
+                                        
+                                         <label id="" style ="cursor:pointer;box-shadow:1px 1px 3px;border:solid 5px white;width:40px;height:40px;background:<?=$detalles['cuadroColorRgb']?>">
                                              <input onchange="validateSelectionRadio(this)" type="radio" id="radioColor" name="radioColor" value="<?=$detalles['cuadroColorRgb']?>">
                                         </label>
                                     </div>
@@ -153,12 +155,13 @@ input[type="radio"][id^="radioColor"]{
                                 case "PHOTOS":
                                     if($loadedDetails[1]){
                                     echo"<div class='row' style='width:250px'>";
+                                    echo '<p id="imgAlert" style="color:red;display:none;">***Esta selección es requerida</p>';
                                     foreach ($atributos['Detalles'] as $detalles) {
                                     
                                    ?>
                                     <div class="col-4 m-auto" style ="width:100px;height:100px;">
                                         <label class='img-rd' style ="cursor:pointer;box-shadow:1px'img-rd 1px 3px;border:solid 5px white;width:40px;height:40px;background:<?=$detalles['cuadroColorRgb']?>">
-                                            <input type="radio" onchange="validateSelectionImg(this)" id="radioImg" name="radioImg" value="<?=$detalles['valor']?>">
+                                            <input type="radio" onchange="validateSelectionImg(this)" id="radioImg" name="radioImg" value="<?=$detalles['foto']?>">
                                             <img style='width:100%;' src="<?=base_url.$detalles['foto']?>" alt="alt"/>
                                         </label>
                                     </div>
@@ -171,9 +174,9 @@ input[type="radio"][id^="radioColor"]{
                                     break;
                                 case "DROPDOWN":
                                 if($loadedDetails[2]){
-                                    echo"<div class='row' style='width:150px'>";
+                                    echo"<div class='row' style='width:250px'>";
+                                    echo '<p id="selectAlert" style="color:red;display:none;">***Esta selección es requerida</p>';
                                    ?>
-                                    
             <select id="selectAtribute" onchange="validateSelection(this)" name="selectAtribute" style='width:200px' class="form-control selectpicker show-tick">
                 <option value="0">Seleccione</option>
                 <?php
@@ -202,14 +205,15 @@ input[type="radio"][id^="radioColor"]{
                     <div id="seleccion" style="padding:15px;">
                     
                     <p id="radioColorText">
+                    
                         <div id="radioColorTextContainer" class="col-4 " style ="width:60px;height:60px;display:none;">
                                          <label style ="cursor:pointer;box-shadow:1px 1px 3px;border:solid 5px white;width:40px;height:40px;">
                                              
                                         </label>
                                     </div>
                     </p>
-                    <p id="radioImgText"></p>
-                    <p id="selectedList"></p>
+                    <p id="radioImgText" > <img id="radioImgN" style="width:100px" src=""></p>
+                    <p id="selectedList"> </p>
                 </div>';
                 }
                 ?>
@@ -425,37 +429,57 @@ function validarCantidad(data){
 
 $('#exampleModal').appendTo("body");
 function agregarCarrito(idArticulo,action,nombre,imagen,precio,impuesto,IVAIncluido,llevaimpuesto){
+    let sendData = true;
+    // Initialize to know if the container is already exists for validate data 
+    let colorContainer =  $('input:radio[name=radioColor]');
+    let imgContainer =  $('input:radio[name=radioImg]');
+    let selectContainer =  $("#selectAtribute");
+    console.log(selectContainer.length)
+    //Get the values for any selection
     let radioColor = $('input:radio[name=radioColor]:checked').val();
-   let radioImg = $('input:radio[name=radioImg]:checked').val();
+    let radioImg = $('input:radio[name=radioImg]:checked').val();
     let listSelection  = $("#selectAtribute").val();
+    
+    //Get values for quotes
     let observacion=$("#observacion").val();
     let cantidad = $("#cantidadMinima").val();
+    
+    //Create form
      var file_data = '';
      var form_data = new FormData();
      if(document.getElementById( "file-1" )){
        file_data = $("#file-1").prop("files")[0]; 
      }
-     
    if(typeof radioColor ==='undefined'){
-      
+      if(colorContainer.length>0){
+          $("#colorAlert").css("display","block");
+          sendData = false;
+      }
     }else {
            form_data.append("radioColor", radioColor);
-
+           $("#colorAlert").css("display","none");
+       
     }
        if(typeof radioImg ==='undefined'){
-        
+        if(imgContainer.length>0){
+          $("#imgAlert").css("display","block");
+          sendData = false;
+      }
     }else {
            form_data.append("radioImg", radioImg);
-
+           $("#imgAlert").css("display","none");
+         
     }
-    
-      if(typeof listSelection ==='undefined'){
-      
+    if(typeof listSelection ==='undefined' || listSelection=="0"){
+        if(selectContainer.length>0){
+            $("#selectAlert").css("display","block");
+            sendData = false;
+        }
     }else {
            form_data.append("listAttr", listSelection);
-
+           $("#selectAlert").css("display","none");
+         
     }
-
      form_data.append("idArticulo", idArticulo);
      if(!observacion){
         
@@ -481,7 +505,7 @@ function agregarCarrito(idArticulo,action,nombre,imagen,precio,impuesto,IVAInclu
      
      
    
-    if(idArticulo){
+    if(idArticulo&&sendData){
    
     $.ajax({
         type:'POST',    
@@ -603,7 +627,13 @@ function validateSelectionRadio(data){
 function validateSelectionImg(data){
    
    let radio = $('input:radio[name=radioImg]:checked').val();
-   $("#radioImgText").text("Imagen: "+radio)
+   console.log(radio);
+   $("#radioImgText").text("Imagen: ")
+   let myElement = document.createElement("img");
+   $(myElement).attr("id","radioImgN");
+   $(myElement).attr("style","width:150px");
+   $("#radioImgText").append(myElement);
+   $("#radioImgN").attr("src","<?=base_url2?>"+radio);
 
    
 }

@@ -161,8 +161,8 @@ $( "#enviarInfo" ).on( "click", function( event ) {
     type : 'POST',
     url : './carritoCompras/carritoController.php',
     data : $('#formInfo').serialize(),
-   success:function(dat){
-       console.log(dat);
+   success:function(datos){
+       let dat = $.parseJSON(datos);
             if(dat.status){
                           Swal.fire({
                                    icon: 'success',

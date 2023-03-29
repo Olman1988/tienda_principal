@@ -21,7 +21,7 @@
 
                                <?php
                                      foreach ($responseAllCategories as $valueCategorias) {
-                                         
+                                     if($valueCategorias['cat_CodigoCategoria']!=$_GET['id']){  
                                      if($valueCategorias['cat_CodigoCategoria']!=$oneCategory['categoriaPadre']){
 
                                           ?>
@@ -32,7 +32,7 @@
                                 <option class='optionCategory'  style="border-radius:15px;" selected="selected" value="<?=$valueCategorias['cat_CodigoCategoria']?>"><?=$valueCategorias['cat_Descripcion']?></option>
                                         <?php
                                      }
-                               
+                                     }
                                      }
                                ?>
                                  </select>

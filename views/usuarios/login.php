@@ -79,7 +79,6 @@ let pass=$("#pass").val();
     url : './controllers/userController.php',
     data : $('#login-box').serialize(),
    success:function(dat){
-           alert(dat);
             if(dat==true){
             Swal.fire({
                                                    icon: 'success',

@@ -4,8 +4,16 @@
  require '../phpmailer/src/Exception.php';
  require '../phpmailer/src/PHPMailer.php';
  require '../phpmailer/src/SMTP.php';
+ require_once "../models/generalModel.php";
+ 
 class cotizacion{
+    private $profile;
     
+    public function __construct() {
+        $consultaGeneral=new generalModel();
+        $this->profile=$consultaGeneral->consultaProfile();
+        
+    }
     public function sendEmailQuote($nombre,$email,$code,$data){
         require_once '../email/principalController.php';
         require_once '../config/parameters.php';
@@ -24,16 +32,16 @@ class cotizacion{
       
         $mail = new PHPMailer();
         $mail->isSMTP();
-        $mail->SMTPDebug = SMTP::DEBUG_OFF;//SMTP::DEBUG_SERVER;  // SMTP::DEBUG_OFF = off;
+        $mail->SMTPDebug = SMTP::DEBUG_OFF ;//SMTP::DEBUG_SERVER;  // SMTP::DEBUG_OFF = off;
         $mail->SMTPAutoTLS = false;
         $mail->SMTPSecure = false;
         $mail->Host = 'tecnosula.com';
         $mail->Port = 25;
         $mail->SMTPAuth = true;
         $mail->isHTML(true);
-        $mail->Username = 'info@tecnosula.com';
-        $mail->Password = 'C0nt@ct0/2022';
-        $mail->setFrom('info@tecnosula.com', 'Tienda');
+        $mail->Username = 'contacto@tecnosula.com';
+        $mail->Password = 'C0ntact0/2022*1';
+        $mail->setFrom('contacto@tecnosula.com', 'Tienda');
 
 
             $mail->addAddress($email, 'Cliente');
@@ -79,19 +87,18 @@ class cotizacion{
         date_default_timezone_set('Etc/UTC');
         $mail = new PHPMailer();
         $mail->isSMTP();
-        $mail->SMTPDebug = SMTP::DEBUG_OFF;  // SMTP::DEBUG_OFF = off;
+        $mail->SMTPDebug = SMTP::DEBUG_OFF ;  // SMTP::DEBUG_OFF = off;// SMTP::DEBUG_SERVER
         $mail->SMTPAutoTLS = false;
         $mail->SMTPSecure = false;
         $mail->Host = 'tecnosula.com';
         $mail->Port = 25;
         $mail->SMTPAuth = true;
         $mail->isHTML(true);
-        $mail->Username = 'info@tecnosula.com';
-        $mail->Password = 'C0nt@ct0/2022';
-        $mail->setFrom('info@tecnosula.com', 'Balloons');
-https://localhost/new_projects/tienda_principal/assets/files/641407733E261Tarea%20%234.pdf
+        $mail->Username = 'contacto@tecnosula.com';
+        $mail->Password = 'C0ntact0/2022*1';
+        $mail->setFrom('contacto@tecnosula.com', 'Tienda');
 
-            $mail->addAddress("olman1000@gmail.com", 'Cliente');
+            $mail->addAddress($this->profile->infoEmail, 'Cliente');
             $mail->Subject = 'Cotizacion '.$code;
             $mail->Body = $respTemplate; 
 

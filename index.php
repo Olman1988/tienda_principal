@@ -250,9 +250,7 @@ if(isset($_GET['pag'])){
                 if($respuestaSession==true){
                     if (isset($_SESSION['carrito'])|| isset($_SESSION['cotizacion'])){
                 switch ($_GET['step']) {
-                     case 'resultTransaction':
-                        require_once 'views/carritoCompras/resultTransaction.php';
-                        break;
+                    
                     case 'general':
                         if(isset($_SESSION['cotizacion'])){
                             require_once 'views/carritoCompras/checkoutCotizar.php';
@@ -283,11 +281,16 @@ if(isset($_GET['pag'])){
                         break;
                 }
                     }else{
-                       echo "<div style='height:60vh'></div><script>
+                        if(isset($_GET['step'])&&$_GET['step']=='resultTransaction'){
+                            require_once 'views/carritoCompras/resultTransaction.php';
+                        } else {
+                           echo "<div style='height:60vh'></div><script>
                             window.setTimeout(function () {
                             window.location.href ='./?pag=carrito'
                             }, 0);              
-                            </script>"; 
+                            </script>";  
+                        }
+                       
                     }
                 } else {
                     echo "<div style='height:60vh'></div><script>Swal.fire({

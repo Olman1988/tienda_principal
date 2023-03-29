@@ -72,31 +72,35 @@
                       <div class="form-group">
                   <label for="reg-email">Provincia</label>
                         <select name="provincia" id="slt-provincias" class="form-control">
-                <option value="">-- Seleccione una provincia --</option>
+               
             </select>
+                  <p id="requiredProvincia" style="color:red;display:none">***Espacio Requerido</p>
                         </div>
                   </div>
                   <div class="col-sm-4">
                       <div class="form-group">
                   <label for="reg-email">Cantón</label>
                       <select  name="canton" id="slt-cantones" class="form-control">
-            <option value="">-- Seleccione un cantón --</option>
+            
         </select>
+                  <p id="requiredCanton" style="color:red;display:none">***Espacio Requerido</p>
                         </div>
                   </div>
                   <div class="col-sm-4">
                       <div class="form-group">
                   <label for="reg-email">Distrito</label>
                       <select name="distrito" id="slt-distritos" class="form-control">
-            <option value="">-- Seleccione un distrito --</option>
+           
         </select>
+                  <p id="requiredDistrito" style="color:red;display:none">***Espacio Requerido</p>
                         </div>
                   </div>
               </div>
                         <div class="row">
                   <div class="col-sm-12">
-                        <input name="direccion" type="text" id="direccion" class="form-control" required="" value="" />
-                    </div>
+                        <input name="direccion" type="text" id="direccion" placeholder="Dirección de entrega" class="form-control" required="" value="" />
+                  <p id="requiredDireccion" style="color:red;display:none">***Espacio Requerido</p>  
+                  </div>
                     </div>
                       </form>      
                     </td>
@@ -128,6 +132,95 @@
     
     <script>
         var existsCost = false;
+        var respCalc = false;
+      function calculateForUbicacion(){
+          let province = $("#slt-provincias").val();
+          let canton = $("#slt-cantones").val();
+          let district = $("#slt-distritos").val();
+          let address = $("#direccion").val();
+          
+          if(province===''||province=='-- Seleccione una provincia --'||province==null){
+              $("#requiredProvincia").css("display","block");
+          } else {
+              $("#requiredProvincia").css("display","none");
+          }
+          if(canton===''||canton=='-- Seleccione un cantón --'||canton==null){
+              $("#requiredCanton").css("display","block");
+          }else {
+              $("#requiredCanton").css("display","none");
+          }
+          if(district===''||district=='-- Seleccione un distrito --'||district==null){
+              $("#requiredDistrito").css("display","block");
+          } else {
+             $("#requiredDistrito").css("display","none"); 
+          }
+          if(address===''){
+              $("#requiredDireccion").css("display","block");
+          } else {
+              $("#requiredDireccion").css("display","none");
+          }
+          let datos = {
+              "action":"calcularCCosto",
+              "province":province,
+              "canton":canton,
+              "district":district,
+              "address":address
+          }
+          let dataFormulario='';
+          if(province!=''&&canton!=''&&district!=''&&address!=''){
+              $.ajax({
+                    type : 'POST',
+                    url : './controllers/generalController.php',
+                    data : datos,
+                   success:function(dat){
+                            if(dat!=false){
+                                respCalc =true;
+                                $("#container_cost").css("display","block");
+                                $("#cost_envio").text("₡"+dat)
+                                dataFormulario=$('#formMetodo').serialize();
+                                    $.ajax({
+                                        type : 'POST',
+                                        url : './carritoCompras/carritoController.php',
+                                        data : dataFormulario,
+                                        success:function(dat){
+                                                  if(dat!=false){
+                                                      Swal.fire({
+                                                          icon: 'success',
+                                                          title: 'Costo de envío',
+                                                          text: 'Información de costo de envío guardada'
+                                                          });
+                                                     window.setTimeout(function () {
+                                                                  window.location.href = "./?pag=checkout&&step=payment"
+                                                              }, 2000);
+                                                  } else {
+                                                      Swal.fire({
+                                                      icon: 'error',
+                                                      title: 'Oops...',
+                                                      text: 'Datos incorrectos'
+
+                                                    })
+                                                  }
+                                              }
+                                          });
+                            } else {
+                                     Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error en los datos requeridos',
+                                        text: 'Si ha seleccionado la opción de entrega a domicilio, debe completar los espacios de ubicación'
+
+                                      })
+                              }
+                            }
+                        });
+            } else {
+               Swal.fire({
+                        icon: 'error',
+                        title: 'Error en los datos requeridos',
+                        text: 'Si ha seleccionado la opción de entrega a domicilio, debe completar los espacios de ubicación'
+
+                      })
+          }
+      }  
       function calculateCost(){
           let province = $("#slt-provincias").val();
           let canton = $("#slt-cantones").val();
@@ -179,7 +272,6 @@
                $('input:radio[name=modoEnvio]')[0].checked = true;
            }
            //e.currentTarget.firstElementChild.firstElementChild.checked=true
-           console.log(e.currentTarget.firstElementChild.firstElementChild.value);
          });
      
         //href="<?=base_url?>?pag=checkout&&step=payment"
@@ -188,52 +280,39 @@
        let radio=$("input[name=modoEnvio]:checked").val();
        let dataFormulario;
         if(radio=="Ubicacion"){
-            if(existsCost){
-                dataFormulario=$('#formMetodo').serialize()
-            } else {
-                dataFormulario = false;   
-            }
+            calculateForUbicacion();
         } else {
             dataFormulario={
              "radio":radio,
              "action":"carritoEnvio"
             };
-        }
-        if(dataFormulario!=false){
-          $.ajax({
-          type : 'POST',
-          url : './carritoCompras/carritoController.php',
-          data : dataFormulario,
-          success:function(dat){
-              console.log(dat);
-                    if(dat!=false){
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Costo de envío',
-                            text: 'Información de costo de envío guardada'
-                            });
-                       window.setTimeout(function () {
-                                    window.location.href = "./?pag=checkout&&step=payment"
-                                }, 2000);
-                    } else {
-                        Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Datos incorrectos'
+                $.ajax({
+                                        type : 'POST',
+                                        url : './carritoCompras/carritoController.php',
+                                        data : dataFormulario,
+                                        success:function(dat){
+                                                  if(dat!=false){
+                                                      Swal.fire({
+                                                          icon: 'success',
+                                                          title: 'Costo de envío',
+                                                          text: 'Información de costo de envío guardada'
+                                                          });
+                                                     window.setTimeout(function () {
+                                                                  window.location.href = "./?pag=checkout&&step=payment"
+                                                              }, 2000);
+                                                  } else {
+                                                      Swal.fire({
+                                                      icon: 'error',
+                                                      title: 'Oops...',
+                                                      text: 'Datos incorrectos'
 
-                      })
-                    }
-                }
-            });
-        } else {
-            Swal.fire({
-                        icon: 'error',
-                        title: 'Error en los datos requeridos',
-                        text: 'Si ha seleccionado la opción de entrega a domicilio, debe calcular el costo de envío'
-
-                      })
+                                                    })
+                                                  }
+                                              }
+                                          });            
+            
         }
-         
+
 });
        
     

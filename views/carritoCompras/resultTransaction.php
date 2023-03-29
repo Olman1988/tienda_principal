@@ -38,7 +38,9 @@ $descripResult= $_GET['descrip'];
                                 <p>Su pedido ha sido realizado satisfactoriamente</p>
                                 <hr>
                                 <p class="mb-0">En breve una persona de nuestro equipo se pondrá en contacto con usted.</p>
-                              </div> <a class="btn btn-outline-success"  href="'.base_url.'" style="margin:auto">SEGUIR COMPRANDO</a> ';
+                                <p>Para pagos por SINPE o Transferencia, el envío se iniciará hasta el momento que el dinero este reflejado en la cuenta bancaria. Favor enviar comprobante a:</p>
+                                    <a href="https://wa.me/+506'.$profile->whatsApp.'?text=Hola!%20Comprobante%20de%20pago%20" style="text-decoration:none;font-size:20px;width:150px;background:#25D366;color:white;border-radius:25px;padding:10px;">Whastapp<i class="fa-brands fa-whatsapp ml-2" style="color:white;padding-left:10px;"></i></a>
+                </div> <a class="btn btn-outline-success"  href="'.base_url.'" style="margin:auto">SEGUIR COMPRANDO</a> ';
                         break;
                      case "error":
                         echo'<div class="alert alert-danger" role="alert">

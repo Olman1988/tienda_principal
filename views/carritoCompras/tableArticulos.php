@@ -24,7 +24,7 @@
     <div class="container overflow-auto">
 <table class="table table-striped table-bordered" cellspacing="0" cellpadding="4" rules="cols" border="1" id="ContentPlaceHolder1_CartList" style="border-collapse:collapse;">
 		<tr>
-			<th scope="col">&nbsp;</th><th scope="col">Nombre</th><th scope="col">Cantidad</th><th>Precio Unitario</th>
+			<th scope="col">&nbsp;</th><th scope="col">Nombre</th><th scope="col">Personalización</th><th scope="col">Cantidad</th><th>Precio Unitario</th>
                         <th scope="col">Impuesto Unitario</th>
                         <th scope="col">Total</th>
                         <th scope="col">Acciones</th>
@@ -63,7 +63,15 @@
                             <img style="width:100px;" src="<?=base_url2.$carritoTabla['imagen']?>" alt="" />
                                 </td><td>
                                     <a href="<?=base_url?>?pag=product&&id=<?=$carritoTabla['id']?>"><span id=""> <?=$carritoTabla['nombre']?></span></a>
-                                </td><td>
+                                </td>
+                                <td>
+                                    <?=isset($carritoTabla['radioColor'])&&!empty($carritoTabla['radioColor'])?'Color: <label style ="cursor:pointer;box-shadow:1px 1px 3px;border:solid 5px white;width:40px;height:40px;background:'.$carritoTabla["radioColor"].'"></label><br>':'';?>
+                                    <?=isset($carritoTabla['radioImg'])&&!empty($carritoTabla['radioImg'])?"Imagen: <img style='width:100px' src ='".base_url."".$carritoTabla['radioImg']."'><br>":'';?>
+                                    <?=isset($carritoTabla['listAttribute'])&&!empty($carritoTabla['listAttribute'])?"Selección: ".$carritoTabla['listAttribute']:'';?>
+                                </td>
+                                
+                                
+                                <td>
                                     <input onchange="validarCantidad(this,<?=$carritoTabla['cantidadMinima']?>)" name="" type="number" value="<?=$carritoTabla['cantidad']?>" id="cantidadArticulo" style="width:40px;" />
                                     <input id="idArticulo" type="hidden" name="idArticulo" value="<?=$carritoTabla['id']?>">
                                     

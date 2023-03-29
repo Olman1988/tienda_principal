@@ -26,8 +26,8 @@ $mail->Port = 25;
 $mail->SMTPAuth = true;
 $mail->isHTML(true);
 $mail->Username = 'contacto@tecnosula.com';
-$mail->Password = 'C0nt@ct0/2022';
-$mail->setFrom('contacto@tecnosula.com', 'Bordados');
+$mail->Password = 'C0ntact0/2022*1';
+$mail->setFrom('contacto@tecnosula.com', 'Tienda');
 
  
     $mail->addAddress('olman1000@gmail.com', 'Cliente');

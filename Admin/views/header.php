@@ -179,6 +179,53 @@ h3{
 }
 .sidebar .nav-item .nav-link{
     min-width:250px;
+    padding:10px 0px 10px 10px !important;
+}
+.btn-toggle[aria-expanded="true"]::before {
+    transform: rotate(90deg);
+}
+.btn-toggle::before {
+    font-family: "Font Awesome 5 Free";
+    width: 1.25em;
+    line-height: 0;
+    content:"\f105";
+    transition: transform 0.5s ease;
+    transform-origin: 0.5em 50%;
+    color:white;
+}
+.btn-toggle[aria-expanded="true"] {
+    color: white;
+}
+.btn-toggle {
+    display: inline-flex;
+    align-items: center;
+    padding: 1rem 0.5rem;
+    font-weight: 600;
+    color: rgba(235,235,235,0.9);
+    background-color: transparent;
+    border: 0;
+    font-size:18px;
+    transition: all 0.5s ease-out !important;
+    width:100%;
+}
+.collapse{
+    transition: all 0.5s ease-out !important;
+}
+.btn-toggle:hover{
+    color:rgba(225,225,225,0.9)!important;
+}
+.btn-toggle i{
+    padding-left:10px;
+}
+.sidebar-line{
+    border: 1px solid rgba(255,255,255,.7);
+}
+.secondary-link{
+    font-size:16px !important;
+}
+.accordion{
+--bs-accordion-transition: color 0.5s ease-in-out,background-color 0.5s ease-in-out,border-color 0.5s ease-in-out,box-shadow 0.5s ease-in-out,border-radius 0.5s ease !important;
+--bs-accordion-btn-icon-transition: transform 1s ease-in-out !important;
 }
   </style>
   <body style="">

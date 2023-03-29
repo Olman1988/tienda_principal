@@ -130,7 +130,7 @@ class ordenController{
     try {
             $db = conexion::getConnect();//Aqui se conecta a la base de datos
                // $consulta =$db->prepare("SELECT i.id, i.nombre, i.modelo, i.marca, i.descripcion, i.cantidad, i.precio, ci.nombre AS categoria, cs.nombre AS subcategoria, i.image, e.nombre AS estado FROM tbl_productos i INNER JOIN tbl_categorias ci ON i.id_categoria = ci.id INNER JOIN tbl_subcategorias cs ON i.id_subcategoria = cs.id INNER JOIN tbl_estados e ON i.estado = e.id ORDER BY id");
-           $consulta =$db->prepare("SELECT od.cantidad,od.art_Descripcion,od.price, od.taxAmount,od.totalPrice FROM OrdenDetalle od INNER JOIN Orden o ON o.id= od.idOrden INNER JOIN Articulo a ON od.art_CodigoArticulo = a.art_CodigoArticulo where o.codigo"
+           $consulta =$db->prepare("SELECT od.cantidad,od.art_Descripcion,od.price, od.taxAmount,od.totalPrice,od.personalizacion FROM OrdenDetalle od INNER JOIN Orden o ON o.id= od.idOrden INNER JOIN Articulo a ON od.art_CodigoArticulo = a.art_CodigoArticulo where o.codigo"
                    . "='$code'");
            $consulta->execute();
             

@@ -34,7 +34,9 @@ $respuestaColorFuente="rgba($r, $g, $b, 1)";
   <!--CAROUSEL.css------------->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="" crossorigin="anonymous" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="" crossorigin="anonymous"></script>
-
+<!--DATATABLE-->
+  <script src="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" ></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js" ></script>
 <!-- Include Unite Gallery core files -->
 <script src='unitegallery/js/unitegallery.min.js' type='text/javascript'  ></script>
 <link  href='unitegallery/css/unite-gallery.css' rel='stylesheet' type='text/css' />
@@ -80,6 +82,24 @@ $respuestaColorFuente="rgba($r, $g, $b, 1)";
              background:<?=$respuestaLAF['colorNavbar']?> !important;
              border:solid 1px <?=$respuestaLAF['colorNavbar']?>  !important;   
             }
+            .paginate_button{
+    margin-left:20px;
+}
+.dataTables_length {
+    margin-top:50px;
+}
+#generalTable_filter {
+    float:right;
+}
+.paginate_button{
+    text-decoration: none;
+    padding: 5px;
+    background: #4e73df;
+    color: white;
+    cursor: pointer;
+    margin-left: 5px;
+    border-radius: 5px;
+}
             /**CAROUSEL**/
 .owl-dots {
     display: flex;
