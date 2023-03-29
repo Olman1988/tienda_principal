@@ -23,16 +23,16 @@
                             foreach ($respuestaBlogs as $respuestaBlogs) {
                         ?>
                             <tr class="table-active">
-                                <th scope="row"><?= $respuestaBlogs['id'] ?></th>
+                                <td scope="row"><?= $respuestaBlogs['id'] ?></td>
                                 <td><?= $respuestaBlogs['title'] ?></td>
                                 <td><img style='width:100px' src="<?= base_url ?><?= $respuestaBlogs['photo'] ?>" alt="alt" /></td>
                                 <td><?= $respuestaBlogs['status'] ?></td>
                                 <td><?= $respuestaBlogs['description'] ?></td>
-                                <td>
-                                <td style="min-width:120px;">
-                                    <a href='<?= base_url ?>Admin/?seccion=blog_section&&action=edit&&id=<?= $respuestaBlogs['id'] ?>'><i class="fa-solid fa-pen-to-square" style="cursor:pointer;color:white;font-size:20px;margin-left:75%;"></i></a>
-                                    <i class="fa-solid fa-trash" style="cursor:pointer;color:white;font-size:20px; margin-left:10px;" onclick="eliminarPost('<?= $respuestaBlogs['id'] ?>')"></i>
-                                </td>
+                                
+                                 <td style="min-width:120px;" class="">
+          <a href='<?= base_url ?>Admin/?seccion=blog_section&&action=edit&&id=<?= $respuestaBlogs['id'] ?>'><i class="fa-solid fa-pen-to-square" style="cursor:pointer;color:white;font-size:20px;" ></i></a>
+          <i class="fa-solid fa-trash" style="cursor:pointer;color:white;font-size:20px; margin-left:10px;" onclick="eliminarPost('<?= $respuestaBlogs['id'] ?>')"></i>
+      </td>
                             </tr>
                         <?php
                             }
@@ -68,20 +68,20 @@
                 });
             }(document, window, 0));
         });
-        function eliminarFAQ(id) {
+        function eliminarPost(id) {
             var parametros = {
                 "id": parseInt(id, 10),
-                "action": "borrar"
+                "action-blog": "delete"
             };
             Swal.fire({
-                title: '¿Desea desea eliminar esta FAQ?',
+                title: '¿Desea desea eliminar este Blog?',
                 showCancelButton: true,
                 denyButtonText: `Cancelar`,
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "../controllers/faqController.php",
+                        url: "../controllers/blogController.php",
                         type: "POST",
                         datatype: "html",
                         data: parametros,
@@ -89,7 +89,7 @@
                             if (response) {
                                 Swal.fire('Elemento eliminado con éxito!', '', 'success');
                                 window.setTimeout(function() {
-                                    window.location.href = "./?seccion=faq_section"
+                                  window.location.href = "./?seccion=blog_section"
                                 }, 2000);
                             } else {
                                 Swal.fire({

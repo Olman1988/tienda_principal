@@ -6,7 +6,6 @@ require_once "../config/conexion.php";
 require_once "../models/generalModel.php";
 require_once "../models/faqModel.php";
 require_once "../models/blogModel.php";
-require_once "../models/datosGeneralesModel.php";
 require_once "../models/configModel.php";
 require_once "../models/articulosModel.php";
 require_once "../models/landingModel.php";
@@ -616,25 +615,198 @@ $securityAdmin = $security->isAdmin();
                                                 require_once '../controllers/faqController.php';
                                             break;
                                             default:
-                                                break;
+                                            break;
                                         }
-        
                                     } else {
                                         $respuestaFAQ = $_FAQ->consultarFAQ();
                                         require_once 'views/faq.php'; 
                                     }
                                 break;
-                                case 'datos_generales':
-                                    echo "<div style='margin-top:200px'></div>";
-                                    $GEN = new datosGenModel();
-                                    $respuestaDatos = $GEN->consultarDatos();
-                                    require_once 'views/datosgenerales.php';  
+                                case 'perfil_tienda':
+                                   
+                                      require_once "../models/perfiltiendaModel.php";
+                                    require_once "../controllers/perfiltiendaController.php";
+                                    $PTC = new perfiltiendaController();
+                                    $respuestaDatos = $PTC->consultarDatos();
+                                    $respuestaDatos = $respuestaDatos[0];
+                                    if(isset($respuestaDatos['id'])){
+                                        
+                                        if(isset($_GET['action'])){
+                                         
+                                            switch ($_GET['action']) {
+                                                case "action-edit":
+                                                    $name         = (isset($_POST['name'])) ? $_POST['name'] : '';
+                                                    $address      = (isset($_POST['address'])) ? $_POST['address'] : '';
+                                                    $infoEmail    = (isset($_POST['infoEmail'])) ? $_POST['infoEmail'] : '';
+                                                    $supportEmail = (isset($_POST['supportEmail'])) ? $_POST['supportEmail'] : '';
+                                                    $phone     	  = (isset($_POST['phone'])) ? $_POST['phone'] : '';
+                                                    $mobile    	  = (isset($_POST['mobile'])) ? $_POST['mobile'] : '';
+                                                    $whatsApp  	  = (isset($_POST['whatsApp'])) ? $_POST['whatsApp'] : '';
+                                                    $latitude  	  = (isset($_POST['latitude'])) ? $_POST['latitude'] : '';
+                                                    $longitude 	  = (isset($_POST['longitude'])) ? $_POST['longitude'] : '';
+                                                    $logo         = (isset($_POST['logo'])) ? $_POST['logo'] : '';
+                                                    $facebook     = (isset($_POST['facebook'])) ? $_POST['facebook'] : '';
+                                                    $instagram    = (isset($_POST['instagram'])) ? $_POST['instagram'] : '';
+                                                    $twitter      = (isset($_POST['twitter'])) ? $_POST['twitter'] : '';
+                                                    $pinterest    = (isset($_POST['pinterest'])) ? $_POST['pinterest'] : '';
+                                                    $linkedin     = (isset($_POST['linkedin'])) ? $_POST['linkedin'] : '';
+                                                    $youtube      = (isset($_POST['youtube'])) ? $_POST['youtube'] : '';
+                                                    $AppId        = (isset($_POST['AppId'])) ? $_POST['AppId'] : '';
+                                                    $storeUrl     = (isset($_POST['storeUrl'])) ? $_POST['storeUrl'] : '';
+                                                    $mapsEmbeded  = (isset($_POST['mapsEmbeded'])) ? $_POST['mapsEmbeded'] : '';
+                                                    $id           = !empty($_POST['id']) ? $_POST['id'] : 0;
+                                                    $nombrefinal  = '';
+
+                                                    if(isset($_FILES['file']['name']) && $_FILES['file']['name']!=''){
+                                                        $archivo = $_FILES['file']['name'];
+                                                        $tipo = $_FILES['file']['type'];
+                                                        $tamano = $_FILES['file']['size'];
+                                                        $temp = $_FILES['file']['tmp_name'];
+
+                                                        if (!((strpos($tipo, "gif") || strpos($tipo, "jpeg") || strpos($tipo, "jpg") || strpos($tipo, "png")) && ($tamano < 2000000000))) {
+                                                            $errorimg = true;
+                                                        }else {
+                                                            $nombrefinal = $id.$archivo;
+                                        
+                                                            if(!is_dir('../images/admin/logos/')) {
+                                                                    mkdir('../images/admin/logos/', 0777, true);
+                                                            }
+
+                                                            if(file_exists('../images/admin/logos/' . $nombrefinal)){
+                                                                unlink('../images/admin/logos/' . $nombrefinal);
+                                                            } else {
+                                                                if (move_uploaded_file($temp, '../images/admin/logos/'.$nombrefinal)) {
+                                                                    chmod('../images/admin/logos/'.$nombrefinal, 0777);
+                                                                }else {
+                                                                    $errorimg = true;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    $ARR = [
+                                                        'name'=>$name,
+                                                        'address'=>$address,
+                                                        'infoEmail'=>$infoEmail,
+                                                        'supportEmail'=>$supportEmail,
+                                                        'phone'=>$phone,
+                                                        'mobile'=>$mobile,
+                                                        'whatsApp'=>$whatsApp,
+                                                        'latitude'=>$latitude,
+                                                        'longitude'=>$longitude,
+                                                        'logo'=>$nombrefinal,
+                                                        'facebook'=>$facebook,
+                                                        'instagram'=>$instagram,
+                                                        'twitter'=>$twitter,
+                                                        'pinterest'=>$pinterest,
+                                                        'linkedin'=>$linkedin,
+                                                        'youtube'=>$youtube,
+                                                        'AppId'=>$AppId,
+                                                        'storeUrl'=>$storeUrl,
+                                                        'mapsEmbeded'=>$mapsEmbeded,
+                                                        'id'=>$id
+                                                    ];
+                                               
+                                                    if(!empty($id)){
+                                                       $respuestaDatos = $PTC->modificarDatos($ARR);
+                                                        if($respuestaDatos){
+                                                            echo"<script>Swal.fire('Elemento modificado con éxito!', '', 'success');";
+                                                            echo"window.setTimeout(function () {window.location.href = './?seccion=perfil_tienda'}, 2000)";
+                                                            echo "</script>";
+                                                        }else {
+                                                           echo "<script>Swal.fire({
+                                                                icon: 'error',
+                                                                title: 'Oops...',
+                                                                text: 'No fue posible actualizar los datos, intente de nuevo',
+                                                                footer: '',
+                                                            })
+                                                           //window.setTimeout(function () {history.back()}
+                                                            , 2000)</script>";
+                                                        }
+                                                    }
+                                                break;
+                                            }
+                                        }else{
+                                            require_once 'views/perfiltienda.php';
+                                        }
+                                    }else{
+                                        $respuestaInsert = $PTC->insertRecord();
+                                        if($respuestaInsert){
+                                            $respuestaDatos = $PTC->consultarDatos();
+                                            $respuestaDatos = $respuestaDatos[0];
+                                        }else{
+                                            $respuestaDatos = [];
+                                        }
+                                        require_once 'views/perfiltienda.php';
+                                    }                                      
                                 break;
                                 case 'config_general':
-                                    echo "<div style='margin-top:200px'></div>";
-                                    $CONF = new configModel();
-                                    $respuestaConfigs = $CONF->consultarConfigs();
-                                    require_once 'views/configuraciones.php';  
+                                    require_once "../controllers/configController.php";
+                                    $CONFIG = new configuracionController();
+                                    $respuestaDatos = $CONFIG->consultarDatos();
+                                    $respuestaDatos = $respuestaDatos[0];
+                                    
+                                    if(isset($respuestaDatos['id'])){
+                                        if(isset($_GET['action'])){
+                                            switch ($_GET['action']) {
+                                                case "action-edit":
+                                                    $AppId               = (isset($_POST['AppId'])) ? $_POST['AppId'] : '';
+                                                    $Tax                 = (isset($_POST['Tax'])) ? $_POST['Tax'] : 0;
+                                                    $HomeType            = (isset($_POST['HomeType'])) ? $_POST['HomeType'] : '';
+                                                    $idPaymentType       = (isset($_POST['idPaymentType'])) ? $_POST['idPaymentType'] : 0;
+                                                    $mostarPrecios       = (isset($_POST['mostarPrecios'])) ? $_POST['mostarPrecios'] : 0;
+                                                    $accesoAnonimo       = (isset($_POST['accesoAnonimo'])) ? $_POST['accesoAnonimo'] : 0;
+                                                    $envio  	         = (isset($_POST['envio'])) ? $_POST['envio'] : 0;
+                                                    $blog  	             = (isset($_POST['blog'])) ? $_POST['blog'] : 0;
+                                                    $preguntasFrecuentes = (isset($_POST['preguntasFrecuentes'])) ? $_POST['preguntasFrecuentes'] : 0;
+                                                    $generalShipping     = (isset($_POST['generalShipping'])) ? $_POST['generalShipping'] : 0;
+                                                    $id                  = !empty($_POST['id']) ? $_POST['id'] : 0;
+
+                                                    $ARR = [
+                                                        'AppId'=>$AppId,
+                                                        'Tax'=>$Tax,
+                                                        'HomeType'=>$HomeType,
+                                                        'idPaymentType'=>$idPaymentType,
+                                                        'mostarPrecios'=>$mostarPrecios,
+                                                        'accesoAnonimo'=>$accesoAnonimo,
+                                                        'envio'=>$envio,
+                                                        'blog'=>$blog,
+                                                        'preguntasFrecuentes'=>$preguntasFrecuentes,
+                                                        'generalShipping'=>$generalShipping,
+                                                        'id'=>$id
+                                                    ];
+
+                                                    if(!empty($id)){
+                                                        $respuesta = $CONFIG->modificarDatos($ARR);
+                                                        if($respuesta){
+                                                            echo"<script>Swal.fire('Elemento modificado con éxito!', '', 'success');";
+                                                            echo"window.setTimeout(function () {window.location.href = './?seccion=config_general'}, 2000)</script>";
+                                                        }else {
+                                                           echo "<script>Swal.fire({
+                                                                icon: 'error',
+                                                                title: 'Oops...',
+                                                                text: 'No fue posible actualizar los datos, intente de nuevo',
+                                                                footer: '',
+                                                            })
+                                                            window.setTimeout(function () {history.back()}, 2000)</script>";
+                                                        }
+                                                    }
+                                                break;
+                                            }
+                                        }else{
+                                            require_once 'views/configuraciones.php';
+                                        }
+                                    }else{
+                                        $respuestaInsert = $CONFIG->insertRecord();
+                                        if($respuestaInsert){
+                                            $respuestaDatos = $CONFIG->consultarDatos();
+                                            $respuestaDatos = $respuestaDatos[0];
+                                        }else{
+                                            $respuestaDatos = [];
+                                        }
+
+                                        require_once 'views/configuraciones.php';
+                                    } 
                                 break;
                                 case 'blog_section':
                                     require_once '../models/blogModel.php';

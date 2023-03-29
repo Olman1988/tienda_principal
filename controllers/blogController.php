@@ -1,4 +1,6 @@
 <?php
+require_once '../models/blogModel.php';
+require_once '../models/blogModel.php';
 class blogController{
 	public $_BLOG;
 	public function __construct(){
@@ -34,8 +36,8 @@ class blogController{
 	 * 
 	 * 
 	 */
-	public function updateBlog($titulo, $descripcion, $nombrefinal, $contenido, $id){
-		$respuestaUpdate = $this->_BLOG->updateBlog($titulo, $descripcion, $nombrefinal, $contenido, $id);
+	public function updateBlog($id, $titulo, $descripcion, $nombrefinal, $contenido, $status){
+		$respuestaUpdate = $this->_BLOG->updateBlog($id, $titulo, $descripcion, $nombrefinal, $contenido, $status);
 		return $respuestaUpdate; 
 	}
 	/**
@@ -68,20 +70,21 @@ if(isset($_POST['action-blog'])){
 			$nombrefinal = '';
 
             $id = !empty($_POST['id'])? $_POST['id']:false;
-            $titulo = !empty($_POST['title'])? $_POST['nombre']:false;
+            $titulo = !empty($_POST['title'])? $_POST['title']:false;
             $descripcion = !empty($_POST['description']) ? $_POST['description']: false;
             $contenido = !empty($_POST['content']) ? $_POST['content']: false;
+            $status = ($_POST['status'] == 1) ? 'Active': 'Disabled';
 
 			$provisionalName = !empty($_POST['filenameImg'])? $_POST['filenameImg']: false;
             if(isset($_FILES['file']['name'])&&$_FILES['file']['name']!=''){
                 $archivo = $_FILES['file']['name'];
-		$tipo = $_FILES['file']['type'];
+				$tipo = $_FILES['file']['type'];
                 $tamano = $_FILES['file']['size'];
                 $temp = $_FILES['file']['tmp_name'];
                 if (!((strpos($tipo, "gif") || strpos($tipo, "jpeg") || strpos($tipo, "jpg") || strpos($tipo, "png")) && ($tamano < 2000000000))) {
                     $errorimg = true;
 				}else {
-	                $nombrefinal = $idgen.$archivo;
+	                $nombrefinal = $id.$archivo;
 
 					if(!is_dir('../images/admin/blog/')) {
 							mkdir('../images/admin/blog/', 0777, true);
@@ -101,7 +104,7 @@ if(isset($_POST['action-blog'])){
             }
             
             $nombrefinal = "/images/admin/blog/".$nombrefinal;
-            $respuestaActualizar = $BLOG->updateBlog($titulo, $descripcion, $nombrefinal, $contenido, $id);
+            $respuestaActualizar = $BLOG->updateBlog($id, $titulo, $descripcion, $nombrefinal, $contenido, $status);
             
             if($respuestaActualizar){
                 echo"<script>Swal.fire('Elemento modificado con éxito!', '', 'success');";
@@ -112,13 +115,11 @@ if(isset($_POST['action-blog'])){
 					title: 'Oops...',
 					text: 'No fue posible eliminar los datos, intente nuevamente!',
 					footer: '',
-
 				})
 				window.setTimeout(function () {history.back()}, 2000)</script>";
             }
 		break;
         case "add":
-            $nombrefinal ='';
             $archivo;
             $observacion;
             $validacion = true;
@@ -127,7 +128,7 @@ if(isset($_POST['action-blog'])){
             $contenido = !empty($_POST['content']) ? $_POST['content']: false;
 			
             $provisionalName = !empty($_POST['filenameImg'])? $_POST['filenameImg']:false;
-            if($provisionalName&&$titulo&&$contenido){
+            if($titulo){
                 if(isset($_FILES['file']['name'])&&$_FILES['file']['name']!=''){
                     $archivo = $_FILES['file']['name'];
                     $tipo = $_FILES['file']['type'];
@@ -166,17 +167,16 @@ if(isset($_POST['action-blog'])){
                echo "<script>Swal.fire({
 					icon: 'error',
 					title: 'Oops...',
-					text: 'No fue posible guardar los datos, intente nuevamente!',
+					text: 'No fue posible eliminar los datos, intente nuevamente!',
 					footer: '',
-
 				})
-				//window.setTimeout(function () {history.back()}
-                                , 2000)</script>";
+				window.setTimeout(function () {history.back()}, 2000)</script>";
             }
             break;
         case 'delete':
+            require_once '../models/blogModel.php';
             $respuestaEliminar = $BLOG->deleteBlog($_POST['id']);
-            echo $respuestaEliminar;
+          
 		break;
         default:
 		break;

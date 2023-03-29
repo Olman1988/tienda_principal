@@ -54,11 +54,11 @@ class faqController{
     }
 }
 
-if (isset($_POST['action'])) {
+if (isset($_POST['action-faq'])) {
     $FAQ = new faqController();
 
-    switch ($_POST['action']){
-        case 'agregar':
+    switch ($_POST['action-faq']){
+        case 'add':
             $pregunta = !empty($_POST['pregunta']) ? filter_var($_POST['pregunta'], FILTER_SANITIZE_STRING) : '';
             $contenido = !empty($_POST['contenido']) ? filter_var($_POST['contenido'], FILTER_SANITIZE_STRING) : '';
             
@@ -73,14 +73,12 @@ if (isset($_POST['action'])) {
                     title: 'Oops...',
                     text: 'No fue posible agregar los datos, verifique que los datos son correctos!',
                     footer: '',
-
                 })
-
                 window.setTimeout(function () {history.back()}, 2000)</script>";
             }
 
         break;
-        case 'modificar':
+        case 'edit':
             $pregunta  = !empty($_POST['pregunta']) ? $_POST['pregunta'] : '';
             $contenido = !empty($_POST['contenido']) ? $_POST['contenido'] : '';
             $id        = !empty($_POST['id']) ? $_POST['id'] : 0;
@@ -95,7 +93,6 @@ if (isset($_POST['action'])) {
                     title: 'Oops...',
                     text: 'No fue posible eliminar los datos, intente nuevamente!',
                     footer: '',
-
                 })
                 
                 window.setTimeout(function () {history.back()}, 2000)</script>";
