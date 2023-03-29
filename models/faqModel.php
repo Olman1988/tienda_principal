@@ -53,13 +53,11 @@ class faqModel{
         try {
             $db = conexion::getConnect();
             $consulta=$db->prepare("INSERT INTO [dbo].[base_PreguntasFrecuentes](pregunta, contenido, idTipoPregunta,orden)"
-                    . "VALUES (:pregunta,:contenido,:idTipoPregunta,:orden)");
+                    . "VALUES (:pregunta,:contenido,1,1)");
             
             $db->beginTransaction(); //inicia la transaccion
             $consulta->bindValue(':pregunta', $pregunta);
             $consulta->bindValue(':contenido', $contenido);
-            $consulta->bindValue(':idTipoPregunta', 1);
-            $consulta->bindValue(':orden', 1);
             
             $consulta->execute();
             

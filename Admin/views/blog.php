@@ -68,7 +68,7 @@
                 });
             }(document, window, 0));
         });
-        function eliminarFAQ(id) {
+        function eliminarPost(id) {
             var parametros = {
                 "id": parseInt(id, 10),
                 "action": "borrar"
@@ -81,7 +81,7 @@
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "../controllers/faqController.php",
+                        url: "../controllers/blogController.php",
                         type: "POST",
                         datatype: "html",
                         data: parametros,
