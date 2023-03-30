@@ -3,6 +3,7 @@
 class faqController{
     public $_FAQ;
     public function __construct(){
+        require_once "../models/faqModel.php";
         $this->_FAQ = new faqModel();
     }
     /**
@@ -44,7 +45,7 @@ class faqController{
      * 
      */
     public function borrarFAQ($id){
-        if (isset($_POST['action'])) {
+         if (isset($_POST['action-faq'])) {
             require_once '../config/conexion.php';
         }
 
@@ -56,7 +57,6 @@ class faqController{
 
 if (isset($_POST['action-faq'])) {
     $FAQ = new faqController();
-
     switch ($_POST['action-faq']){
         case 'add':
             $pregunta = !empty($_POST['pregunta']) ? filter_var($_POST['pregunta'], FILTER_SANITIZE_STRING) : '';
@@ -71,7 +71,7 @@ if (isset($_POST['action-faq'])) {
                 echo "<script>Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'No fue posible agregar los datos, verifique que los datos son correctos!',
+                     text: 'No fue posible modificar los datos, intente de nuevo',
                     footer: '',
                 })
                 window.setTimeout(function () {history.back()}, 2000)</script>";
@@ -79,6 +79,7 @@ if (isset($_POST['action-faq'])) {
 
         break;
         case 'edit':
+            $FAQ = new faqController();
             $pregunta  = !empty($_POST['pregunta']) ? $_POST['pregunta'] : '';
             $contenido = !empty($_POST['contenido']) ? $_POST['contenido'] : '';
             $id        = !empty($_POST['id']) ? $_POST['id'] : 0;
@@ -101,6 +102,24 @@ if (isset($_POST['action-faq'])) {
         case "borrar":
             $respuestaBorrar = $FAQ->borrarFAQ($_POST['id']);
             echo $respuestaBorrar;
+            $FAQ = new faqController();
+
+            $id = (!empty($_POST['id'])) ? $_POST['id'] : 0;
+            if(!empty($id)){
+                $respuestaBorrar = $FAQ->borrarFAQ($_POST['id']);
+                error_log(PHP_EOL.__FILE__.PHP_EOL.'LINE: '.__LINE__.PHP_EOL.'|respuestaBorrar: ->'.PHP_EOL.print_r($respuestaBorrar,true),3,'C:/xampp/htdocs/codetest.log');
+                echo"<script>Swal.fire('Elemento eliminado', '', 'success');";
+                echo"window.setTimeout(function () {window.location.href = './?seccion=faq_section'}, 2000)</script>";
+            }else{
+                echo "<script>Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'No fue posible eliminar los datos, intente de nuevo',
+                    footer: '',
+                })
+                
+                window.setTimeout(function () {history.back()}, 2000)</script>";
+            }
         break;
         default:
         break;
