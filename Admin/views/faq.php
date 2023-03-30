@@ -74,7 +74,7 @@ td{
         function eliminarFAQ(id) {
             var parametros = {
                 "id": parseInt(id, 10),
-                "action": "borrar"
+                "action-faq": "borrar"
             };
             Swal.fire({
                 title: '¿Desea desea eliminar esta FAQ?',
