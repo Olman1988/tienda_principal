@@ -41,21 +41,20 @@ class faqController{
      * 
      */
     public function borrarFAQ($id){
-        
-        
-        
-        
+        if (isset($_POST['action'])) {
         if (isset($_POST['action-faq'])) {
             require_once '../config/conexion.php';
         }
 
         $respuestaBorrar = $this->_FAQ->borrarFAQ($id);
 
+        error_log(PHP_EOL.__FILE__.PHP_EOL.'LINE: '.__LINE__.PHP_EOL.'|respuestaBorrar: ->'.PHP_EOL.print_r($respuestaBorrar,true),3,'C:/xampp/htdocs/codetest.log');
         return $respuestaBorrar;
     }
 }
 
 if (isset($_POST['action-faq'])) {
+    $FAQ = new faqController();
 
     switch ($_POST['action-faq']){
         case 'add':
@@ -71,7 +70,7 @@ if (isset($_POST['action-faq'])) {
                 echo "<script>Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'No fue posible modificar los datos, intente de nuevo',
+                    text: 'No fue posible agregar los datos, verifique que los datos son correctos!',
                     footer: '',
                 })
                 window.setTimeout(function () {history.back()}, 2000)</script>";
@@ -101,6 +100,8 @@ if (isset($_POST['action-faq'])) {
             }
         break;
         case "borrar":
+            $respuestaBorrar = $FAQ->borrarFAQ($_POST['id']);
+            echo $respuestaBorrar;
             $FAQ = new faqController();
 
             $id = (!empty($_POST['id'])) ? $_POST['id'] : 0;
