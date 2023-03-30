@@ -50,15 +50,15 @@ class faqController{
         }
 
         $respuestaBorrar = $this->_FAQ->borrarFAQ($id);
-
+        error_log(PHP_EOL.__FILE__.PHP_EOL.'LINE: '.__LINE__.PHP_EOL.'|respuestaBorrar: ->'.PHP_EOL.print_r($respuestaBorrar,true),3,'C:/xampp/htdocs/codetest.log');
         return $respuestaBorrar;
     }
 }
-
 if (isset($_POST['action-faq'])) {
     $FAQ = new faqController();
     switch ($_POST['action-faq']){
         case 'add':
+            $FAQ = new faqController();
             $pregunta = !empty($_POST['pregunta']) ? filter_var($_POST['pregunta'], FILTER_SANITIZE_STRING) : '';
             $contenido = !empty($_POST['contenido']) ? filter_var($_POST['contenido'], FILTER_SANITIZE_STRING) : '';
             
@@ -92,7 +92,7 @@ if (isset($_POST['action-faq'])) {
                echo "<script>Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'No fue posible eliminar los datos, intente nuevamente!',
+                    text: 'No fue posible modificar los datos, intente de nuevo',
                     footer: '',
                 })
                 
