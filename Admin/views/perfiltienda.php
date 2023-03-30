@@ -36,7 +36,7 @@
                                         <span class="iborrainputfile " id="iborrainputfile"><?=$str?></span>
                                     </label>
                                     <label style="color:gray">Imagen Actual</label>
-                                    <div style="width:130px;"><img style="width:100%" src="<?=base_url.$respuestaDatos['logo']?>" alt="alt"/></div>
+                                    <div style="width:130px;"><img style="width:100%" src="<?=base_url.'/images/admin/logos/'.trim($respuestaDatos['logo'])?>" alt="alt"/></div>
                                 </div>
                             </div>
                         </div>
