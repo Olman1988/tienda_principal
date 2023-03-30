@@ -52,6 +52,7 @@ class faqController{
         return $respuestaBorrar;
     }
 }
+}
 
 if (isset($_POST['action-faq'])) {
     $FAQ = new faqController();
