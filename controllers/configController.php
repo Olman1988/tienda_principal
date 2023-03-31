@@ -8,6 +8,15 @@ class configuracionController{
 	  * 
 	  * 
 	  */
+	 public function metodos_pago(){
+		  $Configs = $this->_CONF->metodos_pago();
+		  
+		  return $Configs;
+	 }
+	/**
+	  * 
+	  * 
+	  */
 	 public function consultarDatos(){
 		  $Configs = $this->_CONF->consultarConfigs();
 		  
@@ -42,6 +51,7 @@ class configuracionController{
 			$ARR['blog'],
 			$ARR['preguntasFrecuentes'],
 			$ARR['generalShipping'],
+			$ARR['payment_active'],
 			$ARR['id']
 		);
 
