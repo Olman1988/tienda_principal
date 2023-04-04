@@ -77,12 +77,7 @@
               <li class="nav-item secondary-link">
                   <a class="nav-link" href="<?=base_url?>Admin/?seccion=quotes"><i class="fa-solid fa-file-invoice-dollar icon-admin"></i>Cotizaciones</a>
               </li>
-              <li class="nav-item secondary-link">
-                   <a class="nav-link" href="<?=base_url?>Admin/?seccion=infoLanding"><i class="fa-solid fa-address-card"></i>Clientes Promociones</a>
-              </li>
-              <li class="nav-item secondary-link">
-                 <a class="nav-link" href="<?=base_url?>Admin/?seccion=orders"><i class="fa-solid fa-truck-fast icon-admin"></i>Órdenes</a>
-             </li>
+             
             <li class="nav-item secondary-link">
                 <a class="nav-link" href="<?=base_url?>Admin/?seccion=quotes"><i class="fa-solid fa-file-invoice-dollar icon-admin"></i>Cotizaciones</a>
             </li>

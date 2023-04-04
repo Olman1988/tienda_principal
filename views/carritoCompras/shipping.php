@@ -81,7 +81,7 @@
                       <div class="form-group">
                   <label for="reg-email">Cantón</label>
                       <select  name="canton" id="slt-cantones" class="form-control">
-            
+                          <option value="0">-- Seleccione un cantón --</option>
         </select>
                   <p id="requiredCanton" style="color:red;display:none">***Espacio Requerido</p>
                         </div>
@@ -90,6 +90,7 @@
                       <div class="form-group">
                   <label for="reg-email">Distrito</label>
                       <select name="distrito" id="slt-distritos" class="form-control">
+                          <option value="0">-- Seleccione un distrito --</option>
            
         </select>
                   <p id="requiredDistrito" style="color:red;display:none">***Espacio Requerido</p>

@@ -59,11 +59,14 @@ if(isset($_GET['respCode'])&&$_GET['respCode']!=1){
                                 <p>Ha habido un inconveniente al realizar la compra, verifique que el método de pago utilizado está vigente.</p>
                                 <hr>
                                 <p class="mb-0">Vuelva a intentar nuevamente o comuníquese con el administrador.</p>
-                              </div> <a class="btn btn-outline-success"  href="'.base_url.'?pag=checkout&&step=review" style="margin:auto">INTENTAR NUEVAMENTE</a> ';
-                        echo '<script>'
+                              </div> <a class="btn btn-outline-success" onclick="backToTilopay()" href="" style="margin:auto;cursor:pointer">INTENTAR PAGO NUEVAMENTE</a> '
+                            . '<a class="btn btn-outline-success" href="'.base_url.'?pag=checkout&&step=review" style="margin:auto">VOLVER AL CARRITO</a>';
+                        echo '<script>function backToTilopay(){'
                         . 'window.setTimeout(function () {
                             history.back();
-                            }, 3000);              
+                            }, 0);  
+                          
+                          }             
                             </script>';
                     default:
                         break;

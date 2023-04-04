@@ -36,7 +36,7 @@ class ordenController{
     }
     
     public function insertarOrdenNueva($code,$codeSmall,$total){
-        
+        date_default_timezone_set('America/Costa_Rica');
             try {
             $db = conexion::getConnect();
 
@@ -162,7 +162,7 @@ class ordenController{
             $consulta->bindValue(':totalFinal',$totalFinal); 
             $consulta->bindValue(':impuestosFinal',$impuestosFinal);
             $consulta->bindValue(':subtotalFinal',$subtotalFinal);
-            $consulta->bindValue(':shipping',$respCostoN); 
+            $consulta->bindValue(':shipping',intval($respCosto)); 
             $consulta->bindValue(':id',strtoupper($id));
             $consulta->execute();
          $respuesta=$db->commit();

@@ -718,7 +718,7 @@ if(isset($_POST['action'])){
                       $impuestosFinal = $impuestosFinal+($respCostoN*0.13);
                       $subtotalFinal = $subtotalFinal;
                       $totalFinal = $impuestosFinal+$subtotalFinal+$respCostoN;
-                      $respuestaInsertar=$orden->updateOrden($impuestosFinal,$subtotalFinal,$totalFinal,$respCosto,$code);
+                      $respuestaInsertar=$orden->updateOrden($impuestosFinal,$subtotalFinal,$totalFinal,$respCostoN,$code);
                   }
                   
                   $nombreCliente = $_SESSION['nombre'];

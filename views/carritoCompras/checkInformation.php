@@ -229,7 +229,7 @@ if(dat!=false){
 						if(dat != 'denied'){
 							//vaciarCarrito2();
 							window.setTimeout(function () {
-						//window.location.href = dat;
+						window.location.href = dat;
 							}, 500);
                                                         
 						}else{
@@ -238,7 +238,7 @@ if(dat!=false){
 							title: 'Oops...',
 							text: 'Datos incorrectos'
 						});
-                                     //     setTimeout(window.location.href = "./?pag=checkout&&step=payment", 2000);
+                                    setTimeout(window.location.href = "./?pag=checkout&&step=payment", 2000);
 						}
 					} else {
 						Swal.fire({
