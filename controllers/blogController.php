@@ -103,7 +103,7 @@ if(isset($_POST['action-blog'])){
                 $nombrefinal = $provisionalName;
             }
             
-            $nombrefinal = "/images/admin/blog/".$nombrefinal;
+            $nombrefinal = "images/admin/blog/".$nombrefinal;
             $respuestaActualizar = $BLOG->updateBlog($id, $titulo, $descripcion, $nombrefinal, $contenido, $status);
             
             if($respuestaActualizar){

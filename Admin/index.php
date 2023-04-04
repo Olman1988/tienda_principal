@@ -682,8 +682,11 @@ $securityAdmin = $security->isAdmin();
                                                                 }
                                                             }
                                                         }
+                                                    } else {
+                                                        
+                                                        $nombrefinal = (isset($_POST['filenameImg'])) ? $_POST['filenameImg'] : '';
                                                     }
-
+                                                    $nombrefinal = 'images/admin/logos/'.$nombrefinal;
                                                     $ARR = [
                                                         'name'=>$name,
                                                         'address'=>$address,
@@ -706,7 +709,7 @@ $securityAdmin = $security->isAdmin();
                                                         'mapsEmbeded'=>$mapsEmbeded,
                                                         'id'=>$id
                                                     ];
-                                               
+                                                    
                                                     if(!empty($id)){
                                                        $respuestaDatos = $PTC->modificarDatos($ARR);
                                                         if($respuestaDatos){

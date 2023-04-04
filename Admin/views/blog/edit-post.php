@@ -23,7 +23,7 @@
             <label for="reg-ln">Imagen</label>   
                 <div class="container-input">
                     <?php
-                        $str = ucfirst(mb_substr($onePost['photo'], 24, null, 'UTF-8'));
+                        $str = ucfirst(mb_substr($onePost['photo'], 18, null, 'UTF-8'));
                     ?>
                     <input type='hidden' name='filenameImg' value='<?=$str?>'>
                     <input value='<?=$onePost['photo']?>' type="file" name="file" id="file-1" value="" class="inputfile inputfile-1" data-multiple-caption="{count} archivos seleccionados" multiple />
@@ -38,7 +38,7 @@
         </div>
         <div class="col-4">
             <div class="form-check form-switch">
-                <input class="form-check-input" value='1' <?=$onePost['status']=='Activo'? ' checked="checked"' : '';?> name='status' type="checkbox" id="status">
+                <input class="form-check-input" value='1' <?=$onePost['status']=='Active'? ' checked="checked"' : '';?> name='status' type="checkbox" id="status">
                 <label class="form-check-label" for="status">Activo</label>
             </div>
         </div>

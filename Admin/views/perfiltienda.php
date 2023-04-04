@@ -27,7 +27,7 @@
                             <label for="reg-ln">Logo</label>   
                                 <div class="container-input">
                                     <?php
-                                        $str = ucfirst(mb_substr($respuestaDatos['logo'], 24, null, 'UTF-8'));
+                                        $str = ucfirst(mb_substr($respuestaDatos['logo'], 19, null, 'UTF-8'));
                                     ?>
                                     <input type='hidden' name='filenameImg' value='<?=$str?>'>
                                     <input value='<?=$respuestaDatos['logo']?>' type="file" name="file" id="file-1" value="" class="inputfile inputfile-1" data-multiple-caption="{count} archivos seleccionados" multiple />
@@ -36,7 +36,7 @@
                                         <span class="iborrainputfile " id="iborrainputfile"><?=$str?></span>
                                     </label>
                                     <label style="color:gray">Imagen Actual</label>
-                                    <div style="width:130px;"><img style="width:100%" src="<?=base_url.'/images/admin/logos/'.trim($respuestaDatos['logo'])?>" alt="alt"/></div>
+                                    <div style="width:130px;"><img style="width:100%" src="<?=base_url.trim($respuestaDatos['logo'])?>" alt="alt"/></div>
                                 </div>
                             </div>
                         </div>

@@ -1,6 +1,9 @@
 <?php
 $descripResult = '';
 $descripResult= $_GET['descrip'];
+if(isset($_GET['respCode'])&&$_GET['respCode']!=1){
+               $descripResult = "error_payment" ;
+            }
 ?>
 <div class="page-title" id='page-title'>
         <div class="container">
@@ -45,11 +48,23 @@ $descripResult= $_GET['descrip'];
                      case "error":
                         echo'<div class="alert alert-danger" role="alert">
                                 <h4 class="alert-heading"><span>Error en el proceso</span><i class="fa-regular fa-circle-check" style="padding:15px"></i></h4>
-                                <p>Ha habido un inconvenuente para realizar su pedido</p>
+                                <p>Ha habido un inconveniente para realizar su pedido</p>
                                 <hr>
                                 <p class="mb-0">Vuelva a intentar nuevamente o comuníquese con el administrador.</p>
                               </div> <a class="btn btn-outline-success"  href="'.base_url.'?pag=checkout&&step=review" style="margin:auto">INTENTAR NUEVAMENTE</a> ';
                         break;
+                    case"error_payment":
+                         echo'<div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading"><span>Error en el proceso</span><i class="fa-regular fa-circle-check" style="padding:15px"></i></h4>
+                                <p>Ha habido un inconveniente al realizar la compra, verifique que el método de pago utilizado está vigente.</p>
+                                <hr>
+                                <p class="mb-0">Vuelva a intentar nuevamente o comuníquese con el administrador.</p>
+                              </div> <a class="btn btn-outline-success"  href="'.base_url.'?pag=checkout&&step=review" style="margin:auto">INTENTAR NUEVAMENTE</a> ';
+                        echo '<script>'
+                        . 'window.setTimeout(function () {
+                            history.back();
+                            }, 3000);              
+                            </script>';
                     default:
                         break;
                 }

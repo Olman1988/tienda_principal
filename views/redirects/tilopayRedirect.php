@@ -2,6 +2,8 @@
     if($_GET){
         require_once '../../config/conexion.php';
         require_once '../../config/parameters.php';
+        require_once '../../carritoCompras/carritoController.php';
+        
         session_start();
 
         try {
@@ -44,11 +46,17 @@
             echo "se ha presentado un error " . $e->getMessage();
             throw $e;
         }
-
-
-
-        
-            $estado = 2;
+        $estado = 0;
+        if(isset($_GET['code'])&&!empty($_GET['code'])){
+            if($_GET['code']==1){
+                $carrito = new carritoController();
+                $carrito -> vaciarCarrito();
+                $estado = 2;
+            } else {
+                $estado = 3;
+            }
+        }
+            
             try {
                 $db = conexion::getConnect();
                 $consulta=$db->prepare("UPDATE [dbo].[Orden] SET estado = $estado WHERE id = '". $_GET['order']."'");
@@ -60,7 +68,7 @@
                 throw $e;
             }
             
-            header("Location: " . base_url . '?pag=checkout&&step=resultTransaction&&descrip='.$_GET['description']);
+            header("Location: " . base_url . '?pag=checkout&&step=resultTransaction&&descrip='.$_GET['description'].'&&respCode='.$_GET['code']);
             //'Transaction is approved'
         die();
     }

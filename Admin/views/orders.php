@@ -1,6 +1,5 @@
 <?php
 
-
 ?>
 <div style="width:95%;margin:auto;margin-top:100px; min-width:320px;min-height:90vh;margin-bottom:100px;padding:15px;padding-top:50px;border-radius:15px;background:white;box-shadow:2px 2px 10px gray;">
     <h2 class="text-center">Órdenes</h2>
@@ -16,6 +15,7 @@
                     <th>Cliente</th>
                     <th>Contacto</th>
                     <th>Tipo Pago</th>
+					    <th>Estado</th>
                      <th>Dirección de Entrega</th>
                     <th>Fecha</th>
                     <th style="min-width:80px;">SubTotal</th>
@@ -39,6 +39,7 @@
 ?
 </a></td>
                     <td><?=$ordenesValue['idPaymentType']?></td>
+						<td><?=$ordenesValue['status']?></td>
                     <?php
                     if($ordenesValue['shippingMethod']=='Ubicacion'){
                     ?>

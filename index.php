@@ -272,13 +272,11 @@ if(isset($_GET['pag'])){
                     case "review":
                         require_once 'views/carritoCompras/checkInformation.php';
                         break;
-
-                    default:
-                        echo "<script>window.setTimeout(function () {
-                            window.location.href ='./?pag=carrito'
-                        }, 0);              
-                        </script>";
+                    case "resultTransaction":
+                        require_once 'views/carritoCompras/resultTransaction.php';
                         break;
+
+                   
                 }
                     }else{
                         if(isset($_GET['step'])&&$_GET['step']=='resultTransaction'){

@@ -56,7 +56,7 @@ class blogModel{
      * 
      * 
      */
-    public function insertBlog($title, $content, $description, $photo){
+    public function insertBlog($title, $description, $content, $photo){
         try {
             $db = conexion::getConnect();
             $consulta=$db->prepare("INSERT INTO [dbo].[blog_Post] (

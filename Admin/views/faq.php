@@ -32,8 +32,8 @@ td{
                                 <th scope="row"><?= $respuesta['id'] ?></th>
                                 <td><?= $respuesta['pregunta'] ?></td>
                                 <td style="max-width: 250px;"><?= $respuesta['contenido'] ?></td>
-                                <td style="min-width:120px;">
-                                    <a href='<?= base_url ?>Admin/?seccion=faq_section&&action=edit&&id=<?= $respuesta['id'] ?>'><i class="fa-solid fa-pen-to-square" style="cursor:pointer;color:white;font-size:20px;margin-left:75%;"></i></a>
+                                <td style="min-width:120px;" class="text-center">
+                                    <a href='<?= base_url ?>Admin/?seccion=faq_section&&action=edit&&id=<?= $respuesta['id'] ?>'><i class="fa-solid fa-pen-to-square" style="cursor:pointer;color:white;font-size:20px;margin-left:10px;"></i></a>
                                     <i class="fa-solid fa-trash" style="cursor:pointer;color:white;font-size:20px; margin-left:10px;" onclick="eliminarFAQ('<?= $respuesta['id'] ?>')"></i>
                                 </td>
                             </tr>
@@ -88,12 +88,15 @@ td{
                         type: "POST",
                         datatype: "html",
                         data: parametros,
-                        success: function(response) {
-                            if (response) {
+                        success: function(data) {
+                            let response = $.parseJSON(data)
+                            console.log(response);
+                            
+                            if (response.status) {
                                 Swal.fire('Elemento eliminado con éxito!', '', 'success');
                                 window.setTimeout(function() {
-                                    window.location.href = "./?seccion=faq_section"
-                                }, 2000);
+                                 window.location.href = "./?seccion=faq_section"
+                                }, 3000);
                             } else {
                                 Swal.fire({
                                     icon: 'error',

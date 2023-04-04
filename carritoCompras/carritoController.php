@@ -714,6 +714,10 @@ if(isset($_POST['action'])){
                     }
                     $respCosto = $general->getGeneralShippingCost();
                   if($respuestaInsertar){
+                      $respCostoN = isset($respCosto[0]['generalShipping'])&&$respCosto[0]['generalShipping']!=0?($respCosto[0]['generalShipping']):0;
+                      $impuestosFinal = $impuestosFinal+($respCostoN*0.13);
+                      $subtotalFinal = $subtotalFinal;
+                      $totalFinal = $impuestosFinal+$subtotalFinal+$respCostoN;
                       $respuestaInsertar=$orden->updateOrden($impuestosFinal,$subtotalFinal,$totalFinal,$respCosto,$code);
                   }
                   
@@ -783,7 +787,7 @@ if(isset($_POST['action'])){
                         
                         $pay = $payment->processPayment(
                             array(
-                                "amount"=> $TotalOrder,
+                                "amount"=> $totalFinal,
                                 "currency"=> "CRC",
                                 "billToFirstName"=> $_SESSION['nombre'],
                                 "billToLastName"=> $_SESSION['apellido'],
@@ -801,7 +805,7 @@ if(isset($_POST['action'])){
                         
                         if($pay['result']){
                             if(isset($pay['url'])){
-                                $carrito->vaciarCarrito();
+                                
                                 $response = $pay['url'];
                             }else{
                                 $response = 'denied';

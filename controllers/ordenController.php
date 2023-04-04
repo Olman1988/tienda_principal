@@ -146,12 +146,12 @@ class ordenController{
         return $respuesta;  
         }
         public function updateOrden($impuestosFinal,$subtotalFinal,$totalFinal,$respCosto,$id){
-            $respCostoN = isset($respCosto[0]['generalShipping'])?($respCosto[0]['generalShipping']):0;
-            
-            
-            $impuestosFinal = $impuestosFinal+($respCostoN*0.13);
-            $subtotalFinal = $subtotalFinal;
-            $totalFinal = $impuestosFinal+$subtotalFinal+$respCostoN;
+//            $respCostoN = isset($respCosto[0]['generalShipping'])?($respCosto[0]['generalShipping']):0;
+//            
+//            
+//            $impuestosFinal = $impuestosFinal+($respCostoN*0.13);
+//            $subtotalFinal = $subtotalFinal;
+//            $totalFinal = $impuestosFinal+$subtotalFinal+$respCostoN;
             $resp = false;
             try {
             $db = conexion::getConnect();

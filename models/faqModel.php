@@ -96,7 +96,6 @@ class faqModel{
             $consulta = $db->prepare("DELETE FROM [dbo].[base_PreguntasFrecuentes] WHERE id =:id");
             $consulta->bindValue(':id', $id);
             $response=$consulta->execute();
-            error_log(PHP_EOL.__FILE__.PHP_EOL.'LINE: '.__LINE__.PHP_EOL.'|response: ->'.PHP_EOL.print_r($response,true),3,'C:/xampp/htdocs/codetest.log');
         } catch (PDOException $e) { //captura en caso de error de proceso db
             echo "se ha presentado un error " . $e->getMessage(); //muestra el mensaje de error.
             $db->rollBack(); //en caso de error, elimina las transacciones que se han realizado
