@@ -27,47 +27,51 @@
                                 <img style="height:10em;width:auto;" id="categories" src="<?=base_url?>/images/admin/config/categories.jpg">
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="Tax">Valor impuesto:</label>
                                 <input name="Tax" type="text" id="Tax" class="form-control" value='<?=$respuestaDatos['Tax']?>' />
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="form-check form-switch" style="padding-left: 12%;">
-                                    <input class="form-check-input" value='1' <?=$respuestaDatos['envio']=='1'? ' checked="checked"' : '';?>  name='envio' type="checkbox" id="envio">
-                                    <label class="form-check-label" for="envio">Hace envíos</label>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" value='1' <?=$respuestaDatos['mostarPrecios']=='1'? ' checked="checked"' : '';?> name='mostarPrecios' type="checkbox" id="mostarPrecios">
-                                    <label class="form-check-label" for="mostarPrecios">Mostrar precios</label>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" value='1' <?=$respuestaDatos['accesoAnonimo']=='1'? ' checked="checked"' : '';?> name='accesoAnonimo' type="checkbox" id="accesoAnonimo">
-                                    <label class="form-check-label" for="accesoAnonimo">Acceso Anónimo</label>
-                                </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="payment_method">Metodo de Pago:</label>
+                                <input class="form-check-input" value='<?=$respuestaDatos['payment_active'];?>' <?=$respuestaDatos['payment_active']=='1'? ' checked="checked"' : '';?>  name='payment' type="checkbox" id="payment" style="margin-left:2%;">
+                                <select id="payment_method" name="idPaymentType" class="form-control selectpicker show-tick">
+                                    <?php foreach($metodos_pago as $metodo){ ?>
+                                    <option style="border-radius:15px;" value='<?=$metodo['id']; ?>' <?=$respuestaDatos['idPaymentType']== $metodo['id'] ? 'selected': ''; ?>><?=$metodo['alias']; ?></option>
+                                    <?php } ?>
+                                </select>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-4">
-                                <label>Método de pago: <strong>SINPE</strong></label>
+                        <div class="col-md-12" style="padding-left: 5%;">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" value='1' <?=$respuestaDatos['envio']=='1'? ' checked="checked"' : '';?>  name='envio' type="checkbox" id="envio">
+                                <label class="form-check-label" for="envio">Hace envíos</label>
                             </div>
-                            <div class="col-4">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" value='1' <?=$respuestaDatos['blog']=='1'? ' checked="checked"' : '';?> name='blog' type="checkbox" id="blog">
-                                    <label class="form-check-label" for="blog">Mostrar Blog</label>
-                                </div>
+                        </div>
+                        <div class="col-md-12" style="padding-left: 5%;">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" value='1' <?=$respuestaDatos['mostarPrecios']=='1'? ' checked="checked"' : '';?> name='mostarPrecios' type="checkbox" id="mostarPrecios">
+                                <label class="form-check-label" for="mostarPrecios">Mostrar precios</label>
                             </div>
-                            <div class="col-4">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" value='1' <?=$respuestaDatos['preguntasFrecuentes']=='1'? ' checked="checked"' : '';?> name='preguntasFrecuentes' type="checkbox" id="preguntasFrecuentes">
-                                    <label class="form-check-label" for="preguntasFrecuentes">Preguntas frecuentes</label>
-                                </div>
+                        </div>
+                        <div class="col-md-12" style="padding-left: 5%;">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" value='1' <?=$respuestaDatos['accesoAnonimo']=='1'? ' checked="checked"' : '';?> name='accesoAnonimo' type="checkbox" id="accesoAnonimo">
+                                <label class="form-check-label" for="accesoAnonimo">Acceso Anónimo</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="padding-left: 5%;">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" value='1' <?=$respuestaDatos['blog']=='1'? ' checked="checked"' : '';?> name='blog' type="checkbox" id="blog">
+                                <label class="form-check-label" for="blog">Mostrar Blog</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="padding-left: 5%;">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" value='1' <?=$respuestaDatos['preguntasFrecuentes']=='1'? ' checked="checked"' : '';?> name='preguntasFrecuentes' type="checkbox" id="preguntasFrecuentes">
+                                <label class="form-check-label" for="preguntasFrecuentes">Preguntas frecuentes</label>
                             </div>
                         </div>
                     </div>
@@ -77,6 +81,25 @@
         </div>
     </div>
     <script>
+        var payment = $('#payment').val();
+        console.log(payment);
+
+        if(payment == 0){
+            $('#payment_method').prop('disabled', 'disabled');
+        }else{
+            $('#payment_method').prop('disabled', false);
+        }
+
+        $("#payment").change(function(){
+            if($('#payment').prop( "checked" )){
+                this.value = 1;  
+                $('#payment_method').prop('disabled', false);
+            }else{
+                this.value = 0;
+                $('#payment_method').prop('disabled', 'disabled');
+            }
+        });
+
         var imageSel = $('#HomeType').val();
         switch (imageSel) {
             case 'Simple':
