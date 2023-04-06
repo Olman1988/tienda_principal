@@ -49,15 +49,16 @@ class faqModel{
         return $respuesta;
     }
 
-    public function insertarFAQ($pregunta, $contenido){
+    public function insertarFAQ($pregunta, $contenido, $orden){
         try {
             $db = conexion::getConnect();
-            $consulta=$db->prepare("INSERT INTO [dbo].[base_PreguntasFrecuentes](pregunta, contenido, idTipoPregunta,orden)"
-                    . "VALUES (:pregunta,:contenido,1,1)");
+            $consulta=$db->prepare("INSERT INTO [dbo].[base_PreguntasFrecuentes](pregunta, contenido, idTipoPregunta, orden)"
+                    . "VALUES (:pregunta,:contenido,1,:orden)");
             
             $db->beginTransaction(); //inicia la transaccion
             $consulta->bindValue(':pregunta', $pregunta);
             $consulta->bindValue(':contenido', $contenido);
+            $consulta->bindValue(':orden', $orden);
             
             $consulta->execute();
             
@@ -70,13 +71,14 @@ class faqModel{
         return $respuesta;
     }
 
-    public function modificarFAQ($pregunta, $contenido, $id){
+    public function modificarFAQ($pregunta, $contenido, $orden, $id){
         try {
             $db = conexion::getConnect();
-            $consulta=$db->prepare("UPDATE [dbo].[base_PreguntasFrecuentes] SET pregunta=:pregunta, contenido=:contenido WHERE id = :id");
+            $consulta=$db->prepare("UPDATE [dbo].[base_PreguntasFrecuentes] SET pregunta=:pregunta, contenido=:contenido, orden=:orden WHERE id = :id");
             $db->beginTransaction(); //inicia la transaccion
             $consulta->bindValue(':pregunta', $pregunta);
             $consulta->bindValue(':contenido', $contenido);
+            $consulta->bindValue(':orden', $orden);
             $consulta->bindValue(':id', $id);
             $consulta->execute();
             

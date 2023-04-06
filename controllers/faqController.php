@@ -18,22 +18,22 @@ class faqController{
      * 
      * 
      */
-    public function insertarFAQ($pregunta, $contenido){
+    public function insertarFAQ($pregunta, $contenido, $orden){
         if (isset($_POST['action'])) {
             require_once '../config/conexion.php';
         }
-        $respuestaInsertar = $this->_FAQ->insertarFAQ($pregunta, $contenido);
+        $respuestaInsertar = $this->_FAQ->insertarFAQ($pregunta, $contenido, $orden);
         return $respuestaInsertar;
     }
     /**
      * 
      * 
      */
-    public function modificarFAQ($pregunta, $contenido, $id){
+    public function modificarFAQ($pregunta, $contenido, $orden, $id){
         if (isset($_POST['action'])) {
             require_once '../config/conexion.php';
         }
-        $respuestaModificar = $this->_FAQ->modificarFAQ($pregunta, $contenido, $id);
+        $respuestaModificar = $this->_FAQ->modificarFAQ($pregunta, $contenido, $orden, $id);
         return $respuestaModificar;
     }
     /**
@@ -58,10 +58,11 @@ if (isset($_POST['action-faq'])) {
     switch ($_POST['action-faq']){
         case 'add':
             $FAQ = new faqController();
-            $pregunta = !empty($_POST['pregunta']) ? filter_var($_POST['pregunta'], FILTER_SANITIZE_STRING) : '';
+            $pregunta  = !empty($_POST['pregunta'])  ? filter_var($_POST['pregunta'], FILTER_SANITIZE_STRING) : '';
             $contenido = !empty($_POST['contenido']) ? filter_var($_POST['contenido'], FILTER_SANITIZE_STRING) : '';
+            $orden     = !empty($_POST['orden'])     ? filter_var($_POST['orden'], FILTER_SANITIZE_NUMBER_INT) : 1;
 
-            $respuestaInsertar = $FAQ->insertarFAQ($pregunta,$contenido);
+            $respuestaInsertar = $FAQ->insertarFAQ($pregunta, $contenido, $orden);
             if($respuestaInsertar){
                 echo"<script>Swal.fire('Elemento guardado con éxito!', '', 'success');";
                 echo"window.setTimeout(function () {window.location.href = './?seccion=faq_section'}, 2000)</script>";
@@ -80,9 +81,10 @@ if (isset($_POST['action-faq'])) {
             $FAQ = new faqController();
             $pregunta  = !empty($_POST['pregunta']) ? $_POST['pregunta'] : '';
             $contenido = !empty($_POST['contenido']) ? $_POST['contenido'] : '';
+            $orden     = !empty($_POST['orden']) ? $_POST['orden'] : 1;
             $id        = !empty($_POST['id']) ? $_POST['id'] : 0;
             
-            $respuestaModificar = $FAQ->modificarFAQ($pregunta,$contenido,$id);
+            $respuestaModificar = $FAQ->modificarFAQ($pregunta,$contenido,$orden,$id);
             if($respuestaModificar){
                 echo"<script>Swal.fire('Elemento modificado con éxito!', '', 'success');";
                 echo"window.setTimeout(function () {window.location.href = './?seccion=faq_section'}, 2000)</script>";
