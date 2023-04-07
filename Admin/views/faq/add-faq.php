@@ -11,6 +11,12 @@
                     <input name="pregunta" type="text" id="pregunta" class="form-control" value='' />
                 </div>
             </div>
+            <div class="col-6"> 
+                <div class="form-group">
+                    <label for="orden">Orden</label>
+                    <input name="orden" type="number" id="orden" min="1" class="form-control" value='' />
+                </div>
+            </div>
             <div class="col-12"> 
                 <div class="form-group">
                     <label for="editor">Contenido</label>

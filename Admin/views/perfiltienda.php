@@ -48,9 +48,8 @@
                         </div>
                         <div class="col-12"> 
                             <div class="form-group">
-                                <label for="geo">Geo Localizacion:</label>
-                                <input name="geo" type="text" id="geo" class="form-control" value='<?=$respuestaDatos['mapsEmbeded']?>' />
-                            </div>
+                          <label for="mapsEmbeded">Geo Localizacion:</label>
+                                <input name="mapsEmbeded" type="text" id="mapsEmbeded" class="form-control" value='<?=$respuestaDatos['mapsEmbeded']?>' />  </div>
                         </div>
                         <div class="col-6"> 
                             <div class="form-group">
@@ -67,7 +66,7 @@
                         <div class="col-6"> 
                             <div class="col-8"> 
                                 <div class="form-group">
-                                    <input class="btn btn-primary mt-4" type="button" value="Obtener ubicación">
+                                    <input class="btn btn-primary mt-4" type="button" value="Obtener ubicación" id="getLocation">
                                 </div>
                             </div>
                         </div>
@@ -190,6 +189,22 @@
                 ordering: true,
                 info: true,
             });
+        });
+        const successCallback = (position) => {
+            if(position.coords.latitude != null && position.coords.latitude != undefined){
+                $('#latitude').val(position.coords.latitude);
+            }
+            if(position.coords.longitude != null && position.coords.longitude != undefined){
+                $('#longitude').val(position.coords.longitude);
+            }
+        };
+
+        const errorCallback = (error) => {
+            console.log(error);
+        };
+
+        $('#getLocation').click(function() {
+            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
         });
     </script>
 </div>
