@@ -4,38 +4,37 @@
 
 <div class="m-auto" id="myContent">
  
-  <div class="" id="profile" style="padding-top:20px;">
-      <button class="btn btn-primary"><a style="text-decoration: none;color:white;" href="<?=base_url?>Admin/?seccion=sliders&&action=add">+Agregar</a></button>
-      <table class="table" id='generalTable'>
-  <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Imagen</th>
-      <th scope="col">Url</th>
-      <th scope="col">Orden</th>    
-      <th scope="col">Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-      <?php
-      if(isset($respSliders)&&count($respSliders)>0){
-          foreach ($respSliders as $respSlidersValues) {
-              
-          
-      ?>
-       <tr class="table-active" style="">
-     
-      
-      <td><?=$respSlidersValues['id']?></td>
-      <td><img style='width:100px' src="<?=base_url?><?=$respSlidersValues['sliderPath']?>" alt="alt"/></td>
-      <td><?=$respSlidersValues['url']?></td>
-      <td><?=$respSlidersValues['order']?></td>
-      <td style="min-width:120px;" class="">
-          <a href='<?=base_url?>Admin/?seccion=sliders&&action=edit&&id=<?=$respSlidersValues['id']?>'><i class="fa-solid fa-pen-to-square" style="cursor:pointer;color:white;font-size:20px;" ></i></a>
-          <i class="fa-solid fa-trash" style="cursor:pointer;color:white;font-size:20px; margin-left:10px;" onclick="eliminarCategoria('<?=$respSlidersValues['id']?>')"></i>
-      </td>
-      
-    </tr>
+    <div class="" id="profile" style="padding-top:20px;">
+        <button class="btn btn-primary"><a style="text-decoration: none;color:white;" href="<?=base_url?>Admin/?seccion=sliders&&action=add">+Agregar</a></button>
+        <table class="table" id='generalTable'>
+    <thead>
+        <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Imagen Escritorio</th>
+        <th scope="col">Imagen Movil</th>
+        <th scope="col">Url Escritorio</th>
+        <th scope="col">Url Movil</th>
+        <th scope="col">Orden</th>    
+        <th scope="col">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if(isset($respSliders)&&count($respSliders)>0){
+            foreach ($respSliders as $respSlidersValues) {
+        ?>
+        <tr class="table-active">
+            <td><?=$respSlidersValues['id']?></td>
+            <td><img style='width:100px' src="<?=base_url?><?=$respSlidersValues['sliderPath']?>" alt="alt"/></td>
+            <td><img style='width:100px' src="<?=base_url?><?=$respSlidersValues['sliderPathMobile']?>" alt="alt"/></td>
+            <td><?=$respSlidersValues['url']?></td>
+            <td><?=$respSlidersValues['url_mobile']?></td>
+            <td><?=$respSlidersValues['order']?></td>
+            <td style="min-width:120px;" class="">
+                <a href='<?=base_url?>Admin/?seccion=sliders&&action=edit&&id=<?=$respSlidersValues['id']?>'><i class="fa-solid fa-pen-to-square" style="cursor:pointer;color:white;font-size:20px;" ></i></a>
+                <i class="fa-solid fa-trash" style="cursor:pointer;color:white;font-size:20px; margin-left:10px;" onclick="eliminarCategoria('<?=$respSlidersValues['id']?>')"></i>
+            </td>
+        </tr>
       <?php
            }
       }

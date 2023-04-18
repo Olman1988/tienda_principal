@@ -34,70 +34,73 @@ class slidersModel{
 
             return $respuesta;
     }
-    public function insertSlider($title,$url,$order,$image){
+    public function insertSlider($nombrefinal,$url,$nombrefinl2,$url_mobile,$order){
         try {
             $db = conexion::getConnect();
-            $consulta=$db->prepare("INSERT INTO [dbo].[HomeTypeSlider] (sliderPath,url,[order])"
-                    . "VALUES (:image,:url,:order)");
+            $consulta=$db->prepare("INSERT INTO [dbo].[HomeTypeSlider](sliderPath, url, sliderPathMobile, url_mobile, [order])"
+                    . "VALUES (:image,:url,:image2,:url_mobile,:order)");
             
             $db->beginTransaction(); //inicia la transaccion
-           // $consulta->bindValue(':title', $title);
+            $consulta->bindValue(':image', $nombrefinal);
             $consulta->bindValue(':url', $url);
+            $consulta->bindValue(':image2', $nombrefinl2);
+            $consulta->bindValue(':url_mobile', $url_mobile);
             $consulta->bindValue(':order', intval($order));
-            $consulta->bindValue(':image', $image);
             $consulta->execute();
-         $respuesta=$db->commit();
-
-            
+            $respuesta=$db->commit();
         } catch (PDOException $e) {
             echo "se ha presentado un error " . $e->getMessage();
             throw $e;
-           
         }
         
-      return $respuesta;
+        return $respuesta;
     }
     
     public function getSliderById($id){
-        $respuesta;
-    try {
+        $respuesta = [];
+        try {
             $db = conexion::getConnect();//Aqui se conecta a la base de datos
                // $consulta =$db->prepare("SELECT i.id, i.nombre, i.modelo, i.marca, i.descripcion, i.cantidad, i.precio, ci.nombre AS categoria, cs.nombre AS subcategoria, i.image, e.nombre AS estado FROM tbl_productos i INNER JOIN tbl_categorias ci ON i.id_categoria = ci.id INNER JOIN tbl_subcategorias cs ON i.id_subcategoria = cs.id INNER JOIN tbl_estados e ON i.estado = e.id ORDER BY id");
-           $consulta =$db->prepare("SELECT * FROM [dbo].[HomeTypeSlider] where id = $id");
-         
+            $consulta =$db->prepare("SELECT * FROM [dbo].[HomeTypeSlider] where id = $id");
             $consulta->execute();
             
             $respuesta=$consulta->fetch(PDO::FETCH_OBJ);
-            
         } catch (PDOException $e) {
             echo "se ha presentado un error " . $e->getMessage();
             throw $e;
         }
+
         return $respuesta;
     }
-    public function updateSlider($title,$order,$url,$imagen,$id){
+    public function updateSlider($nombrefinal,$url,$nombrefinl2,$url_mobile,$order,$id){
         try {
             $db = conexion::getConnect();
-            $consulta=$db->prepare("UPDATE [dbo].[HomeTypeSlider] SET sliderPath=:sliderPath,[order] =:order, url =:url WHERE id =:id");
+            $consulta=$db->prepare("UPDATE [dbo].[HomeTypeSlider] SET 
+                                        sliderPath =:sliderPath, 
+                                        url =:url, 
+                                        sliderPathMobile =:sliderPathMobile, 
+                                        url_mobile =:url_mobile,
+                                        [order] =:order
+                                    WHERE id =:id");
             $db->beginTransaction(); //inicia la transaccion
-            $consulta->bindValue(':id', $id);
-            $consulta->bindValue(':sliderPath', $imagen);
+            $consulta->bindValue(':sliderPath', $nombrefinal);
             $consulta->bindValue(':url', $url);
+            $consulta->bindValue(':sliderPathMobile', $nombrefinl2);
+            $consulta->bindValue(':url_mobile', $url_mobile);
             $consulta->bindValue(':order', $order); 
+            $consulta->bindValue(':id', $id);
             $consulta->execute();
-           $respuesta=$db->commit();
-
             
+            $respuesta=$db->commit();
         } catch (PDOException $e) {
             echo "se ha presentado un error " . $e->getMessage();
             throw $e;
-           
         }
         
-      return $respuesta; 
+        return $respuesta; 
     }
     public function deleteSlider($id){
-         $response;
+        $response = [];
         try {
             $db = conexion::getConnect();
             $consulta = $db->prepare("DELETE FROM [dbo].[HomeTypeSlider] WHERE id =:id");
