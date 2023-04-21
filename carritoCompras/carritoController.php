@@ -127,7 +127,7 @@ class carritoController{
 
     public function vaciarCarrito(){
         if(isset($_SESSION['carrito'])){
-       unset($_SESSION['carrito']);  
+      unset($_SESSION['carrito']);  
         }
         return true;
     }
@@ -680,7 +680,7 @@ if(isset($_POST['action'])){
                                 
                                 $impuesto=round(intval($respArticulo['art_PorcentajeIV']),2);   
                             }
-                            
+                        $respCostoN =0;  
                         $precioIni =round($respArticulo['art_PrecioUnitario'],2);
                         $precio = $respArticulo['art_LlevaImpuesto']==1?$respArticulo['IVAIncluido']==1&&$impuesto!=0?($precioIni/(1+($impuesto/100))):$precioIni:$precioIni; 
                         $impMonto=$respArticulo['art_LlevaImpuesto']==1?$impuesto!=0?$respArticulo['IVAIncluido']==1?$precioIni-$precio:$precio*($impuesto/100):0:0;
@@ -741,9 +741,10 @@ if(isset($_POST['action'])){
                             "Color"=>$costum['radioColor'],
                             "Seleccion"=>$costum['listAttribute']
                         );
+                        $newArray[$index]['ID']= $valuesOrder['ID'];
                         $newArray[$index]['Cantidad']= $valuesOrder['cantidad'];
-                        $newArray[$index]['Descripcion']= $valuesOrder['art_Descripcion'];
-                        $newArray[$index]['Personalizacion']= $newCostumArray;
+                        $newArray[$index]['Descripción']= $valuesOrder['art_Descripcion'];
+                        $newArray[$index]['Personalización']= $newCostumArray;
                         $newArray[$index]['Precio']= $valuesOrder['price'];
                         $newArray[$index]['Impuesto']= $valuesOrder['taxAmount'];
                         $newArray[$index]['Total']= $valuesOrder['totalPrice'];
@@ -754,9 +755,11 @@ if(isset($_POST['action'])){
                     require_once '../email/ordenes.php';
                     $emailSent = new ordenes();
                     $fullname = $nombreCliente." ".$apellidos;
-                    $respEmaiSent = $emailSent->sendEmailOrder($fullname,$email,$codeSmall,$respOrden);
+                    
+                      $respuestaInsertar=$orden->updateOrden($impuestosFinal,$subtotalFinal,$totalFinal,$respCostoN,$code);
+                    $respEmaiSent = $emailSent->sendEmailOrder($fullname,$email,$codeSmall,$respOrden,$subtotalFinal,$totalFinal,$impuestosFinal,$respCostoN);
                     if($respEmaiSent){
-                       $respCotizacionBusiness = $emailSent->sendEmailOrderToBusiness($fullname,$email,$codeSmall,$respOrden,$DNI,$provincia,$canton,$distrito,$direccion,$telefono);
+                       $respCotizacionBusiness = $emailSent->sendEmailOrderToBusiness($fullname,$email,$codeSmall,$respOrden,$DNI,$provincia,$canton,$distrito,$direccion,$telefono,$subtotalFinal,$totalFinal,$impuestosFinal,$respCostoN);
                     }
                     if(isset($_SESSION['orden']['tipoEnvio'])){
                         if($_SESSION['orden']['tipoEnvio'] != 'Oficina'){

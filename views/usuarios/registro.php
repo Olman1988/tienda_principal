@@ -224,7 +224,6 @@ const isStrongPassword = p => p.search(/^((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S
     url : './controllers/userController.php',
     data : $('#formularioRegistro').serialize(),
    success:function(dat){
-          alert(dat);
             if(dat==true){
             Swal.fire({
                                                    icon: 'success',

@@ -76,22 +76,22 @@
                                     <input id="idArticulo" type="hidden" name="idArticulo" value="<?=$carritoTabla['id']?>">
                                     
                                 </td>
-                                <td>
+                                <td class="text-num">
                                     <input type="hidden" id="precio_Un" value="<?=round($carritoTabla['art_PrecioUnitario'],2)?>">
-                                    <span id="precio"><?=$precio?></span>
+                                    <span id="precio" ><?=$precio?></span>
                                 </td>
-                                <td>
+                                <td class="text-num">
                                     <input type="hidden" id="impuestos" value="<?=$impuesto?>">
                         <input id="ivaIncluido" type="hidden" name="ivaIncluido" value="<?=$carritoTabla['IVAIncluido']?>">
                         <input id="llevaimpuesto" type="hidden" name="llevaimpuesto" value="<?=$carritoTabla['llevaimpuesto']?>">
                         <?=$impMonto?>
                                     <br/>
                                 </td>
-                                <td>
+                                <td class="text-num">
                                     <span id="subTotalConImp"><?=$subTotal?></span>
                                 </td>
                                 
-                                <td>
+                                <td class="text-num">
                                    <a onclick ="removerProductoCoarrito(<?=$carritoTabla['id']?>)" class="btn btn-outline-danger">Eliminar</a>
                                 </td>
 		</tr>
@@ -136,17 +136,17 @@
         <hr class="mb-4 pb-2">
         <div class="row justify-content-end">
         <h4 class="col-4" style="">Subtotal: </h4>
-        <span style="font-size:20px;font-weight:400;" class="ml-1 col-1">₡</span><span style="font-size:20px;font-weight:400;" class="col-3 text-right" id="subTotalFinal">0</span>
+        <span style="font-size:20px;font-weight:400;text-align:right;" class="ml-1 col-1 text-right">₡</span><span style="font-size:20px;font-weight:400;text-align:right;" class="col-3" id="subTotalFinal">0</span>
         </div>
         <hr>
         <div class="row justify-content-end">
         <h4 class="col-4" style="">Impuesto Total: </h4>
-        <span style="font-size:20px;font-weight:400;" class="ml-1 col-1">₡</span><span style="font-size:20px;font-weight:400;" class="col-3 text-right" id="impuestoFinal">0</span>
+        <span style="font-size:20px;font-weight:400;text-align:right;" class="ml-1 col-1 ">₡</span><span style="font-size:20px;font-weight:400;text-align:right;" class="col-3 text-right" id="impuestoFinal">0</span>
         </div>
         <hr>
                  <div class="row justify-content-end">
         <h4 class="col-4" style="">Total: </h4>
-        <span style="font-size:20px;font-weight:400;" class="ml-1 col-1">₡</span><span style="font-size:20px;font-weight:400;" class="col-3 text-right" id="TotalFinal">0</span>
+        <span style="font-size:20px;font-weight:400;text-align:right;" class="ml-1 col-1">₡</span><span style="font-size:20px;font-weight:400;text-align:right;" class="col-3 text-right" id="TotalFinal">0</span>
         </div>
  <hr>
     </div>

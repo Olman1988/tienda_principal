@@ -114,7 +114,7 @@
     </div>
 
 <script src="./assets/js/distribucion-cr.js"></script>
-    <script src="./assets/js/formulario.js"></script>
+    <script src="./assets/js/formularioN.js"></script>
 <script>
 
  $( document ).ready(function() {

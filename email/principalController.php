@@ -17,6 +17,7 @@ class principalController{
             $Template = preg_replace("/%\bMAININFO\b%/", $ARR['info'], $Template);
             $Template = preg_replace("/%\bURLIMG\b%/", $ARR['url'], $Template);
             $Template = preg_replace("/%\bTABLEDATA\b%/", $ARR['table'], $Template);
+            $Template = preg_replace("/%\bPRICEDATA\b%/", $ARR['priceData'], $Template);
             return $Template;
     }
     

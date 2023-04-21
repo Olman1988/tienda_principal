@@ -85,7 +85,7 @@ public function crearDetalles($idProducto,$cantidad,$code,$file=1,$observacion=1
         $respuesta=[];
         try {
                 $db = conexion::getConnect();
-               $consulta =$db->prepare("SELECT c.idCotizacion,c.nombre as cliente, c.apellido, c.provincia, c.canton, c.distrito, c.direccion, c.email, c.fecha, c.codigo,c.telefono,ec.Descripcion AS estado FROM Cotizacion c INNER JOIN EstadosCotizacion ec ON c.Estado=ec.ID;");
+               $consulta =$db->prepare("SELECT c.Estado as idEstado,c.idCotizacion,c.nombre as cliente, c.apellido, c.provincia, c.canton, c.distrito, c.direccion, c.email, c.fecha, c.codigo,c.telefono,ec.Descripcion AS estado FROM Cotizacion c INNER JOIN EstadosCotizacion ec ON c.Estado=ec.ID;");
                 $consulta->execute();
                 foreach($consulta->fetchAll(PDO::FETCH_ASSOC) as $value){
                         $respuesta[]=$value;

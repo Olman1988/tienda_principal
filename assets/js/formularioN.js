@@ -5,7 +5,7 @@ const listaDistritos = document.querySelector('#slt-distritos');
 let provinciaSeleccionada;
 let cantonSeleccionado;
 const mostrarProvincias = () => {
-    listaProvincias.options.add(new Option('-- Seleccione una provincia --'));
+    //listaProvincias.options.add(new Option('-- Seleccione una provincia --'));
     distribucion.provincias.forEach(provincia => {
         
         listaProvincias.options.add(new Option(provincia.title));

@@ -66,11 +66,14 @@
             <div class="collapse" id="sales-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                 <li class="nav-item secondary-link">
-                    <a class="nav-link" href="<?=base_url?>Admin/?seccion=promociones"><i class="fa-solid fa-percent"></i>Promociones</a>
+                    <a class="nav-link" href="<?=base_url?>Admin/?seccion=promociones"><i class="fa-solid fa-percent icon-admin"></i>Promociones</a>
                 </li>
                <li class="nav-item secondary-link">
-                    <a class="nav-link" href="<?=base_url?>Admin/?seccion=paginaAterrizaje"><i class="fa-solid fa-globe"></i>Página de Aterrizaje</a>
+                    <a class="nav-link" href="<?=base_url?>Admin/?seccion=paginaAterrizaje"><i class="fa-solid fa-globe icon-admin"></i>Página de Aterrizaje</a>
                </li>
+               <li class="nav-item secondary-link">
+                <a class="nav-link" href="<?=base_url?>Admin/?seccion=infoLanding"><i class="fa-solid fa-id-card icon-admin"></i>Clientes Páginas Aterrizaje</a>
+            </li>
                <li class="nav-item secondary-link">
                     <a class="nav-link" href="<?=base_url?>Admin/?seccion=orders"><i class="fa-solid fa-truck-fast icon-admin"></i>Órdenes</a>
               </li>
@@ -78,9 +81,7 @@
                   <a class="nav-link" href="<?=base_url?>Admin/?seccion=quotes"><i class="fa-solid fa-file-invoice-dollar icon-admin"></i>Cotizaciones</a>
               </li>
              
-            <li class="nav-item secondary-link">
-                <a class="nav-link" href="<?=base_url?>Admin/?seccion=quotes"><i class="fa-solid fa-file-invoice-dollar icon-admin"></i>Cotizaciones</a>
-            </li>
+            
           </ul>
         </div>
         </li>

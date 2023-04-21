@@ -1,7 +1,7 @@
 <?php
  
 ?>
-<div class="container" style="width:80%;background:white;border-radius:15px;height:70vh;margin-top:100px;padding:20px">
+<div class="container" style="width:80%;background:white;border-radius:15px;height:auto;margin-top:100px;padding:20px">
     <h2 class="text-center">Clientes</h2>
     <div class="col-lg-8 m-auto">
 <?php
@@ -10,7 +10,6 @@
 <div class="m-auto" id="myContent">
  
   <div class="" id="profile" style="padding-top:20px;">
-       <input type="text" class="form-control float-right mb-3" style="width:50%; min-width:300px;" id="search" placeholder="Ingrese la palabra a buscar...">
 
       <table class="table" id="tabla-clientes">
   <thead>
@@ -40,7 +39,7 @@
       ?>
    </tbody>  
    </table>
-       <div class=""> <button id="exporttable" class="btn btn-primary">Export</button> </div>
+<!--       <div class=""> <button id="exporttable" class="btn btn-primary">Export</button> </div>-->
  </div>
     </div>
 </div>
@@ -48,11 +47,28 @@
 
 <script>
  $(document).ready(function(){
- $("#exporttable").click(function(e){
-            $("#tabla-clientes").table2excel({
-            filename: "Clientes.xls"
-        });
-        });
+
+        $('#tabla-clientes').DataTable({
+        paging: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'excel'
+        ]
+    });
+});
+
+
+$(document).ready(function(){
+ $("#search").keyup(function(){
+ _this = this;
+ // Show only matching TR, hide rest of them
+ $.each($("#tabla-clientes tbody tr"), function() {
+ if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
+ $(this).hide();
+ else
+ $(this).show();
+ });
+ });
 });
 
 </script>

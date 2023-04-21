@@ -225,10 +225,12 @@ if(isset($_GET['pag'])){
                     require_once 'views/usuarios/perfil.php';
                     break;
                 case "cambioClave":
-                     require_once 'views/usuarios/menuNavegacion.php';
+                    require_once 'views/usuarios/menuNavegacion.php';
                     require_once 'views/usuarios/cambioPassword.php';
                     break;
-              
+                case "reset":
+                    require_once 'views/usuarios/reset.php';
+                    break;
                 default:
                     break;
             }
@@ -297,7 +299,7 @@ if(isset($_GET['pag'])){
                              text: 'Debe iniciar sesion para completar el proceso'
                                 })
                             window.setTimeout(function () {
-                            window.location.href ='./?pag=cuenta&&func=login'
+                            window.location.href ='./?pag=cuenta&&func=login&&from=carrito'
                             }, 2000);              
                             </script>";
                 }

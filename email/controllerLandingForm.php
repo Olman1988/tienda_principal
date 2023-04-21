@@ -34,13 +34,13 @@ $mensajeCompleto.="Email: $email <br>";
 $mensajeCompleto.="Identificación: $cedula <br>";
 $mensajeCompleto.="Teléfono: $telefono <br>";
 $mensajeCompleto.="Código: $code <br>";
-
 $mail = new PHPMailer();
 $mail->isSMTP();
 $mail->SMTPDebug = SMTP::DEBUG_OFF;  // SMTP::DEBUG_OFF  // SMTP::DEBUG_SERVER;
 $mail->SMTPAutoTLS = false;
 $mail->SMTPSecure = false;
 $mail->Host = 'tecnosula.com';
+$mail->CharSet = 'UTF-8';
 $mail->Port = 25;
 $mail->SMTPAuth = true;
 $mail->isHTML(true);
@@ -61,14 +61,14 @@ $mail->setFrom('olman.monge@tecnosula.com', 'Tienda');
         //ENVIO DE CORREO
         if (!$mail->send()) {
         //echo 'Mailer Error: ' . $mail->ErrorInfo;
-            return 0;
+            echo 0;
         } else {
-       return 1;
+       echo 1;
         }
 
    }
 
 } else {
-    return 0;
+    echo 0;
 }
 ?>

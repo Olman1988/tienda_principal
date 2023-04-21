@@ -75,7 +75,8 @@ class contacto{
            
             <form id='formInfo'>
               <div class="col-sm-12 mt-2">
-                    
+                  <input type="hidden" name='emailBusiness' value="<?=$profile->infoEmail?>">
+                  <input type="hidden" name='nameBusiness' value="<?=$profile->name?>">
                       <input name="nombre" type="text" id="" class="form-control form-control-rounded" placeholder="Nombre completo" />
                         <span data-val-controltovalidate="" data-val-errormessage="Requerido" id="nombreRespuesta" class="text-danger" data-val="true" data-val-evaluationfunction="RequiredFieldValidatorEvaluateIsValid" data-val-initialvalue="" style="visibility:hidden;">Requerido</span>
                     

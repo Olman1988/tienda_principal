@@ -43,11 +43,17 @@
                 </thead>
                 <tbody>
                     <?php 
+                    $counter= 0;
                     foreach ($respuestaMetodos as $respuestaMetodosValue) {
+                        $counter++;
+                        $tipo = '';
+                        if(isset($_SESSION['orden'])){
+                            $tipo = $_SESSION['orden']['tipoPago'];
+                        }
                     ?>
                   <tr>
                     <td class="align-middle" style="width:150px">
-                        <input checked style="width:15px;height:15px;opacity:1" id="<?=strtolower($respuestaMetodosValue['alias'])?>" value="<?=strtolower($respuestaMetodosValue['alias'])?>" type="radio" name="tipoPago" value="<?=strtolower($respuestaMetodosValue['descripcion'])?>" onclick="" />
+                        <input   <?=($tipo!=''&&strtolower($tipo)==strtolower($respuestaMetodosValue['alias']))?'checked':($counter==1?'checked':'');?>  style="width:15px;height:15px;opacity:1" id="<?=mb_convert_case($respuestaMetodosValue['alias'], MB_CASE_LOWER, "UTF-8")?>" value="<?=mb_convert_case($respuestaMetodosValue['alias'], MB_CASE_LOWER, "UTF-8")?>" type="radio" name="tipoPago" value="<?=strtolower($respuestaMetodosValue['descripcion'])?>" onclick="" />
                         <img src="<?=base_url?>assets/imagenesPagos/<?=$respuestaMetodosValue['rutaImagen']?>" width="85px" height="" alt="alt"/>
                       
                     </td>

@@ -4,7 +4,7 @@
  <div class=" padding-bottom-3x mb-4 pb-4 m-auto" style="height:100vh;width:100%;background:linear-gradient(90deg, rgba(73,139,241,1) 0%, rgba(0,0,0,1) 100%, rgba(210,174,121,1) 100%);">
         <div class="row m-auto" style="background:white;box-shadow: 1px 1px 10px gray;position:absolute;top:0px;bottom:0px;left:0px;right:0px;max-width:90%;width:800px;height:350px;border-radius:15px;">
             <div class="col-md-6 col-sm-12 mt-4 p-4" style="min-height:300px;">
-                <img class="m-auto" style="width:250px;display:block;object-fit:cover;position: absolute;top: 0px;bottom: 0px;left:0px;right:0px;" src="https://balloonsadmin.tecnosula.com//images/logo/prof20221006063306.png" alt=""/>
+                <img class="m-auto" style="width:250px;display:block;object-fit:cover;position: absolute;top: 0px;bottom: 0px;left:0px;right:0px;" src="<?=base_url.$respPerfil->logo?>" alt=""/>
                 </div>
           <div class="col-md-6 col-sm-12 mt-4 p-4">
             <form id="login-box" class="login-box m-auto" method="post">

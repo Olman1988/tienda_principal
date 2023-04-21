@@ -749,7 +749,7 @@ $securityAdmin = $security->isAdmin();
                                     $respuestaDatos = $CONFIG->consultarDatos();
                                     $metodos_pago   = $CONFIG->metodos_pago();
                                     $respuestaDatos = $respuestaDatos[0];
-                                    
+                                    var_dump($respuestaDatos['id']);
                                     if(isset($respuestaDatos['id'])){
                                         if(isset($_GET['action'])){
                                             switch ($_GET['action']) {
@@ -1034,7 +1034,9 @@ $securityAdmin = $security->isAdmin();
         //FIN DEL DIV WRAPPER
             echo "</div>";
         } else {
-          require_once 'views/login.php';  
+            $perfil = new generalModel();
+            $respPerfil = $perfil->consultaProfile();
+             require_once 'views/login.php';  
         }
 
 

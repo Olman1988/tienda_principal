@@ -1,4 +1,37 @@
 <?php
+$nombre = '';
+$apellido = '';
+$DNI= '';
+$provincia = '';
+$canton = '';
+$distrito = '';
+$direccion = '';
+$email= '';
+$telefono= '';
+
+if(isset($_SESSION['orden']['InfoGeneral'])){
+    $nombre = $_SESSION['orden']['InfoGeneral']['Nombre'];
+    $apellido = $_SESSION['orden']['InfoGeneral']['Apellidos'];
+    $DNI= $_SESSION['orden']['InfoGeneral']['Cedula'];
+    $provincia = $_SESSION['orden']['InfoGeneral']['provincia'];
+    $canton = $_SESSION['orden']['InfoGeneral']['canton'];
+    $distrito = $_SESSION['orden']['InfoGeneral']['distrito'];
+    $direccion = $_SESSION['orden']['InfoGeneral']['Direccion'];
+    $email= $_SESSION['orden']['InfoGeneral']['Email'];
+    $telefono= $_SESSION['orden']['InfoGeneral']['Telefono'];
+} else {
+    if(isset($_SESSION)){
+        $nombre = $_SESSION['nombre'];
+        $apellido = $_SESSION['apellido'];
+        $DNI= $_SESSION['DNI'];
+        $provincia = $_SESSION['provincia'];
+        $canton = $_SESSION['canton'];
+        $distrito = $_SESSION['distrito'];
+        $direccion = $_SESSION['direccion'];
+        $email= $_SESSION['email'];
+        $telefono= $_SESSION['telefono'];
+    }
+}
 ?>
 <div class="page-title" id='page-title'>
         <div class="container">
@@ -38,21 +71,21 @@
               <div class="col-sm-4">
                 <div class="form-group">
                   <label for="reg-fn">Nombre</label>
-                  <input name="Nombre" type="text" id="ContentPlaceHolder1_Nombre" class="form-control" required="" value="<?=$_SESSION['nombre']?>" />
+                  <input name="Nombre" type="text" id="ContentPlaceHolder1_Nombre" class="form-control" required="" value="<?=$nombre?>" />
                     <span data-val-controltovalidate="ContentPlaceHolder1_Nombre" data-val-errormessage="Requerido." data-val-display="Dynamic" id="ContentPlaceHolder1_ctl01" class="text-danger" data-val="true" data-val-evaluationfunction="RequiredFieldValidatorEvaluateIsValid" data-val-initialvalue="" style="display:none;">Requerido.</span>
                 </div>
               </div>
               <div class="col-sm-4">
                 <div class="form-group">
                   <label for="reg-ln">Apellidos</label>
-                  <input name="Apellidos" type="text" id="ContentPlaceHolder1_Apellidos" class="form-control" required="" value="<?=$_SESSION['apellido']?>" />
+                  <input name="Apellidos" type="text" id="ContentPlaceHolder1_Apellidos" class="form-control" required="" value="<?=$apellido?>" />
                     <span data-val-controltovalidate="ContentPlaceHolder1_Apellidos" data-val-errormessage="Requerido." data-val-display="Dynamic" id="ContentPlaceHolder1_ctl02" class="text-danger" data-val="true" data-val-evaluationfunction="RequiredFieldValidatorEvaluateIsValid" data-val-initialvalue="" style="display:none;">Requerido.</span>
                 </div>
               </div>
                 <div class="col-sm-4">
                 <div class="form-group">
                   <label for="reg-ln">Cédula</label>
-                  <input name="Cedula" type="number" id="ContentPlaceHolder1_Cedula" class="form-control" required="" value="<?=$_SESSION['DNI']?>" />
+                  <input name="Cedula" type="number" id="ContentPlaceHolder1_Cedula" class="form-control" required="" value="<?=$DNI?>" />
                     <span data-val-controltovalidate="ContentPlaceHolder1_Cedula" data-val-errormessage="Requerido." data-val-display="Dynamic" id="ContentPlaceHolder1_ctl03" class="text-danger" data-val="true" data-val-evaluationfunction="RequiredFieldValidatorEvaluateIsValid" data-val-initialvalue="" style="display:none;">Requerido.</span>
                 </div>
               </div>
@@ -87,7 +120,7 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <label for="reg-email">Dirección</label>
-                  <input name="Direccion" type="text" id="ContentPlaceHolder1_Direccion" class="form-control" required="" value="<?=$_SESSION['direccion']?>" />
+                  <input name="Direccion" type="text" id="ContentPlaceHolder1_Direccion" class="form-control" required="" value="<?=$direccion?>" />
                     <span data-val-controltovalidate="ContentPlaceHolder1_Direccion" data-val-errormessage="Requerido." data-val-display="Dynamic" id="ContentPlaceHolder1_ctl04" class="text-danger" data-val="true" data-val-evaluationfunction="RequiredFieldValidatorEvaluateIsValid" data-val-initialvalue="" style="display:none;">Requerido.</span>
                 </div>
               </div>
@@ -96,7 +129,7 @@
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="reg-email">E-mail</label>
-                  <input name="Email" type="email" id="ContentPlaceHolder1_Email" class="form-control" required="" value="<?=$_SESSION['email']?>" />
+                  <input name="Email" type="email" id="ContentPlaceHolder1_Email" class="form-control" required="" value="<?=$email?>" />
                     <span data-val-controltovalidate="ContentPlaceHolder1_Email" data-val-errormessage="Requerido." data-val-display="Dynamic" id="ContentPlaceHolder1_ctl05" class="text-danger" data-val="true" data-val-evaluationfunction="RequiredFieldValidatorEvaluateIsValid" data-val-initialvalue="" style="display:none;">Requerido.</span>
                     <span data-val-controltovalidate="ContentPlaceHolder1_Email" data-val-errormessage="Correo incorrecto" data-val-display="Dynamic" id="ContentPlaceHolder1_ctl06" class="text-danger" data-val="true" data-val-evaluationfunction="RegularExpressionValidatorEvaluateIsValid" data-val-validationexpression="\w+([-+.&#39;]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" style="display:none;">Correo incorrecto</span>
                 </div>
@@ -104,7 +137,7 @@
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="reg-phone">Teléfono</label>
-                  <input name="Telefono" type="number" id="ContentPlaceHolder1_Telefono" class="form-control" required="" value="<?=$_SESSION['telefono']?>" />
+                  <input name="Telefono" type="number" id="ContentPlaceHolder1_Telefono" class="form-control" required="" value="<?=$telefono?>" />
                     <span data-val-controltovalidate="ContentPlaceHolder1_Telefono" data-val-errormessage="Requerido." data-val-display="Dynamic" id="ContentPlaceHolder1_ctl07" class="text-danger" data-val="true" data-val-evaluationfunction="RequiredFieldValidatorEvaluateIsValid" data-val-initialvalue="" style="display:none;">Requerido.</span>
                 </div>
               </div>
@@ -123,7 +156,7 @@
         </div>
     </div>
 <script src="./assets/js/distribucion-cr.js"></script>
-    <script src="./assets/js/formulario.js"></script>
+    <script src="./assets/js/formularioN.js"></script>
 <script>
  $( document ).ready(function() {
      const removeAccents = (str) => {
@@ -142,19 +175,21 @@
         }
     }
     }
-     var provinciaSesion="<?=$_SESSION['provincia']?>";
+     var provinciaSesion="<?=$provincia?>";
      provinciaSesion=removeAccents(provinciaSesion);
     var provincias=document.querySelectorAll("#slt-provincias option");
+    console.log(provincias);
+    console.log(provinciaSesion);
     evaluarInfo(provincias,provinciaSesion);
     
     
-    var cantonSesion="<?=$_SESSION['canton']?>";
+    var cantonSesion="<?=$canton?>";
      cantonSesion=removeAccents(cantonSesion);
     
     $("#slt-cantones").val(cantonSesion);
     $("#slt-cantones").append("<option value='"+cantonSesion+"' selected>"+cantonSesion+"</option>");
     
-   var distritoSesion="<?=$_SESSION['distrito']?>";
+   var distritoSesion="<?=$distrito?>";
      distritoSesion=removeAccents(distritoSesion);
     
     $("#slt-distritos").val(distritoSesion);

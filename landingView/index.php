@@ -9,6 +9,7 @@ $consultaLAF= new lookandfeelModel();
 $respuestaLAF =  $consultaLAF -> consultarLAF();
 $consultaGeneral=new generalModel();
 $profile=$consultaGeneral->consultaProfile();
+$consultaAcercaDe=$consultaGeneral->consultaAcercaDe();
 require_once "../views/principal/socialMedia.php";
 $evaluar=new socialMedia();
 if(isset($_GET['code'])){
@@ -16,178 +17,9 @@ if(isset($_GET['code'])){
   $respuestaLanding = $consultarLanding->consultarLandingCode($_GET['code']);
  
     if($respuestaLanding!=false&& count($respuestaLanding)>0){
-
+require_once "header.php";
 ?>
-<html lang="es">
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title> <?=$profile->name?></title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <!--JQUERY-->
-  <link rel="icon" href="<?phpbase_url2.$profile->logo?>">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-  <!--BOOSTRAP-->
-  <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
- <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
-<!--ANIMACIONES-->
-   <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
- <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
- 
-  <!--ICONOS-->
-  <script src="https://kit.fontawesome.com/b58e5dabf0.js" crossorigin="anonymous"></script>
-  <!--CAROUSEL.css------------->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="" crossorigin="anonymous" />
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="" crossorigin="anonymous"></script>
-
-<!-- Include Unite Gallery core files -->
-
-   <script type="text/javascript"> (function() { var css = document.createElement("link"); css.href = "https://use.fontawesome.com/releases/v5.9.0/css/all.css"; css.rel = "stylesheet"; css.type = "text/css"; document.getElementsByTagName("head")[0].appendChild(css); })(); </script>
-
-   <style>
-        @import url('https://fonts.googleapis.com/css2?family=Chicle&display=swap');
-            @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;900&family=Poppins:wght@400;500;600;700&family=Mukta:wght@200;400;500;700&family=Montserrat+Alternates:wght@200&family=Ubuntu:wght@400;500;700&family=Poiret+One:wght@400;500;700&display=swap');
-	
-            *{
-            font-family: 'Montserrat', sans-serif;
-        }
-        body{
-            background-color: white;
-         }
-        h1{
-            font-size: 20px;
-            font-weight: 800;
-            color:<?=$respuestaLAF['colorPrincipal']?>;
-		 font-family:'<?=$respuestaLAF['fuenteTitulo']?>';
-    font-size: 45px;
-    letter-spacing: 2px;
-        }
-        p{ 
-            font-size: 14px;
-            font-weight: 300;
-            color: rgb(168, 168, 168);
-        }
-
-        .boxt{ 
-            border: 1px solid lightgrey;
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: 200;
-            padding-top: 13px;
-            padding-bottom: 13px;
-            width: 70%;
-            box-shadow: 2px 3px 4px #dbdbdb;
-           font-weight: bold;
-        }
-        .mybutton{ 
-            background-color: rgb(0, 0, 0) !important;
-            width: 70%;
-            border: 1px solid lightgrey;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 800;
-            padding-top: 13px;
-           
-
-        }
-        .mybutton:hover{ 
-            background-color: red!important;
-            border: 1px solid red;
-
-        }
-        .nfull{ 
-            width: 80%;
-        }
-
-        .section2{ 
-            width: 70%;
-            margin-top: 60px;
-            padding-bottom: 20px;
-            margin-top: 80px;
-            margin-bottom: 90px;
-        }
-        .mp-btn{
-            text-decoration:none;
-            color:white;
-            border-radius:50%;
-            border:solid 2px rgba(255,255,255,0.12);
-            padding:5px 9px 5px 9px;
-            color: rgba(255,255,255,0.5);
-            margin:10px;
-            height:20px;
-            width:20px;
-        }
-
-        h2{ 
-            font-size: 18px;
-            font-weight: 700;
-            padding-top: 20px;
-            color: #E4008D;
-    font-family: 'Chicle';
-    font-size: 45px;
-    letter-spacing: 2px;
-        }
-
-        .socialfoot{ 
-         
-            color: white;
-            padding-top: 60px;
-            padding-bottom: 60px;
-
-        }
-
-        .bulled{ 
-            color: red;
-            font-weight: 800;
-        }
-       
-        @media only screen and (max-width: 600px) {
-            .boxt{ 
-            width: 100%;
-            font-weight: bold;
-            }
-            .mybutton{ 
-                width: 100%;
-            }
-            .nfull{ 
-            width: 100%;
-        }
-        .section2{ 
-            width: 100%;
-        }
-
-        .justify{ 
-            padding-right: 5px !important;
-        }
-
-       
-
-        }
-
-        .justify{ 
-            padding-right: 140px;
-        }
-  
-      .resalt{ 
-        color: white;
-        font-weight: 600;
-        font-size: 16px;
-      }
-      .boxt::placeholder {
-         color: black;
-        }
-
-        input.largerCheckbox {
-            width: 22px;
-            height: 22px;
-        }
-   </style>
-</head>
-<body id="body" style='min-height:95vh'>
    <div class="section1 container" style="margin-top: 20px;margin-bottom:50px;min-height:68vh">
         
         <div class="row">
@@ -233,7 +65,7 @@ if(isset($_GET['code'])){
     </div>
 
 
-    <footer class="container-fluid" style="background-color: <?=$respuestaLAF['colorFooter']?>;min-height:25vh;color: <?=$respuestaLAF['footerTextoColor']?>!important;">
+<!--    <footer class="container-fluid" style="background-color: <?=$respuestaLAF['colorFooter']?>;min-height:25vh;color: <?=$respuestaLAF['footerTextoColor']?>!important;">
         <div class="container socialfoot text-center">
             <p>Visite nuestras redes sociales</p>
               <?php
@@ -248,7 +80,7 @@ if(isset($_GET['code'])){
               ?>
         </div>
 
-    </footer>
+    </footer>-->
      <script>
       $( "#landingForm" ).on( "submit", function( event ) {
   event.preventDefault();
@@ -270,7 +102,7 @@ if(isset($_GET['code'])){
                                                  });
                
             window.setTimeout(function () {
-                   //     window.location.href = "../"
+                    window.location.href = "../"
                       }, 2000);
             } else {
                 Swal.fire({
@@ -367,9 +199,10 @@ if(isset($_GET['code'])){
         
        
         </script>
-</body>
+
 
 <?php
+          require_once "footer.php";
     } else {
     echo "<script>window.location.href = '".base_url."'</script>";
 }

@@ -185,7 +185,7 @@
      $("#formularioRegistro").on('submit', function(evt){
     evt.preventDefault();  
     console.log($("#estadoProducto").val());
-        if($("#nombre").val()!=''&&$("#estadoProducto").val()!=-1&&$("#categoria").val()!=-1&&$("#file-1").val()!=''&&$("#littledescription").val()!=''){
+        if($("#nombre").val()!=''&&$("#estadoProducto").val()!=-1&&$("#categoria").val()!=-1&&$("#file-1").val()!=''&&$("#littledescription").val()!=''&&$("#file-1").val()!=''){
             document.getElementById('formularioRegistro').submit();
         }else {
             if($("#nombre").val()==''){
@@ -208,6 +208,11 @@
                  $(".msnAlertDesc").css("display","block");
             }else {
                 $(".msnAlertDesc").css("display","none");
+            }
+            if($("#file-1").val()==''){
+                 $(".msnAlertImg").css("display","block");
+            }else {
+                $(".msnAlertImg").css("display","none");
             }
         }
  });

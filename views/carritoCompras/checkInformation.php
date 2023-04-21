@@ -116,40 +116,49 @@ if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][
                                     <?=isset($valueCarrito['listAttribute'])&&!empty($valueCarrito['listAttribute'])?"Selección: ".$valueCarrito['listAttribute']:'';?>
                                 </td>
                       
-                    <td class="text-center text-lg text-medium">
+                    <td class="text-num text-lg text-medium">
                         <?=$subTotal?>
                     </td>
-                    <td class="text-center text-lg text-medium">
+                    <td class="text-num text-lg text-medium">
                         <?=$impTotal?>
                     </td>
-                    <td class="text-center text-lg text-medium">
+                    <td class="text-num text-lg text-medium">
                         <?=$total?>
                     </td>
                       
-                    <td class="text-center"><a class="btn btn-outline-primary btn-sm mt-4" href="<?=base_url?>?pag=carrito">Editar</a></td>
+                    <td class="text-right"><a class="btn btn-outline-primary btn-sm mt-4" href="<?=base_url?>?pag=carrito">Editar</a></td>
                   </tr>
                     <?php
                     }
                     //Adicionar el costo de entrega
                   if($shippingCost!=0){
                         $impuestosFinal = $impuestosFinal + ($shippingCost*0.13);    
-                        $subtotalFinal = $subtotalFinal + $shippingCost;
-                        $totalFinal = $impuestosFinal + $subtotalFinal;
+                        $totalFinal = $impuestosFinal + $subtotalFinal +$shippingCost;
                     }
                     ?>
                 </tbody>
               </table>
 <hr>
 <div class="justify-content-between w-100 d-flex">
-    <div style="font-size:20px;">Subtotal</div><div class="mr-4" style="font-size:17px;">₡<span class="ml-1"><?=$subtotalFinal?></span></div>
+    <div style="font-size:20px;">Subtotal</div><div class="mr-4 text-right" style="font-size:17px;">₡<span class="ml-1"><?=$subtotalFinal?></span></div>
+</div>
+<hr>
+<?php
+if($shippingCost!=0){
+?>
+<div class="justify-content-between w-100 d-flex">
+    <div style="font-size:20px;">Costo de Envío </div><div class="mr-4 text-right" style="font-size:17px;">₡<span class="ml-1"><?=$shippingCost?></span></div>
+</div>
+<?php
+}
+?>
+<hr>
+<div class="justify-content-between w-100 d-flex">
+    <div style="font-size:20px;">Impuestos</div><div class="mr-4 text-right" style="font-size:17px;">₡<span class="ml-1"><?=$impuestosFinal?></span></div>
 </div>
 <hr>
 <div class="justify-content-between w-100 d-flex">
-    <div style="font-size:20px;">Impuestos</div><div class="mr-4" style="font-size:17px;">₡<span class="ml-1"><?=$impuestosFinal?></span></div>
-</div>
-<hr>
-<div class="justify-content-between w-100 d-flex">
-    <div style="font-size:20px;"><strong>Total</strong></div><div class="mr-4" style="font-size:17px;">₡<span class="ml-1"><?=$totalFinal?></span></div>
+    <div style="font-size:20px;"><strong>Total</strong></div><div class="mr-4 text-right" style="font-size:17px;">₡<span class="ml-1"><?=$totalFinal?></span></div>
 </div>
             </div>
             <div class="shopping-cart-footer">
@@ -191,7 +200,7 @@ if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][
   <p id="mensajePass"></p>
 </div>
             <div class="checkout-footer margin-top-1x">
-              <div class="column hidden-xs-down"><a class="btn btn-outline-secondary" href="checkout-payment"><i class="icon-arrow-left"></i>&nbsp;Regresar</a></div>
+              <div class="column hidden-xs-down"><a class="btn btn-outline-secondary" href="<?=base_url?>?pag=checkout&&step=payment"><i class="icon-arrow-left"></i>&nbsp;Regresar</a></div>
               <div class="column">
                   <input type="button" name="" style="font-size:15px;text-transform: uppercase"  value="Ordenar" id="btnCompletar" class="btn btn-outline-primary-2" />
               </div>
@@ -214,13 +223,14 @@ if(isset($_SESSION['carrito'][0]['listAttribute'])&&!empty($_SESSION['carrito'][
     data : data,
     beforeSend:function(){
                 Swal.fire({
-                title: 'Por favor espere !',
-                html: 'procesando su orden',// add html attribute if you want or remove
-                allowOutsideClick: false,
-                onBeforeOpen: () => {
-                    Swal.showLoading()
-                },
-            });
+                    title: 'Por favor espere !',
+                html: 'Procesando su orden',// add html attribute if you want or remove
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                      Swal.showLoading()
+                    }
+                  });
          $("#btnCompletar").prop('disabled', true);
             },
    success:function(dat){

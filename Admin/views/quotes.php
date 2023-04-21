@@ -18,6 +18,7 @@
                     </div>
                 </div>
 <div class="m-auto" id="myContent">
+    
             <div class="table-responsive">
               <table class="table table-striped table-hover margin-bottom-none table-bordered " id="generalTable">
                 <thead>
@@ -48,8 +49,8 @@
                    <td><?=$respQuoteResp['provincia']."/".$respQuoteResp['canton']."/".$respQuoteResp['distrito']."/".$respQuoteResp['direccion']?></td>
                     <td><?=$respQuoteResp['fecha']?></td>
                      <td><?=$respQuoteResp['estado']?></td>
-                    <td><button class="btn btn-outline-secondary" onclick="mostrarDetalles('<?=$respQuoteResp['codigo']?>')">Ver Detalles</button>
-                    <button class="btn btn-outline-info" onclick="cambiarEstado('<?=$respQuoteResp['codigo']?>')">Editar</button>
+                    <td><button class="btn btn-outline-secondary" onclick="mostrarDetalles('<?=$respQuoteResp['codigo']?>','<?=$respQuoteResp['cliente']." ".$respQuoteResp['apellido']?>', '<?=$respQuoteResp['email']."/".$respQuoteResp['telefono']?>','<?=$respQuoteResp['provincia']."/".$respQuoteResp['canton']."/".$respQuoteResp['distrito']."/".$respQuoteResp['direccion']?>','<?=$respQuoteResp['fecha']?>','<?=$respQuoteResp['estado']?>')">Ver Detalles</button>
+                    <button class="btn btn-outline-info" onclick="cambiarEstado('<?=$respQuoteResp['codigo']?>','<?=$respQuoteResp['idEstado']?>')">Editar</button>
                     </td>
                     
                     
@@ -67,7 +68,7 @@
      </div>
  
        <div class="modal fade" id="modalDetalles" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
        <div class="modal-content">
          <div class="modal-header">
            <h5 class="modal-title" id="exampleModalLabel">Detalles de Cotización</h5>
@@ -77,6 +78,34 @@
          </div>
 
          <div class="modal-body">
+             <div ><h3>Datos Generales</h3><hr>
+        <div class="row">
+            <div class="col-6 text-left"><strong>Orden</strong></div>
+            <div class="col-6 text-right" id="info_orden"></div>
+        </div>
+        <div class="row">
+            <div class="col-6 text-left"><strong>Cliente</strong></div>
+            <div class="col-6 text-right" id="info_cliente"></div>
+        </div>
+        <div class="row">
+            <div class="col-6 text-left"><strong>Contacto</strong></div>
+            <div class="col-6 text-right" id="info_contacto"></div>
+        </div>
+        <div class="row">
+            <div class="col-6 text-left"><strong>Dirección de Entrega</strong></div>
+            <div class="col-6 text-right" id="info_direccion"></div>
+        </div>
+        <div class="row">
+            <div class="col-6 text-left"><strong>Fecha</strong></div>
+            <div class="col-6 text-right" id="info_fecha"></div>
+        </div>
+        <div class="row">
+            <div class="col-6 text-left"><strong>Estado</strong></div>
+            <div class="col-6 text-right" id="info_estado"></div>
+        </div>
+        
+    </div>
+             <div class="overflow-auto">
       <table class="table table-hover mt-4">
   <thead>
     <tr>
@@ -84,7 +113,7 @@
       <th scope="col">Nombre Artículo</th>
       
        <th scope="col">Cantidad</th>
-              <th scope="col">Notas</th>
+              <th scope="col" style="min-width:200px;">Notas</th>
               <th scope="col">Archivo</th>
 
     </tr>
@@ -93,6 +122,7 @@
       
 </tbody>
 </table>
+                 </div>
          </div>
          <div class="modal-footer">
            <button type="button" class="btn btn-secondary" onclick='cerrarModal()'>Cerrar</button>
@@ -120,7 +150,14 @@ $("#estadoCotizacion" ).change(function() {
     });
     });
 
-function mostrarDetalles(code){
+function mostrarDetalles(code,cliente,contacto,direccion,fecha,estado){
+    $("#info_orden").text(code);
+    $("#info_cliente").text(cliente);
+    $("#info_contacto").text(contacto);
+    $("#info_direccion").text(direccion);
+    $("#info_fecha").text(fecha);
+    $("#info_estado").text(estado);
+    
     let data = {
         "action":"mostrarDetalles",
         "code":code
@@ -153,9 +190,20 @@ function mostrarDetalles(code){
                           celda.appendChild(textoCelda);
                            hilera.appendChild(celda);
                            var celda = document.createElement("td");
-                          var textoCelda = document.createTextNode(objetoJson[i]['Nota']);
-                          celda.appendChild(textoCelda);
-                           hilera.appendChild(celda);
+                           if(objetoJson[i]['Nota']){
+                                var textoCelda = document.createTextNode(objetoJson[i]['Nota']);
+                                let dv = document.createElement("div");
+                                dv.setAttribute("onclick", "verNota('"+objetoJson[i]['Nota']+"')");
+                                dv.setAttribute("class", "btn btn-info");
+                                let dvTexto = document.createTextNode("Ver Nota");
+                                dv.appendChild(dvTexto);
+                                celda.appendChild(dv);
+                                hilera.appendChild(celda);
+                           } else {
+                                var textoCelda = document.createTextNode("No hay notas que mostrar");
+                                celda.appendChild(textoCelda);
+                                hilera.appendChild(celda);
+                           }
                             var celda = document.createElement("td");
                           
                           if(objetoJson[i]['Files']!=''){
@@ -203,7 +251,23 @@ function cerrarModal(){
   $("#modalDetalles").modal("hide");  
     
 }
-function cambiarEstado(code){
+function verNota(dataNote){
+    let notas = '';
+    if(dataNote!=''){
+        notas = dataNote;
+    } else {
+        notas='No hay información que mostrar';
+    }
+    Swal.fire({
+  title: '<strong>Notas</strong>',
+  icon: 'info',
+  html:notas,
+  showCloseButton: true,
+  focusConfirm: false,
+  
+})
+}
+function cambiarEstado(code,idEstado){
 (async () => {
 const { value: status } = await Swal.fire({
   title: 'Seleccione una opción',
@@ -215,6 +279,7 @@ const { value: status } = await Swal.fire({
   },
   inputPlaceholder: 'Seleccione una opción',
   showCancelButton: true,
+  inputValue:idEstado,
   inputValidator: (value) => {
     return new Promise((resolve) => {
         resolve()

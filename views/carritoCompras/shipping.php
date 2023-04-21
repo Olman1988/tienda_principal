@@ -1,4 +1,16 @@
 <?php
+$provincia = '';
+$canton = '';
+$distrito = '';
+$direccion = '';
+$ShippingCost = '';
+if(isset($_SESSION['orden']['tipoEnvio'])&&$_SESSION['orden']['tipoEnvio']['radio']=='Ubicacion'){
+    $provincia = $_SESSION['orden']['tipoEnvio']['provincia'];
+    $canton = $_SESSION['orden']['tipoEnvio']['canton'];
+    $distrito = $_SESSION['orden']['tipoEnvio']['distrito'];
+    $direccion = $_SESSION['orden']['tipoEnvio']['direccion'];
+    $ShippingCost = $_SESSION['orden']['tipoEnvio']['ShippingCost'];
+}
 ?>
 <div class="page-title" id='page-title'>
         <div class="container">
@@ -60,12 +72,12 @@
                         
                     <td class="align-middle" id="radio_row" style="width:50px;cursor:pointer">
                         
-                      <input style="width:15px;height:15px;opacity:1" class="radioForm" id="" type="radio" name="modoEnvio" value="Ubicacion" value="Ubicacion" />
+                      <input style="width:15px;height:15px;opacity:1" <?=$ShippingCost!=''?'checked':'';?> class="radioForm" id="" type="radio" name="modoEnvio" value="Ubicacion" value="Ubicacion" />
                     </td>
                     <td class="align-middle"><span class="text-medium">Ubicación</span><br>
                         <form id="formMetodo">
-                            <input type="hidden" name="action" value="carritoEnvio">
-                            <input type="hidden" name="radio" value="Ubicacion">
+                            <input type="hidden" name="action" value="carritoEnvio" <?=$ShippingCost!=''?'checked':'';?>>
+                            <input type="hidden" name="radio" value="Ubicacion"  <?=$ShippingCost!=''?'checked':'';?>>
 
                         <div class="row">
                   <div class="col-sm-4">
@@ -99,7 +111,7 @@
               </div>
                         <div class="row">
                   <div class="col-sm-12">
-                        <input name="direccion" type="text" id="direccion" placeholder="Dirección de entrega" class="form-control" required="" value="" />
+                      <input name="direccion" type="text" id="direccion" placeholder="Dirección de entrega" class="form-control" required="" value="<?=$direccion!=''?$direccion:'';?>" />
                   <p id="requiredDireccion" style="color:red;display:none">***Espacio Requerido</p>  
                   </div>
                     </div>
@@ -107,7 +119,7 @@
                     </td>
                     <td class="align-middle">
                         <button class="btn btn-outline-primary-2" onclick="calculateCost()">Calcular Costo</button>
-                        <div id="container_cost" class ="text-center mt-2" style="display:none;font-size:20px;font-weight:600"><span id="cost_envio"></span></div>
+                        <div id="container_cost" class ="text-center mt-2" style="display:<?=$ShippingCost!=''?'block':'none';?>;font-size:20px;font-weight:600"><span id="cost_envio">₡ <?php echo $ShippingCost?></span></div>
                     </td>
                     
                   </tr>
@@ -132,6 +144,43 @@
     <script src="./assets/js/formulario.js"></script>
     
     <script>
+         $( document ).ready(function() {
+     const removeAccents = (str) => {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+} 
+    
+    
+    function evaluarInfo(array,infoValidar){
+    for(let i=0;i<array.length;i++){
+        let valoraComparar=removeAccents(array[i].value);
+        if(valoraComparar==infoValidar){
+          //  $("#slt-provincias").val(provinciaSesion);
+          array[i].setAttribute("selected",true);
+        }
+    }
+    }
+    
+     var provinciaSesion="<?=$provincia?>";
+     provinciaSesion=removeAccents(provinciaSesion);
+    var provincias=document.querySelectorAll("#slt-provincias option");
+    evaluarInfo(provincias,provinciaSesion);
+    
+    
+    var cantonSesion="<?=$canton?>";
+    if(cantonSesion!=''){
+     cantonSesion=removeAccents(cantonSesion);
+    
+    $("#slt-cantones").val(cantonSesion);
+    $("#slt-cantones").append("<option value='"+cantonSesion+"' selected>"+cantonSesion+"</option>");
+    }
+   var distritoSesion="<?=$distrito?>";
+   if(distritoSesion!=''){
+     distritoSesion=removeAccents(distritoSesion);
+    
+    $("#slt-distritos").val(distritoSesion);
+    $("#slt-distritos").append("<option value='"+distritoSesion+"' selected>"+distritoSesion+"</option>");
+    }
+});
         var existsCost = false;
         var respCalc = false;
       function calculateForUbicacion(){
@@ -139,24 +188,29 @@
           let canton = $("#slt-cantones").val();
           let district = $("#slt-distritos").val();
           let address = $("#direccion").val();
-          
-          if(province===''||province=='-- Seleccione una provincia --'||province==null){
+          let enviar = true;
+          if(province===''||province.includes('Seleccione')||province==null){
               $("#requiredProvincia").css("display","block");
+              enviar = false;
           } else {
               $("#requiredProvincia").css("display","none");
           }
-          if(canton===''||canton=='-- Seleccione un cantón --'||canton==null){
+          console.log(canton);
+          if(canton===''||canton.includes('Seleccione') ||canton==null||canton==0){
               $("#requiredCanton").css("display","block");
+              enviar = false;
           }else {
               $("#requiredCanton").css("display","none");
           }
-          if(district===''||district=='-- Seleccione un distrito --'||district==null){
+          if(district===''||district.includes('Seleccione')||district==null||district==0){
               $("#requiredDistrito").css("display","block");
+              enviar = false;
           } else {
              $("#requiredDistrito").css("display","none"); 
           }
           if(address===''){
               $("#requiredDireccion").css("display","block");
+              enviar = false;
           } else {
               $("#requiredDireccion").css("display","none");
           }
@@ -168,7 +222,7 @@
               "address":address
           }
           let dataFormulario='';
-          if(province!=''&&canton!=''&&district!=''&&address!=''){
+          if(enviar){
               $.ajax({
                     type : 'POST',
                     url : './controllers/generalController.php',

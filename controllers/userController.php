@@ -2,6 +2,12 @@
 session_start();
 require_once '../models/userModel.php';
 class userController{
+    private $user;
+    public function __construct() {
+        $this->user= new userModel();
+    }
+
+    
     public function iniciarSesion($email,$pass){
         $user= new userModel();
         $respuestaUsuario=$user->iniciarSesion($email);
@@ -114,6 +120,47 @@ class userController{
         echo $respuestaAct;
         
     }
+    public function verifyEmail($email){
+        $res=[];
+        $respUser = $this->user->verifyEmail($email);
+        if(count($respUser)<=0){
+            $res['msn'] = 'Los datos proporcionados son incorrectos, el correo indica no existe en el sistema';
+            $res['status'] = false;
+        }else {
+            $OTP = $this->OTPGenerator();
+            $resp = $this->user->updateToken($email);
+            $resp = $this->user->insertToken($OTP,$email);
+
+            if($resp){
+                require_once '../email/reset.php';
+				$sendReset = new reset();
+				
+                $res['msn'] = 'Correo enviado';
+                $res['status'] = $sendReset->resetPass($email,$OTP);
+            }
+        }
+      return $res;
+    }
+    public function OTPGenerator(){
+        $otp = uniqid('', true);
+        return $otp;
+    }
+    public function validateOTP($email,$otp){
+        $resp = $this->user->validateOTP($email,$otp);
+        if(count($resp)>0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function updatePassword($passConfirm,$email){
+        $resp = $this->user->updatePassword($passConfirm,$email);
+        return $resp;
+    }
+    public function updateTokenUsed($otp){
+        $resp = $this->user->updateTokenUsed($otp);
+        return $resp; 
+    }
     
 }
 
@@ -134,6 +181,11 @@ if(isset($_POST['action'])){
             
 
             break;
+        case "reset":
+            $user= new userController();
+            $respuesta=$user->verifyEmail($_POST['email']);
+            echo json_encode($respuesta);
+            break;
         case "actualizar":
        
             $user= new userController();
@@ -146,7 +198,41 @@ if(isset($_POST['action'])){
             $respuesta=$user->cambiarPass();
             echo $respuesta;
             break;
-
+        case "change-password":
+                $resp='';
+                $respUser = [];
+                $email = !empty($_POST['email'])?filter_var(addslashes($_POST['email']), FILTER_SANITIZE_EMAIL):'';
+                $passConfirm = !empty($_POST['newPasswordConfirm'])?filter_var(addslashes($_POST['newPasswordConfirm']), FILTER_SANITIZE_STRING):'';
+                $pass = !empty($_POST['newPassword'])?filter_var(addslashes($_POST['newPassword']), FILTER_SANITIZE_STRING):'';
+                $otp = !empty($_POST['OTP'])?filter_var(addslashes($_POST['OTP']), FILTER_SANITIZE_STRING):'';
+                $user= new userController();
+                $isValidOTP = $user->validateOTP($email,$otp);
+                if($isValidOTP){
+                    if($passConfirm==$pass){
+                        $resp = $user -> updatePassword($passConfirm,$email);
+                        if($resp){
+                            $resp = $user->updateTokenUsed($otp);
+                        }
+                        if($resp){
+                           $respUser['msn'] = 'Restablecimineto de contraseña exitoso';
+                           $respUser['status'] = true; 
+                        } else {
+                           $respUser['msn'] = 'Ha ocurrido un error al guardar los datos, intente nuevamente';
+                           $respUser['status'] = false; 
+                        }
+                        
+                    }else{
+                        $respUser['msn'] = 'Ha ocurrido un error al guardar los datos, intente nuevamente';
+                        $respUser['status'] = false;
+                    }
+                } else {
+                    
+                    $respUser['msn'] = 'Es posible que el enlace haya caducado o que la información ingresada sea incorrecta, intente nuevamente';
+                    $respUser['status'] = false;
+                }
+                header('Content-Type: application/json');
+                echo json_encode($respUser);
+                break;
         default:
             break;
     }

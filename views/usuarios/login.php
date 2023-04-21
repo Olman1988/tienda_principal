@@ -37,7 +37,8 @@
                   <span id="ContentPlaceHolder1_FailureText"></span>
                   <a class="enlace-form" href="<?=base_url?>?pag=cuenta&&func=registro">Crear cuenta</a>  
                   
-                  <a class="enlace-form" href="">¿Olvidó su contraseña?</a> 
+                  
+                  <a class="enlace-form" href="<?=base_url?>?pag=cuenta&&func=reset">¿Olvidó su contraseña?</a> 
               </div>
               <div class="text-center text-sm-right">
                   <button class="btn btn-outline-primary float-right mt-3" style="font-size:15px;text-transform:uppercase;">Iniciar</button>
@@ -80,6 +81,7 @@ let pass=$("#pass").val();
     data : $('#login-box').serialize(),
    success:function(dat){
             if(dat==true){
+                let redirect = "<?=isset($_GET['from'])&&!empty($_GET['from'])?"pag=carrito":'pag=cuenta&&func=perfil'?>";
             Swal.fire({
                                                    icon: 'success',
                                                    title: 'Sesión Iniciada',
@@ -87,7 +89,7 @@ let pass=$("#pass").val();
 
                                                  });
                                                  window.setTimeout(function () {
-                            window.location.href = "./?pag=carrito"
+                            window.location.href = "./?"+redirect
                         }, 2000);
             } else {
                 if(dat=='Admin'){

@@ -12,7 +12,6 @@ class cotizacion{
     public function __construct() {
         $consultaGeneral=new generalModel();
         $this->profile=$consultaGeneral->consultaProfile();
-        
     }
     public function sendEmailQuote($nombre,$email,$code,$data){
         require_once '../email/principalController.php';
@@ -36,12 +35,13 @@ class cotizacion{
         $mail->SMTPAutoTLS = false;
         $mail->SMTPSecure = false;
         $mail->Host = 'tecnosula.com';
+        $mail->CharSet = 'UTF-8';
         $mail->Port = 25;
         $mail->SMTPAuth = true;
         $mail->isHTML(true);
         $mail->Username = 'contacto@tecnosula.com';
         $mail->Password = 'C0ntact0/2022*1';
-        $mail->setFrom('contacto@tecnosula.com', 'Tienda');
+        $mail->setFrom('contacto@tecnosula.com', $this->profile->name);
 
 
             $mail->addAddress($email, 'Cliente');
@@ -68,13 +68,13 @@ class cotizacion{
         $msnData['info'] = "Ha recibido una solicitud #".$code." para cotizar con los siguintes datos";
         $intro = '';
         $intro .= '<ul>';
-        $intro .= '<li>Nombre:'.$nombre.'</li>';
-        $intro .= '<li>Email: '.$email.'</li>';
-        $intro .= '<li>Identificación: '.$DNI.'</li>';
-        $intro .= '<li>Provincia: '.$provincia.'</li>';
-        $intro .= '<li>Cantón: '.$canton.'</li>';
-        $intro .= '<li>Distrito: '.$distrito.'</li>';
-        $intro .= '<li>Dirección: '.$direccion.'</li>';
+        $intro .= '<li>Nombre:'.utf8_decode($nombre).'</li>';
+        $intro .= '<li>Email: '.utf8_decode($email).'</li>';
+        $intro .= '<li>Identificación: '.utf8_decode($DNI).'</li>';
+        $intro .= '<li>Provincia: '.utf8_decode($provincia).'</li>';
+        $intro .= '<li>Cantón: '.utf8_decode($canton).'</li>';
+        $intro .= '<li>Distrito: '.utf8_decode($distrito).'</li>';
+        $intro .= '<li>Dirección: '.utf8_decode($direccion).'</li>';
         $intro .= '<li>Número telefónico: '.$telefono.'</li>';
         $intro .= '</ul>';
         $msnData['intro'] = $intro;
@@ -90,16 +90,17 @@ class cotizacion{
         $mail->SMTPDebug = SMTP::DEBUG_OFF ;  // SMTP::DEBUG_OFF = off;// SMTP::DEBUG_SERVER
         $mail->SMTPAutoTLS = false;
         $mail->SMTPSecure = false;
+        $mail->CharSet = 'UTF-8';
         $mail->Host = 'tecnosula.com';
         $mail->Port = 25;
         $mail->SMTPAuth = true;
         $mail->isHTML(true);
         $mail->Username = 'contacto@tecnosula.com';
         $mail->Password = 'C0ntact0/2022*1';
-        $mail->setFrom('contacto@tecnosula.com', 'Tienda');
+        $mail->setFrom('contacto@tecnosula.com', $this->profile->name);
 
             $mail->addAddress($this->profile->infoEmail, 'Cliente');
-            $mail->Subject = 'Cotizacion '.$code;
+            $mail->Subject = utf8_decode('Cotización ').$code;
             $mail->Body = $respTemplate; 
 
         //ENVIO DE CORREO

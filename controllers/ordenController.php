@@ -130,7 +130,7 @@ class ordenController{
     try {
             $db = conexion::getConnect();//Aqui se conecta a la base de datos
                // $consulta =$db->prepare("SELECT i.id, i.nombre, i.modelo, i.marca, i.descripcion, i.cantidad, i.precio, ci.nombre AS categoria, cs.nombre AS subcategoria, i.image, e.nombre AS estado FROM tbl_productos i INNER JOIN tbl_categorias ci ON i.id_categoria = ci.id INNER JOIN tbl_subcategorias cs ON i.id_subcategoria = cs.id INNER JOIN tbl_estados e ON i.estado = e.id ORDER BY id");
-           $consulta =$db->prepare("SELECT od.cantidad,od.art_Descripcion,od.price, od.taxAmount,od.totalPrice,od.personalizacion FROM OrdenDetalle od INNER JOIN Orden o ON o.id= od.idOrden INNER JOIN Articulo a ON od.art_CodigoArticulo = a.art_CodigoArticulo where o.codigo"
+           $consulta =$db->prepare("SELECT a.art_CodigoArticulo as ID, od.cantidad,od.art_Descripcion,od.price, od.taxAmount,od.totalPrice,od.personalizacion FROM OrdenDetalle od INNER JOIN Orden o ON o.id= od.idOrden INNER JOIN Articulo a ON od.art_CodigoArticulo = a.art_CodigoArticulo where o.codigo"
                    . "='$code'");
            $consulta->execute();
             
@@ -146,13 +146,8 @@ class ordenController{
         return $respuesta;  
         }
         public function updateOrden($impuestosFinal,$subtotalFinal,$totalFinal,$respCosto,$id){
-//            $respCostoN = isset($respCosto[0]['generalShipping'])?($respCosto[0]['generalShipping']):0;
-//            
-//            
-//            $impuestosFinal = $impuestosFinal+($respCostoN*0.13);
-//            $subtotalFinal = $subtotalFinal;
-//            $totalFinal = $impuestosFinal+$subtotalFinal+$respCostoN;
-            $resp = false;
+
+            $respuesta = false;
             try {
             $db = conexion::getConnect();
             $consulta=$db->prepare("UPDATE Orden SET Total = :totalFinal, TotalTax = :impuestosFinal, SubTotal = :subtotalFinal, Shipping = :shipping where id = :id");
@@ -174,10 +169,30 @@ class ordenController{
         
       return $respuesta;
         }
+        public function updateStatus($code,$status){
+            $respuesta = false;
+            try {
+            $db = conexion::getConnect();
+            $consulta=$db->prepare("UPDATE Orden SET estado = :status  where codigo = :code");
+            
+             $db->beginTransaction(); //inicia la transaccion
+           
+            $consulta->bindValue(':code',$code); 
+            $consulta->bindValue(':status',$status);
+            $consulta->execute();
+         $respuesta=$db->commit();
+        } catch (PDOException $e) {
+            echo "se ha presentado un error " . $e->getMessage();
+            throw $e;
+           
+        }
+      return $respuesta;
+      
+        }
     
 }
 
- if(isset($_POST['action']) &&$_POST['action']== 'mostrarDetalles'){
+ if(isset($_POST['action']) &&$_POST['action']== 'mostrarDetalles' ||$_POST['action']== 'updateStatus'){
         switch ($_POST['action']) {
             case "mostrarDetalles":
                 $ordenes= new ordenController();
@@ -185,6 +200,19 @@ class ordenController{
                 
                 $respuesta = json_encode($respuestaCode);
                 echo $respuesta;
+                break;
+            case "updateStatus":
+                $respuesta=[];
+                $ordenes= new ordenController();
+                $respuestaCode = $ordenes->updateStatus($_POST['code'],$_POST['status']);
+                if($respuestaCode){
+                    $respuesta['status'] =  true;
+                    $respuesta['msn'] =  "Elemento modificado con éxito";
+                } else {
+                    $respuesta['status'] =  false;
+                    $respuesta['msn'] =  "Error al modificar elemento";
+                }
+                echo json_encode($respuesta);
                 break;
 
             default:
