@@ -741,7 +741,32 @@ $securityAdmin = $security->isAdmin();
                                             $respuestaDatos = [];
                                         }
                                         require_once 'views/perfiltienda.php';
-                                    }                                      
+                                    }
+                                break;
+                                case 'about_us':
+                                    require_once "../controllers/aboutusController.php";
+                                    $ABOUT = new aboutusController();
+                                    
+                                    if(isset($_GET['action'])){
+                                        switch ($_GET['action']){
+                                            case "edit":
+                                                if(isset($_GET['codigo'])){
+                                                    //$_POST['action'] es encesario para usar la direccion de directorio de model correcta
+                                                    $modelNotRequired = true;
+                                                    $oneAU = $ABOUT->getAUByCode($_GET['codigo']);
+                                                    require_once 'views/about_us/edit-page.php'; 
+                                                }
+                                            break;
+                                            case "action-edit":
+                                                require_once "../controllers/aboutusController.php";
+                                            break;
+                                            default:
+                                            break;
+                                        }
+                                    } else {
+                                        $respuestaDatos = $ABOUT->consultarPaginas();
+                                        require_once 'views/about_us.php'; 
+                                    }
                                 break;
                                 case 'config_general':
                                     require_once "../controllers/configController.php";

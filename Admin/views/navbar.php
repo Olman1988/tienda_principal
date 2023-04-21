@@ -23,15 +23,17 @@
             <div class="collapse show" id="home-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li class="nav-item secondary-link">
-          
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=dashboard"><i class="fa-solid fa-gauge icon-admin"></i>Dashboard</a>
-        </li>
+				<a class="nav-link" href="<?=base_url?>Admin/?seccion=dashboard"><i class="fa-solid fa-gauge icon-admin"></i>Dashboard</a>
+			</li>
             <li class="nav-item secondary-link">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=perfil_tienda"><i class="fa-solid fa-id-card"></i>Perfil de Tienda</a>
-        </li>
-        <li class="nav-item secondary-link">
-            <a class="nav-link" href="<?=base_url?>Admin/?seccion=config_general"><i class="fa-solid fa-wrench"></i>Configuración Generales</a>
-        </li>
+				<a class="nav-link" href="<?=base_url?>Admin/?seccion=perfil_tienda"><i class="fa-solid fa-id-card"></i>Perfil de Tienda</a>
+			</li>
+			<li class="nav-item secondary-link">
+				<a class="nav-link" href="<?=base_url?>Admin/?seccion=config_general"><i class="fa-solid fa-wrench"></i>Configuración Generales</a>
+			</li>
+			<li class="nav-item secondary-link">
+				<a class="nav-link" href="<?=base_url?>Admin/?seccion=about_us"><i class="fa-solid fa-user-gear"></i>Acerca de</a>
+			</li>
           </ul>
         </div>
         </li>

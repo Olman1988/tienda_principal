@@ -47,8 +47,6 @@ td{
         </div>
     </div>
     <script>
-        var imagenNombre = '';
-        var IDProduct = '';
         $(document).ready(function() {
             (function(document, window, index) {
                 var inputs = document.querySelectorAll('.inputfile');
