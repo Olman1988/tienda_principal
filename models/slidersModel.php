@@ -36,20 +36,8 @@ class slidersModel{
     }
     public function insertSlider($nombrefinal,$url,$order,$type){
         try {
-            $colPath  = '';
-            $colUrl   = '';
-            if($type == 1){
-                $colPath  = 'sliderPath';    
-                $colUrl   = 'url';            
-            }else if($type == 2){
-                $colPath  = 'sliderPathMobile';  
-                $colUrl   = 'url_mobile';              
-            }else if($type == 3){
-                $colPath  = 'sliderPathMovimiento';
-                $colUrl   = 'url_movimiento';
-            }
             $db = conexion::getConnect();
-            $consulta=$db->prepare("INSERT INTO [dbo].[HomeTypeSlider](" . $colPath . ", " . $colUrl . ", [order], [type], [Status])"
+            $consulta=$db->prepare("INSERT INTO [dbo].[HomeTypeSlider]([sliderPath], [url], [order], [type], [Status])"
                     . "VALUES (:sliderPath,:url,:order,:type, 1)");
             
             $db->beginTransaction(); //inicia la transaccion
@@ -86,23 +74,11 @@ class slidersModel{
     }
     public function updateSlider($nombrefinal,$url,$order,$type,$Status,$id){
         try {
-            $colPath = '';
-            $colUrl = '';
-            if($type == 1){
-                $colPath = 'sliderPath';
-                $colUrl = 'url';
-            }else if($type == 2){
-                $colPath = 'sliderPathMobile';
-                $colUrl = 'url_mobile';
-            }else{
-                $colPath = 'sliderPathMovimiento';
-                $colUrl = 'url_movimiento';
-            }
 
             $db = conexion::getConnect();
             $consulta=$db->prepare("UPDATE [dbo].[HomeTypeSlider] SET 
-                                        " . $colPath . " =:sliderPath,
-                                        " . $colUrl ." =:url,
+                                        [sliderPath] =:sliderPath,
+                                        [url] =:url,
                                         [order] =:order,
                                         [type] =:type,
                                         [Status] =:status

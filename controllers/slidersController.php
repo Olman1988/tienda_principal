@@ -69,18 +69,8 @@ if(isset($_POST['action'])){
             $type            = !empty($_POST['type'])? filter_var($_POST['type'], FILTER_SANITIZE_NUMBER_INT): 0;
 
             if($title){
-                switch($type){
-                    case '1':
-                        $Path = '../images/slider/';
-                    break;
-                    case '2':
-                        $Path = '../images/slider/mobile/';
-                    break;
-                    case '3':
-                        $Path = '../images/slider/movimiento/';
-                    break;
-                }
                 if(isset($_FILES['file']['name']) && $_FILES['file']['name']!=''){
+                    $Path = '../images/slider/';
                     $archivo = $_FILES['file']['name'];
                     $tipo = $_FILES['file']['type'];
                     $tamano = $_FILES['file']['size'];
@@ -106,7 +96,7 @@ if(isset($_POST['action'])){
                 }
                 $nombrefinal = "/images/slider/".$nombrefinal;
 
-                $respuestaInsertar = $slider-> insertSlider($nombrefinal,$url,$order,$type);
+                $respuestaInsertar = $slider->insertSlider($nombrefinal,$url,$order,$type);
                 if($respuestaInsertar){
                     echo"<script>Swal.fire('Elemento guardado con éxito!', '', 'success');";
                     echo"window.setTimeout(function () {window.location.href = './?seccion=sliders'}, 2000)</script>";
@@ -139,19 +129,8 @@ if(isset($_POST['action'])){
             $type            = !empty($_POST['type'])? filter_var($_POST['type'], FILTER_SANITIZE_NUMBER_INT): 0;
             $Status          = !empty($_POST['status'])? filter_var($_POST['status'], FILTER_VALIDATE_BOOLEAN): false;
 
-            switch($type){
-                case '1':
-                    $Path = '../images/slider/';
-                break;
-                case '2':
-                    $Path = '../images/slider/mobile/';
-                break;
-                case '3':
-                    $Path = '../images/slider/movimiento/';
-                break;
-            }
-            
             if(isset($_FILES['file']['name']) && $_FILES['file']['name']!=''){
+                $Path = '../images/slider/';
                 $archivo = $_FILES['file']['name'];
                 $tipo = $_FILES['file']['type'];
                 $tamano = $_FILES['file']['size'];
@@ -179,7 +158,8 @@ if(isset($_POST['action'])){
 
             $respuestaInsertar=false;
             if($id){
-                $respuestaInsertar = $slider-> updateSlider($nombrefinal,$url,$order,$type,$Status,$id);
+                $Path = str_replace('..', '', $Path);
+                $respuestaInsertar = $slider-> updateSlider($Path . $nombrefinal,$url,$order,$type,$Status,$id);
             }
             if($respuestaInsertar){
                 echo"<script>Swal.fire('Elemento modificado con éxito!', '', 'success');";

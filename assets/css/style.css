@@ -140,7 +140,8 @@ margin-bottom: 0.5rem;
 .home{
     background-attachment:fixed; 
     background-position: center;
-    width:100%; height: 100%;
+    width:100%; 
+    height: 100%;
     background-size: 1950px 850px;
     animation: movimiento 15s infinite linear alternate;
 }

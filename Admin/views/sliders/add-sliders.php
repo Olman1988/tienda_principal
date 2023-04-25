@@ -26,13 +26,6 @@
                     <input required name="order" type="number" id="order" class="form-control" />
                 </div>
             </div>
-            <div class="col-4">
-                <div class="form-check form-switch">
-                    <label class="form-check-label pt-5" for="status">Estado</label>
-                    <input class="form-check-input mt-5 ml-2" value='1' name='status' checked type="checkbox" id="status">
-                    <label class="form-check-label ml-5" id="statusLabel">Activo</label>
-                </div>
-            </div>
             <div class="col-8">
                 <div class="form-group mt-2">
                     <label for="url">URL</label>
