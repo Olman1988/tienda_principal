@@ -105,7 +105,54 @@ padding: 1rem;
 margin-bottom: 0.5rem;
 }
 
+/*===========================Slider*/
+.myslider .txt_slider img{
+    width:800px;
+    position:absolute;
+    right:-70px;
+    top:-170px;
+     
+     border-radius: 10px;
+     transform: skewY(10deg);  
+}
+.slider_container-buttons{
+   max-width:400px;display:flex;justify-content:space-around;
+}
+.slider_title-line{
+    margin-left:80px;
+    background:#8e3a20;
+    width:60px;height:4px;
+}
+.fdd{
+    -webkit-animation-name:fdd;
+    -webkit-animation-duration:1.5s;
+    animation-name:fdd;
+    animation-duration:1.5s;
+}
+@-webkit-keyframes fdd{
+    from{opacity:0.6}
+    to{opacity:1}
+}
+@keyframes fdd{
+    from{opacity:0.6}
+    to{opacity:1}
+}
+.home{
+    background-attachment:fixed; 
+    background-position: center;
+    width:100%; height: 100%;
+    background-size: 1950px 850px;
+    animation: movimiento 15s infinite linear alternate;
+}
+@keyframes movimiento{
+    from{
+        background-position:left;
+    }to{
+        background-position:right;
+    }
+}
 
+/*=======================End Slider*/
 
 
 /*========= Pie de pagina */

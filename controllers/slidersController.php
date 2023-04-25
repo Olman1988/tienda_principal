@@ -11,11 +11,11 @@ class slidersController{
         $respSlider =  $slider->getAllSliders();
         return $respSlider;
     }
-    public function insertSlider($nombrefinal,$url,$nombrefinl2,$url_mobile,$order){
+    public function insertSlider($nombrefinal,$url,$order,$type){
         require_once '../config/conexion.php';
         require_once '../models/slidersModel.php';
         $slider = new slidersModel();
-        $respSlider =  $slider->insertSlider($nombrefinal,$url,$nombrefinl2,$url_mobile,$order);
+        $respSlider =  $slider->insertSlider($nombrefinal,$url,$order,$type);
         return $respSlider;
     }
     public function codeGenerator(){
@@ -29,11 +29,11 @@ class slidersController{
         $respSlider =  $slider->getSliderById($id);
         return $respSlider;
     }
-    public function updateSlider($nombrefinal,$url,$nombrefinl2,$url_mobile,$order,$id){
+    public function updateSlider($nombrefinal,$url,$order,$type,$Status,$id){
         require_once '../config/conexion.php';
         require_once '../models/slidersModel.php';
         $slider = new slidersModel();
-        $respSlider =  $slider->updateSlider($nombrefinal,$url,$nombrefinl2,$url_mobile,$order,$id);
+        $respSlider =  $slider->updateSlider($nombrefinal,$url,$order,$type,$Status,$id);
         return $respSlider;
     }
     public function deleteSlider($id){
@@ -59,15 +59,27 @@ if(isset($_POST['action'])){
         case 'action-add':
             $slider      = new slidersController();
             $idgen       = $slider->codeGenerator();
-            $idgen2      = $slider->codeGenerator();
             $nombrefinal = '';
-            $nombrefinl2 = '';
-            $title       = !empty($_POST['titulo'])?$_POST['titulo']:'';
-            $order       = !empty($_POST['order'])?$_POST['order']:'';
-            $url         = !empty($_POST['url'])?$_POST['url']:'';
-            $url_mobile  = !empty($_POST['url_mobile'])?$_POST['url_mobile']:'';
+            $Path = '';
+
+            $title           = !empty($_POST['titulo'])?filter_var($_POST['titulo'],FILTER_SANITIZE_STRING):'';
+            $order           = !empty($_POST['order'])?filter_var($_POST['order'],FILTER_SANITIZE_STRING):'';
+            $url             = !empty($_POST['url'])?filter_var($_POST['url'],FILTER_SANITIZE_STRING):'';
+            $provisionalName = !empty($_POST['filenameImg'])? $_POST['filenameImg']:false;
+            $type            = !empty($_POST['type'])? filter_var($_POST['type'], FILTER_SANITIZE_NUMBER_INT): 0;
 
             if($title){
+                switch($type){
+                    case '1':
+                        $Path = '../images/slider/';
+                    break;
+                    case '2':
+                        $Path = '../images/slider/mobile/';
+                    break;
+                    case '3':
+                        $Path = '../images/slider/movimiento/';
+                    break;
+                }
                 if(isset($_FILES['file']['name']) && $_FILES['file']['name']!=''){
                     $archivo = $_FILES['file']['name'];
                     $tipo = $_FILES['file']['type'];
@@ -78,83 +90,66 @@ if(isset($_POST['action'])){
                         $errorimg = true;
                     }else {
                         $nombrefinal = $idgen.$archivo;
-                        if (!is_dir('../images/slider/')) {
-                            mkdir('../images/slider/', 0777, true);
+                        if (!is_dir($Path)) {
+                            mkdir($Path, 0777, true);
                         }
-                        if(file_exists('../images/slider/' . $nombrefinal)){
-                            unlink('../images/slider/' . $nombrefinal);
+                        if(file_exists($Path . $nombrefinal)){
+                            unlink($Path . $nombrefinal);
                         }else{
-                            if (move_uploaded_file($temp, '../images/slider/'.$nombrefinal)) {
-                                chmod('../images/slider/'.$nombrefinal, 0777);
+                            if (move_uploaded_file($temp, $Path.$nombrefinal)) {
+                                chmod($Path.$nombrefinal, 0777);
                             }else {
                                 $errorimg = true;
                             }
                         }
                     }
                 }
-
-                if(isset($_FILES['file_mobile']['name']) && $_FILES['file_mobile']['name']!=''){
-                    $archivo = $_FILES['file_mobile']['name'];
-                    $tipo = $_FILES['file_mobile']['type'];
-                    $tamano = $_FILES['file_mobile']['size'];
-                    $temp = $_FILES['file_mobile']['tmp_name'];
-
-                    if (!((strpos($tipo, "gif") || strpos($tipo, "jpeg") || strpos($tipo, "jpg") || strpos($tipo, "png")) && ($tamano < 2000000000))) {
-                        $errorimg = true;
-                    }else {
-                        $nombrefinl2 = $idgen2.$archivo;
-                        if (!is_dir('../images/slider/mobile/')) {
-                            mkdir('../images/slider/mobile/', 0777, true);
-                        }
-                        if(file_exists('../images/slider/mobile/' . $nombrefinl2)){
-                            unlink('../images/slider/mobile/' . $nombrefinl2);
-                        }else{
-                            if (move_uploaded_file($temp, '../images/slider/'.$nombrefinl2)) {
-                                chmod('../images/slider/mobile/'.$nombrefinl2, 0777);
-                            }else {
-                                $errorimg = true;
-                            }
-                        }
-                    }
-                }
-
                 $nombrefinal = "/images/slider/".$nombrefinal;
-                $nombrefinl2 = "/images/slider/mobile/".$nombrefinl2;
 
-                $respuestaInsertar = $slider-> insertSlider($nombrefinal,$url,$nombrefinl2,$url_mobile,$order);
+                $respuestaInsertar = $slider-> insertSlider($nombrefinal,$url,$order,$type);
                 if($respuestaInsertar){
                     echo"<script>Swal.fire('Elemento guardado con éxito!', '', 'success');";
                     echo"window.setTimeout(function () {window.location.href = './?seccion=sliders'}, 2000)</script>";
                 }else {
                     echo "<script>Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'No fue posible eliminar los datos, intente nuevamente!',
-                            footer: '',
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'No fue posible eliminar los datos, intente nuevamente!',
+                        footer: '',
 
-                        })
-                        
-                        window.setTimeout(function () {history.back()}, 2000)
-                        </script>";
+                    })
+                    
+                    window.setTimeout(function () {history.back()}, 2000)
+                    </script>";
                 }
             }
         break;
         case 'action-edit':
-            $archivo;
-            $observacion;
-            $validacion = true;
             $slider= new slidersController();
             $idgen = $slider->codeGenerator();
-            $idgn2 = $slider->codeGenerator();
+            $Path = '';
+            $archivo;
             $nombrefinal = '';
-            $nombrefinl2 = '';
+
             $id              = !empty($_POST['id'])? filter_var($_POST['id'],FILTER_SANITIZE_NUMBER_INT):false;
             $title           = !empty($_POST['titulo'])?filter_var($_POST['titulo'],FILTER_SANITIZE_STRING):'';
             $order           = !empty($_POST['order'])?filter_var($_POST['order'],FILTER_SANITIZE_STRING):'';
             $url             = !empty($_POST['url'])?filter_var($_POST['url'],FILTER_SANITIZE_STRING):'';
-            $url_mobile      = !empty($_POST['url_mobile'])?filter_var($_POST['url_mobile'],FILTER_SANITIZE_STRING):'';
             $provisionalName = !empty($_POST['filenameImg'])? $_POST['filenameImg']:false;
-            $provisiMoblName = !empty($_POST['file_mobile'])? $_POST['file_mobile']:false;
+            $type            = !empty($_POST['type'])? filter_var($_POST['type'], FILTER_SANITIZE_NUMBER_INT): 0;
+            $Status          = !empty($_POST['status'])? filter_var($_POST['status'], FILTER_VALIDATE_BOOLEAN): false;
+
+            switch($type){
+                case '1':
+                    $Path = '../images/slider/';
+                break;
+                case '2':
+                    $Path = '../images/slider/mobile/';
+                break;
+                case '3':
+                    $Path = '../images/slider/movimiento/';
+                break;
+            }
             
             if(isset($_FILES['file']['name']) && $_FILES['file']['name']!=''){
                 $archivo = $_FILES['file']['name'];
@@ -165,14 +160,14 @@ if(isset($_POST['action'])){
                     $errorimg = true;
                 }else{
                     $nombrefinal = $idgen.$archivo;
-                    if (!is_dir('../images/slider/')) {
-                        mkdir('../images/slider/', 0777, true);
+                    if (!is_dir($Path)) {
+                        mkdir($Path, 0777, true);
                     }
-                    if(file_exists('../images/slider/' . $nombrefinal)){
-                        unlink('../images/slider/' . $nombrefinal);
+                    if(file_exists($Path . $nombrefinal)){
+                        unlink($Path . $nombrefinal);
                     } else {
-                        if (move_uploaded_file($temp, '../images/slider/'.$nombrefinal)) {
-                            chmod('../images/slider/'.$nombrefinal, 0777);
+                        if (move_uploaded_file($temp, $Path.$nombrefinal)) {
+                            chmod($Path.$nombrefinal, 0777);
                         }else {
                             $errorimg = true;
                         }
@@ -182,52 +177,23 @@ if(isset($_POST['action'])){
                 $nombrefinal = $provisionalName;
             }
 
-            if(isset($_FILES['file_mobile']['name']) && $_FILES['file_mobile']['name']!=''){
-                $archivo = $_FILES['file_mobile']['name'];
-                $tipo = $_FILES['file_mobile']['type'];
-                $tamano = $_FILES['file_mobile']['size'];
-                $temp = $_FILES['file_mobile']['tmp_name'];
-                if (!((strpos($tipo, "gif") || strpos($tipo, "jpeg") || strpos($tipo, "jpg") || strpos($tipo, "png")) && ($tamano < 2000000000))) {
-                    $errorimg = true;
-                }else{
-                    $nombrefinl2 = $idgn2.$archivo;
-                    if (!is_dir('../images/slider/mobile/')) {
-                        mkdir('../images/slider/mobile/', 0777, true);
-                    }
-                    if(file_exists('../images/slider/mobile/' . $nombrefinl2)){
-                        unlink('../images/slider/mobile/' . $nombrefinl2);
-                    } else {
-                        if (move_uploaded_file($temp, '../images/slider/mobile/'.$nombrefinl2)) {
-                            chmod('../images/slider/mobile/'.$nombrefinl2, 0777);
-                        }else {
-                            $errorimg = true;
-                        }
-                    }
-                }
-            } else {
-                $nombrefinl2 = $provisiMoblName;
-            }
-            $nombrefinal = "/images/slider/".$nombrefinal;
-            $nombrefinl2 = "/images/slider/mobile/".$nombrefinl2;
-
             $respuestaInsertar=false;
             if($id){
-                $respuestaInsertar = $slider-> updateSlider($nombrefinal,$url,$nombrefinl2,$url_mobile,$order,$id);
+                $respuestaInsertar = $slider-> updateSlider($nombrefinal,$url,$order,$type,$Status,$id);
             }
             if($respuestaInsertar){
                 echo"<script>Swal.fire('Elemento modificado con éxito!', '', 'success');";
                 echo"window.setTimeout(function () {window.location.href = './?seccion=sliders'}, 2000)</script>";
-                
             }else {
                echo "<script>Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'No fue posible eliminar los datos, intente nuevamente!',
-                            footer: '',
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'No fue posible eliminar los datos, intente nuevamente!',
+                    footer: '',
 
-                        })
-                        
-                        window.setTimeout(function () {history.back()}, 2000)</script>";
+                })
+                
+                window.setTimeout(function () {history.back()}, 2000)</script>";
             }
         break;
         case 'delete':

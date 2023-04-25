@@ -15,6 +15,7 @@
         <th scope="col">Url Escritorio</th>
         <th scope="col">Url Movil</th>
         <th scope="col">Orden</th>    
+        <th scope="col">Estado</th>    
         <th scope="col">Acciones</th>
         </tr>
     </thead>
@@ -30,6 +31,14 @@
             <td><?=$respSlidersValues['url']?></td>
             <td><?=$respSlidersValues['url_mobile']?></td>
             <td><?=$respSlidersValues['order']?></td>
+            <td>
+                <?php if($respSlidersValues['Status'] == 1){
+                        echo "Activo";
+                    } else {
+                        echo "Inactivo";
+                    }
+                ?> 
+            </td>
             <td style="min-width:120px;" class="">
                 <a href='<?=base_url?>Admin/?seccion=sliders&&action=edit&&id=<?=$respSlidersValues['id']?>'><i class="fa-solid fa-pen-to-square" style="cursor:pointer;color:white;font-size:20px;" ></i></a>
                 <i class="fa-solid fa-trash" style="cursor:pointer;color:white;font-size:20px; margin-left:10px;" onclick="eliminarCategoria('<?=$respSlidersValues['id']?>')"></i>
