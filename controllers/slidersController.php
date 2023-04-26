@@ -152,14 +152,16 @@ if(isset($_POST['action'])){
                         }
                     }
                 }
+                $nombrefinal = '/images/slider/'.$nombrefinal;
             } else {
-                $nombrefinal = $provisionalName;
+                $nombrefinal = '/images/slider/'.$provisionalName;
             }
 
             $respuestaInsertar=false;
+            /* var_dump($nombrefinal);
+            die(); */
             if($id){
-                $Path = str_replace('..', '', $Path);
-                $respuestaInsertar = $slider-> updateSlider($Path . $nombrefinal,$url,$order,$type,$Status,$id);
+                $respuestaInsertar = $slider-> updateSlider($nombrefinal,$url,$order,$type,$Status,$id);
             }
             if($respuestaInsertar){
                 echo"<script>Swal.fire('Elemento modificado con éxito!', '', 'success');";
