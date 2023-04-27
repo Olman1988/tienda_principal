@@ -10,11 +10,11 @@
     <thead>
         <tr>
         <th scope="col">ID</th>
-        <th scope="col">Imagen Escritorio</th>
-        <th scope="col">Imagen Movil</th>
-        <th scope="col">Url Escritorio</th>
-        <th scope="col">Url Movil</th>
-        <th scope="col">Orden</th>    
+        <th scope="col">Imagen</th>
+        <th scope="col">Url</th>
+        <th scope="col">Orden</th>
+        <th scope="col">Tipo</th>
+        <th scope="col">Estado</th>   
         <th scope="col">Acciones</th>
         </tr>
     </thead>
@@ -26,10 +26,31 @@
         <tr class="table-active">
             <td><?=$respSlidersValues['id']?></td>
             <td><img style='width:100px' src="<?=base_url?><?=$respSlidersValues['sliderPath']?>" alt="alt"/></td>
-            <td><img style='width:100px' src="<?=base_url?><?=$respSlidersValues['sliderPathMobile']?>" alt="alt"/></td>
             <td><?=$respSlidersValues['url']?></td>
-            <td><?=$respSlidersValues['url_mobile']?></td>
             <td><?=$respSlidersValues['order']?></td>
+            <?php
+            $sliderPath = '';
+            switch ($respSlidersValues['type']){
+                case '1':
+                    $sliderPath = 'Escritorio';
+                break;
+                case '2':
+                    $sliderPath = 'Dispositivo Movil';
+                break;
+                case '3':
+                    $sliderPath = 'Con Movimiento';
+                break;
+            }
+            ?>
+            <td><?=$sliderPath?></td>
+            <td>
+                <?php if($respSlidersValues['Status'] == 1){
+                        echo "Activo";
+                    } else {
+                        echo "Inactivo";
+                    }
+                ?> 
+            </td>
             <td style="min-width:120px;" class="">
                 <a href='<?=base_url?>Admin/?seccion=sliders&&action=edit&&id=<?=$respSlidersValues['id']?>'><i class="fa-solid fa-pen-to-square" style="cursor:pointer;color:white;font-size:20px;" ></i></a>
                 <i class="fa-solid fa-trash" style="cursor:pointer;color:white;font-size:20px; margin-left:10px;" onclick="eliminarCategoria('<?=$respSlidersValues['id']?>')"></i>

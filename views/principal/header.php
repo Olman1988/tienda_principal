@@ -53,6 +53,7 @@ $respuestaColorFuente="rgba($r, $g, $b, 1)";
 				
 <script src='unitegallery/themes/default/ug-theme-default.js' type='text/javascript'></script>
 <link  href='unitegallery/themes/default/ug-theme-default.css' rel='stylesheet' type='text/css' />
+<link  href='assets/css/style.css' rel='stylesheet' type='text/css' />
 
    <script type="text/javascript"> (function() { var css = document.createElement("link"); css.href = "https://use.fontawesome.com/releases/v5.9.0/css/all.css"; css.rel = "stylesheet"; css.type = "text/css"; document.getElementsByTagName("head")[0].appendChild(css); })(); </script>
 

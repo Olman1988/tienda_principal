@@ -34,18 +34,18 @@ class slidersModel{
 
             return $respuesta;
     }
-    public function insertSlider($nombrefinal,$url,$nombrefinl2,$url_mobile,$order){
+    public function insertSlider($nombrefinal,$url,$order,$type){
         try {
             $db = conexion::getConnect();
-            $consulta=$db->prepare("INSERT INTO [dbo].[HomeTypeSlider](sliderPath, url, sliderPathMobile, url_mobile, [order])"
-                    . "VALUES (:image,:url,:image2,:url_mobile,:order)");
+            $consulta=$db->prepare("INSERT INTO [dbo].[HomeTypeSlider]([sliderPath], [url], [order], [type], [Status])"
+                    . "VALUES (:sliderPath,:url,:order,:type, 1)");
             
             $db->beginTransaction(); //inicia la transaccion
-            $consulta->bindValue(':image', $nombrefinal);
+            $consulta->bindValue(':sliderPath', $nombrefinal);
             $consulta->bindValue(':url', $url);
-            $consulta->bindValue(':image2', $nombrefinl2);
-            $consulta->bindValue(':url_mobile', $url_mobile);
             $consulta->bindValue(':order', intval($order));
+            $consulta->bindValue(':type', intval($type));
+
             $consulta->execute();
             $respuesta=$db->commit();
         } catch (PDOException $e) {
@@ -72,22 +72,24 @@ class slidersModel{
 
         return $respuesta;
     }
-    public function updateSlider($nombrefinal,$url,$nombrefinl2,$url_mobile,$order,$id){
+    public function updateSlider($nombrefinal,$url,$order,$type,$Status,$id){
         try {
+
             $db = conexion::getConnect();
             $consulta=$db->prepare("UPDATE [dbo].[HomeTypeSlider] SET 
-                                        sliderPath =:sliderPath, 
-                                        url =:url, 
-                                        sliderPathMobile =:sliderPathMobile, 
-                                        url_mobile =:url_mobile,
-                                        [order] =:order
+                                        [sliderPath] =:sliderPath,
+                                        [url] =:url,
+                                        [order] =:order,
+                                        [type] =:type,
+                                        [Status] =:status
                                     WHERE id =:id");
             $db->beginTransaction(); //inicia la transaccion
+
             $consulta->bindValue(':sliderPath', $nombrefinal);
             $consulta->bindValue(':url', $url);
-            $consulta->bindValue(':sliderPathMobile', $nombrefinl2);
-            $consulta->bindValue(':url_mobile', $url_mobile);
             $consulta->bindValue(':order', $order); 
+            $consulta->bindValue(':type', $type); 
+            $consulta->bindValue(':status', $Status); 
             $consulta->bindValue(':id', $id);
             $consulta->execute();
             

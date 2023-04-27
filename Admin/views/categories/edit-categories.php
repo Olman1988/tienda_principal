@@ -77,7 +77,7 @@
                 <div class="row">
                         <div class="col-3 col-md-6 mt-4" style='padding-left:50px'>
                             
-                            <div class="form-check form-switch" style=''>
+                            <div class="form-check form-switch">
                                 <input class="form-check-input" value='1' <?=$oneCategory['menu']=='1'? ' checked="checked"' : '';?> name='menu' type="checkbox" id="productoNuevo">
                                 <label class="form-check-label" for="menu">Aparece en Menú</label>
                             </div>
