@@ -316,7 +316,7 @@ if(isset($_GET['pag'])){
  
  $respuestaSlider=$consultaGeneral->consultarSlider();
  
-require_once "views/principal/slider.php";
+//require_once "views/principal/slider.php";
 require_once 'controllers/generalController.php';
 
 $consultaOfertas= new generalController();

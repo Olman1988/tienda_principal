@@ -750,10 +750,10 @@ $securityAdmin = $security->isAdmin();
                                     if(isset($_GET['action'])){
                                         switch ($_GET['action']){
                                             case "edit":
-                                                if(isset($_GET['codigo'])){
+                                                if(isset($_GET['id'])){
                                                     //$_POST['action'] es encesario para usar la direccion de directorio de model correcta
                                                     $modelNotRequired = true;
-                                                    $oneAU = $ABOUT->getAUByCode($_GET['codigo']);
+                                                    $oneAU = $ABOUT->getAUByCode($_GET['id']);
                                                     require_once 'views/about_us/edit-page.php'; 
                                                 }
                                             break;

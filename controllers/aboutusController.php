@@ -1,4 +1,5 @@
 <?php
+require_once '../models/aboutusModel.php';
 class aboutusController{
 	public $_CONF;
 	public function __construct(){

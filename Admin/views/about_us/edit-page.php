@@ -9,7 +9,7 @@
         <div class="col-8"> 
             <div class="form-group">
                 <label for="nombre">Nombre</label>
-                <input name="nombre" type="text" id="nombre" class="form-control" value='<?=$oneFAQ['nombre']?>' />
+                <input name="nombre" type="text" id="nombre" class="form-control" value='<?=$oneAU['nombre']?>' />
             </div>
         </div>
         <div class="col-4">
@@ -17,12 +17,12 @@
                 <div class="col-6"> 
                     <div class="form-group">
                         <label for="orden">Orden</label>
-                        <input name="orden" type="number" id="orden" min="1" class="form-control" value='<?=$oneFAQ['orden']?>' />
+                        <input name="orden" type="number" id="orden" min="1" class="form-control" value='<?=$oneAU['orden']?>' />
                     </div>
                 </div>
                 <div class="col-6"> 
                     <div class="form-group">
-                        <input class="form-check-input" value='1' <?=$respuestaDatos['activo']=='1'? ' checked="checked"' : '';?> name='activo' type="checkbox" id="activo">
+                        <input class="form-check-input" value='1' <?=$oneAU['activo']=='1'? ' checked="checked"' : '';?> name='activo' type="checkbox" id="activo">
                         <label class="form-check-label" for="activo">Activo</label>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
         <div class="col-12"> 
             <div class="form-group">
                 <label for="editor">Contenido</label>
-                <textarea class='form-control' id="editor" name="contenido" rows="5" cols="10"><?=$oneFAQ['contenido']?></textarea>
+                <textarea class='form-control' id="editor" name="contenido" rows="5" cols="10"><?=$oneAU['contenido']?></textarea>
             </div>
         </div>
         <input class="btn btn-primary mt-4" type="submit" value="Guardar">
