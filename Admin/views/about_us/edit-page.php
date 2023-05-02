@@ -2,8 +2,8 @@
 ?>
 <section style="margin:auto;padding:20px;width:80%;min-width:300px;margin-top:50px;">
     <form id="formularioRegistro" action="./?seccion=about_us&&action=action-edit" method="POST" enctype="multipart/form-data">
-        <input type='hidden' name='action-faq' value='edit'>      
-        <input type="hidden" name="id" value="<?=$_GET['id']?>">
+        <input type='hidden' name='action-edit' value='edit'>      
+        <input type="hidden" name="codigo" value="<?=$_GET['id']?>">
         <div class="row">
         <i class="fa-solid fa-store"></i><h2>Mantenimiento</h2>
         <div class="col-8"> 

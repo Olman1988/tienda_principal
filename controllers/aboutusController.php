@@ -40,14 +40,14 @@ if (isset($_POST['action-edit'])){
 
     switch ($_POST['action-edit']){
         case 'edit':
-            $nombre    = !empty($_POST['nombre']) ? $_POST['nombre'] : '';
-            $contenido = !empty($_POST['contenido']) ? $_POST['contenido'] : '';
-            $orden     = !empty($_POST['orden']) ? $_POST['orden'] : 1;
-            $activo    = !empty($_POST['activo']) ? $_POST['activo'] : 1;
-            $codigo    = !empty($_POST['codigo']) ? $_POST['codigo'] : null;
+            $nombre    = (!empty($_POST['nombre']))    ? $_POST['nombre'] : '';
+            $contenido = (!empty($_POST['contenido'])) ? $_POST['contenido'] : '';
+            $orden     = (!empty($_POST['orden']))     ? $_POST['orden'] : 1;
+            $activo    = (!empty($_POST['activo']))    ? $_POST['activo'] : 0;
+            $codigo    = (!empty($_POST['codigo']))    ? $_POST['codigo'] : null;
             
             if(!empty($codigo) && !empty($nombre) && !empty($contenido)){
-                $respuestaModificar = $AUS->modifyAUByCode($pregunta, $contenido, $orden, $activo, $codigo);
+                $respuestaModificar = $AUS->modifyAUByCode($nombre, $contenido, $orden, $activo, $codigo);
                 if($respuestaModificar){
                     echo"<script>Swal.fire('Elemento modificado con éxito!', '', 'success');";
                     echo"window.setTimeout(function () {window.location.href = './?seccion=about_us'}, 2000)</script>";
