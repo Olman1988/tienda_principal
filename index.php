@@ -8,9 +8,40 @@ require_once "config/parameters.php";
 require_once "config/conexion.php";
 require_once "models/generalModel.php";
 require_once "models/lookandfeelModel.php";
+require_once "models/lookandfeelModel.php";
 $consultaLAF= new lookandfeelModel();
 $respuestaLAF =  $consultaLAF -> consultarLAF();
 $consultaGeneral=new generalModel();
+$respuestaConfigurationSlider=$consultaGeneral->getConfigurationSlider();
+  $sliderDesktopAvailable = !empty($respuestaConfigurationSlider[0]['sliderType'])?true:false;
+  $sliderType = $respuestaConfigurationSlider[0]['sliderType'];
+  $sliderMobileAvailable = !empty($respuestaConfigurationSlider[0]['sliderMobile'])?true:false;
+  $respuestaSlider=$consultaGeneral->consultarSlider();
+  $arraySlider=Array();
+	foreach($respuestaSlider as $respuestaSlidervalue){
+		if($respuestaSlidervalue['Status'] == '1'){
+                    switch ($respuestaSlidervalue['type']) {
+                        case 1:
+                            $arraySlider['sliderDesktop'][]=$respuestaSlidervalue;
+
+                            break;
+                        case 2:
+                            $arraySlider['sliderDesktop'][]=$respuestaSlidervalue;
+
+                            break;
+                        case 3:
+                            $arraySlider['sliderMovil'][]=$respuestaSlidervalue;
+                           // $contSlider++;
+                            break;
+                        default:
+                            break;
+                    }
+			
+		}
+	}
+ $sliderDesktopAvailable = isset($arraySlider['sliderDesktop'])&&count($arraySlider['sliderDesktop'])>0?$sliderDesktopAvailable:false;
+ $sliderMobileAvailable  = isset($arraySlider['sliderMovil'])&&count($arraySlider['sliderMovil'])>0?$sliderMobileAvailable:false;
+
 $profile=$consultaGeneral->consultaProfile();
 require_once "views/principal/header.php";
 require_once "views/principal/socialMedia.php";
@@ -20,7 +51,7 @@ $referenciaParaBotones = 'sliderP';
 $evaluar=new socialMedia();
  setlocale (LC_TIME, "es_ES");
  require_once 'controllers/articulosController.php';
- 
+  
 //$respuesta;
 //    try {
 //            $db = conexion::getConnect();//Aqui se conecta a la base de datos
@@ -305,8 +336,6 @@ if(isset($_GET['pag'])){
                 }
                 
         break;
-                    
-
         default:
             break;
     }
@@ -314,7 +343,7 @@ if(isset($_GET['pag'])){
    require_once "views/principal/footer2.php"; 
 } else {
  
- $respuestaSlider=$consultaGeneral->consultarSlider();
+
  
 require_once "views/principal/slider.php";
 require_once 'controllers/generalController.php';

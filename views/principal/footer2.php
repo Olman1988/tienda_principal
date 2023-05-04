@@ -133,7 +133,7 @@ if($profile->infoEmail!=''){
          $('#box_w').removeClass('animate__bounceOut');
        }else{
          $('#box_scroll').removeClass('animate__bounceIn');
-         $('#box_scroll').addClass('animate__bounceOut');
+      //   $('#box_scroll').addClass('animate__bounceOut');
          $('#box_w').removeClass('animate__bounceIn');
          $('#box_w').addClass('animate__bounceOut');
        }  

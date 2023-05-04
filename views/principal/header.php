@@ -53,7 +53,7 @@ $respuestaColorFuente="rgba($r, $g, $b, 1)";
 				
 <script src='unitegallery/themes/default/ug-theme-default.js' type='text/javascript'></script>
 <link  href='unitegallery/themes/default/ug-theme-default.css' rel='stylesheet' type='text/css' />
-<link  href='assets/css/style.css' rel='stylesheet' type='text/css' />
+<link  href='assets/css/style3.css' rel='stylesheet' type='text/css' />
 
    <script type="text/javascript"> (function() { var css = document.createElement("link"); css.href = "https://use.fontawesome.com/releases/v5.9.0/css/all.css"; css.rel = "stylesheet"; css.type = "text/css"; document.getElementsByTagName("head")[0].appendChild(css); })(); </script>
 
@@ -112,6 +112,55 @@ table .text-num{
     margin-left: 5px;
     border-radius: 5px;
 }
+
+/*captcha*/
+
+ p.wrong {
+        display: none;
+    }
+    
+    p.wrong.shake {
+        display: block;
+    }
+    
+    p.wrong.shake {
+        animation: shake .4s cubic-bezier(.36, .07, .19, .97) both;
+        transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+        perspective: 1000px;
+    }
+    
+    @keyframes shake {
+        10%,
+        90% {
+            transform: translate3d(-1px, 0, 0);
+        }
+        20%,
+        80% {
+            transform: translate3d(1px, 0, 0);
+        }
+        30%,
+        50%,
+        70% {
+            transform: translate3d(-2px, 0, 0);
+        }
+        40%,
+        60% {
+            transform: translate3d(2px, 0, 0);
+        }
+    }
+    
+    .controls img {
+        height: 20px;
+    }
+    
+    /**SLIDER**/
+    .desktop-container{
+        display:block;
+    }
+    .mobile-container{
+        display:none;
+    }
             /**CAROUSEL**/
 .owl-dots {
     display: flex;
@@ -443,6 +492,15 @@ padding-top:16px;
   color: <?=$respuestaLAF['colorHoverNavbar']?>;
  
 }
+
+    @media (max-width: 550px) {
+       .desktop-container{
+        display:<?=$sliderMobileAvailable?'none':'block'?>;
+    } 
+    .mobile-container{
+        display:<?=$sliderMobileAvailable?'block':'none'?>;
+    }
+    }
 @media (max-width: 575px) {
   .navbar-expand-sm .navbar-nav .show .dropdown-menu .dropdown-item {
     color: #616161;

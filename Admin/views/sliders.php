@@ -1,11 +1,13 @@
 <div style="width:80%;margin-top:100px; min-width:320px;min-height:90vh;margin-bottom:100px;">
-    <h2 class="text-center">Slider</h2>
+    <h2 class="text-center">Sliders</h2>
     <div class="col-lg-8 m-auto">
 
 <div class="m-auto" id="myContent">
  
     <div class="" id="profile" style="padding-top:20px;">
         <button class="btn btn-primary"><a style="text-decoration: none;color:white;" href="<?=base_url?>Admin/?seccion=sliders&&action=add">+Agregar</a></button>
+       <div class="mt-3" style="width:100%;height:1px;background:gray;"></div>
+        <h3>Slider Escritorio</h3>
         <table class="table" id='generalTable'>
     <thead>
         <tr>
@@ -22,6 +24,7 @@
         <?php
         if(isset($respSliders)&&count($respSliders)>0){
             foreach ($respSliders as $respSlidersValues) {
+                if($respSlidersValues['type']!=3){
         ?>
         <tr class="table-active">
             <td><?=$respSlidersValues['id']?></td>
@@ -35,9 +38,6 @@
                     $sliderPath = 'Escritorio';
                 break;
                 case '2':
-                    $sliderPath = 'Dispositivo Movil';
-                break;
-                case '3':
                     $sliderPath = 'Con Movimiento';
                 break;
             }
@@ -57,6 +57,7 @@
             </td>
         </tr>
       <?php
+            }
            }
       }
       ?>
@@ -65,7 +66,57 @@
 </table>
   
   </div>
+ <div class="mt-3" style="width:100%;height:1px;background:gray;"></div>
+        <h3>Slider Para Móvil</h3>
+        <table class="table" id='generalTableMobile'>
+    <thead>
+        <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Imagen</th>
+        <th scope="col">Url</th>
+        <th scope="col">Orden</th>
+        <th scope="col">Tipo</th>
+        <th scope="col">Estado</th>   
+        <th scope="col">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if(isset($respSliders)&&count($respSliders)>0){
+            foreach ($respSliders as $respSlidersValues) {
+                if($respSlidersValues['type']==3){
+                    $sliderPath = 'Dispositivo Movil';
+        ?>
+        <tr class="table-active">
+            <td><?=$respSlidersValues['id']?></td>
+            <td><img style='width:100px' src="<?=base_url?><?=$respSlidersValues['sliderPath']?>" alt="alt"/></td>
+            <td><?=$respSlidersValues['url']?></td>
+            <td><?=$respSlidersValues['order']?></td>
+           
+            <td><?=$sliderPath?></td>
+            <td>
+                <?php if($respSlidersValues['Status'] == 1){
+                        echo "Activo";
+                    } else {
+                        echo "Inactivo";
+                    }
+                ?> 
+            </td>
+            <td style="min-width:120px;" class="">
+                <a href='<?=base_url?>Admin/?seccion=sliders&&action=edit&&id=<?=$respSlidersValues['id']?>'><i class="fa-solid fa-pen-to-square" style="cursor:pointer;color:white;font-size:20px;" ></i></a>
+                <i class="fa-solid fa-trash" style="cursor:pointer;color:white;font-size:20px; margin-left:10px;" onclick="eliminarCategoria('<?=$respSlidersValues['id']?>')"></i>
+            </td>
+        </tr>
+      <?php
+            }
+           }
+      }
+      ?>
+   
+  </tbody>
+</table>
   
+  </div>  
 
     </div>
 </div>
@@ -156,6 +207,11 @@ $(document).ready( function () {
              }
         }); 
     $('#generalTable').DataTable({
+        paging: true,
+        ordering: true,
+        info: true,
+    });
+    $('#generalTableMobile').DataTable({
         paging: true,
         ordering: true,
         info: true,

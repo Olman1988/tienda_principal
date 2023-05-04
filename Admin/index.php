@@ -786,12 +786,13 @@ $securityAdmin = $security->isAdmin();
                                                     $mostarPrecios       = (isset($_POST['mostarPrecios'])) ? $_POST['mostarPrecios'] : 0;
                                                     $accesoAnonimo       = (isset($_POST['accesoAnonimo'])) ? $_POST['accesoAnonimo'] : 0;
                                                     $envio  	         = (isset($_POST['envio'])) ? $_POST['envio'] : 0;
-                                                    $blog  	             = (isset($_POST['blog'])) ? $_POST['blog'] : 0;
+                                                    $blog  	         = (isset($_POST['blog'])) ? $_POST['blog'] : 0;
                                                     $preguntasFrecuentes = (isset($_POST['preguntasFrecuentes'])) ? $_POST['preguntasFrecuentes'] : 0;
                                                     $generalShipping     = (isset($_POST['generalShipping'])) ? $_POST['generalShipping'] : 0;
                                                     $payment_active      = (isset($_POST['payment'])) ? $_POST['payment'] : 0;
                                                     $id                  = !empty($_POST['id']) ? $_POST['id'] : 0;
-
+                                                    $sliderType          = !empty($_POST['sliderType']) ? filter_var($_POST['sliderType'], FILTER_SANITIZE_STRING) : '';
+                                                    $sliderMobile        = !empty($_POST['sliderMobile']) ? filter_var($_POST['sliderMobile'], FILTER_SANITIZE_NUMBER_INT) : '';
                                                     $ARR = [
                                                         'AppId'=>$AppId,
                                                         'Tax'=>$Tax,
@@ -804,7 +805,9 @@ $securityAdmin = $security->isAdmin();
                                                         'preguntasFrecuentes'=>$preguntasFrecuentes,
                                                         'generalShipping'=>$generalShipping,
                                                         'payment_active'=>$payment_active,
-                                                        'id'=>$id
+                                                        'id'=>$id,
+                                                        'sliderType'=>$sliderType,
+                                                        'sliderMobile'=>$sliderMobile
                                                     ];
 
                                                     if(!empty($id)){

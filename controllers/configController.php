@@ -52,7 +52,9 @@ class configuracionController{
 			$ARR['preguntasFrecuentes'],
 			$ARR['generalShipping'],
 			$ARR['payment_active'],
-			$ARR['id']
+			$ARR['id'],
+                        $ARR['sliderType'],
+                        $ARR['sliderMobile']
 		);
 
 		return $respuestaModificar;

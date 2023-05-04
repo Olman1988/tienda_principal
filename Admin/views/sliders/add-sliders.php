@@ -16,8 +16,7 @@
                 <select id="type" name="type" class="form-control selectpicker show-tick">
                     <option style="border-radius:15px;" value='-1'>Seleccione</option>
                     <option style="border-radius:15px;" value='1'>Escritorio</option>
-                    <option style="border-radius:15px;" value='2'>Dispositivo Móvil</option>
-                    <option style="border-radius:15px;" value='3'>Slider con Movimiento</option>
+                    <option style="border-radius:15px;" value='3'>Dispositivo Móvil</option>
                 </select>
             </div>
             <div class="col-4">

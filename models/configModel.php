@@ -18,6 +18,8 @@ class configModel{
                     ,[preguntasFrecuentes]
                     ,[generalShipping]
                     ,ISNULL([payment_active], 0) AS payment_active
+                    ,[sliderType]
+                    ,[sliderMobile]
                 FROM [dbo].[store_StoreConfiguration]");
             $consulta->execute();
             
@@ -87,7 +89,7 @@ class configModel{
      * 
      * 
      */
-    public function modificarConfiguracion($AppId, $Tax, $HomeType, $idPaymentType, $mostarPrecios, $accesoAnonimo, $envio, $blog, $preguntasFrecuentes, $generalShipping, $payment_active, $id){
+    public function modificarConfiguracion($AppId, $Tax, $HomeType, $idPaymentType, $mostarPrecios, $accesoAnonimo, $envio, $blog, $preguntasFrecuentes, $generalShipping, $payment_active, $id,$sliderType,$sliderMobile){
         try {
             $db = conexion::getConnect();
             $IDPayment = '';
@@ -108,6 +110,8 @@ class configModel{
                     ,[preguntasFrecuentes] =:preguntasFrecuentes
                     ,[generalShipping] =:generalShipping
                     ,[payment_active] =:payment_active
+                    ,[sliderType]=:sliderType
+                    ,[sliderMobile]=:sliderMobile
                     WHERE id = :id");
             $db->beginTransaction(); //inicia la transaccion
             $consulta->bindValue(':AppId', $AppId);
@@ -124,6 +128,8 @@ class configModel{
             $consulta->bindValue(':generalShipping', $generalShipping);
             $consulta->bindValue(':payment_active', $payment_active);
             $consulta->bindValue(':id', $id);
+            $consulta->bindValue(':sliderType', $sliderType);
+            $consulta->bindValue(':sliderMobile', $sliderMobile);
             $consulta->execute();
             
             $respuesta=$db->commit();

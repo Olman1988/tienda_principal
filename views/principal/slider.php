@@ -1,33 +1,21 @@
-<div id="sliderI" class="sliderMov">
+
 <?php
-	$activeC = true;
-	$sliderMov = false;
-	$contSlider = 0;
-	foreach($respuestaSlider as $respuestaSlidervalue){
-		if($respuestaSlidervalue['Status'] == '1'){
-			if($respuestaSlidervalue['type'] == 1){
+$sliderDesktopAvailable;
+$sliderType;
+$sliderMobileAvailable;
+$contSlider =0;
+if($sliderDesktopAvailable){
+    echo "<div class='desktop-container'>";
+    if($sliderType=='Move'){
 ?>
-				<div id="sliderP" class="sliderP">
-					<div id="desktop" style="min-height:70vh;">
-						<a href="<?= $respuestaSlidervalue['url'] ?>"><img style="object-fit:cover;min-height:70vh;" src="<?= base_url . $respuestaSlidervalue['sliderPath'] ?>" class="d-block w-100" alt="..."></a>
-					</div>
-				</div>
-		<?php
-			}else if($respuestaSlidervalue['type'] == 2){
-		?>
-			
-			<div id="mobile" style="min-height:70vh;">
-				<a href="<?= $respuestaSlidervalue['url'] ?>"><img style="object-fit:cover;min-height:70vh;" src="<?= base_url . $respuestaSlidervalue['sliderPath'] ?>" class="d-block w-100" alt="..."></a>
-			</div>
-		<?php
-			}else if($respuestaSlidervalue['type'] == 3){
-				$sliderMov = true;
-				$contSlider++;
-		?>
-			<div id="desktopMov">
+        <div id="sliderI" class="sliderMov">
+<?php
+            foreach($arraySlider['sliderDesktop'] as $arrayValues){
+            ?>
+            <div id="escritorio">
 				<div  class="myslider fdd">
-					<a href="<?= $respuestaSlidervalue['url'] ?>">
-						<div class="image_slider home" style="background-image:url(<?= base_url . $respuestaSlidervalue['sliderPath']?>);height: 37em !important;"></div>
+					<a href="<?= $arrayValues['url'] ?>">
+						<div class="image_slider home" style="background-image:url(<?= base_url . $arrayValues['sliderPath']?>);height: 37em !important;"></div>
 						<div class="txt_slider" style="margin-bottom:50px">
 							<div class="div_slider">  
 								<div class="slider_container-buttons"></div>
@@ -36,11 +24,9 @@
 					</a>
 				</div>
 			</div>
-				<?php
-			}
-		}
-	}
-	if($sliderMov){
+            <?php
+            $contSlider++;
+            }
 		?>
 			<div class="p_n">
 				<a class="prev" onclick="plusSlides(-1)">&#10094</a>
@@ -58,7 +44,6 @@
 				?>
 			</div>
 		</div>
-	
 		<script>
 			const myslide=document.querySelectorAll('.myslider');
 			//const text=document.querySelectorAll('.txt_slider');
@@ -66,7 +51,6 @@
 			let counter=1;
 			slidefun(counter);
 			let timer=setInterval(autoslide,15000);
-
 			function autoslide(){
 				counter+=1;
 				slidefun(counter);
@@ -80,7 +64,6 @@
 				counter=n;
 				slidefun(counter);
 				resetTimer();
-				
 			}
 			function resetTimer(){
 				clearInterval(timer);
@@ -90,7 +73,6 @@
 				let i;
 				for(i=0;i<myslide.length;i++){
 					myslide[i].style.display="none";
-					
 				}
 				for(i=0;i<dot.length;i++){
 					dot[i].classList.remove('actives');
@@ -109,12 +91,29 @@
 			}
 		</script>
 	<?php
-	}
-	?>
-
-<script>
+            } else {
+                echo "<div class='owl-carousel owl-theme container-slider'>";
+                foreach($arraySlider['sliderDesktop'] as $arrayValues){
+                ?>
+                <div id="">
+				<div  class="">
+					<a href="<?= $arrayValues['url'] ?>">
+                                            <img style="width:100%;" src="<?= base_url . $arrayValues['sliderPath']?>" alt="alt"/>	
+                                            <div class="txt_slider" style="margin-bottom:50px">
+							<div class="div_slider">  
+								<div class="slider_container-buttons"></div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+                <?php
+                }
+                echo '</div>';
+                ?>
+                    <script>
 	$(document).ready(function() {
-		$('.slider-inner').owlCarousel({
+		$('.container-slider').owlCarousel({
 			autoHeight: true,
 			autoHeightClass: 'owl-height',
 			items: 1,
@@ -148,50 +147,63 @@
 		});
 	});
 </script>
-<script>
+                    <?php
+            }
+            echo "</div>"; //FIN CONTANEDOR GENERAL DE ESCRITORIO
+	}
+       
+        if($sliderMobileAvailable){
+            echo "<div class='mobile-container'>";
+            echo "<div class='owl-carousel owl-theme container-slider-mobile'>";
+            foreach($arraySlider['sliderMovil'] as $arrayValues){
+	?>
+			
+			<div id="" style="min-height:70vh;">
+				<a href="<?= $arrayValues['url'] ?>"><img style="object-fit:cover;min-height:70vh;" src="<?= base_url . $arrayValues['sliderPath'] ?>" class="d-block w-100" alt="..."></a>
+			</div>
+		<?php
+            }
+            echo "</div></div>";
+            ?>
+                           <script>
 	$(document).ready(function() {
+		$('.container-slider-mobile').owlCarousel({
+			autoHeight: true,
+			autoHeightClass: 'owl-height',
+			items: 1,
+			margin: 10,
+			pagination: true,
+			autoplay: true,
+			autoplayTimeout: 4000,
+			autoplayHoverPause: true,
+			loop: true,
+			dots: true,
+			nav: true,
+			center: true,
 
-		$(window).scroll(function() {
-
-			let elemento = document.getElementById("info-up");
-			let pos = elemento.getBoundingClientRect().bottom;
-			let sliderP = document.getElementById("sliderI");
-
-			let posSlider = sliderP.getBoundingClientRect().bottom;
-
-			if (pos <= 0) {
-				$('#nav-fix').addClass('fixed-top');
-				$('#sliderP').css('margin-top', '80px');
-			} else {
-				$('#nav-fix').removeClass('fixed-top');
-				$('#sliderP').css('margin-top', '0px');
+			responsive: {
+				0: {
+					items: 1
+				},
+				800: {
+					items: 1
+				},
+				1000: {
+					items: 1
+				},
+				1200: {
+					items: 1
+				},
+				1400: {
+					items: 1
+				}
 			}
-			if (posSlider < 0) {
-				$('#box_scroll').css('display', 'block');
-				$('#box_scroll').addClass('animate__bounceIn');
-				$('#box_scroll').removeClass('animate__bounceOut');
-			} else {
-				$('#box_scroll').removeClass('animate__bounceIn');
-				$('#box_scroll').addClass('animate__bounceOut');
-			}
 		});
-		$('.navbr ul li a').click(function() {
-			// applying again smooth scroll on menu items click
-			$('html').css("scrollBehavior", "smooth");
-		});
-		$('.href_contact').click(function() {
-			// applying again smooth scroll on menu items click
-			$('html').css("scrollBehavior", "smooth");
-		});
-
-
-		$("#js-top").click(function(event) {
-			event.preventDefault();
-			$("html, body").animate({
-				scrollTop: 0
-			}, "slow");
-			return false;
-		});
-		
 	});
 </script>
+                <?php
+        }    
+        
+        ?>        
+
+

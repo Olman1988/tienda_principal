@@ -99,7 +99,33 @@ class contacto{
                         <span data-val-controltovalidate="" data-val-errormessage="Requerido" id="mensajeRespuesta" class="text-danger" data-val="true" data-val-evaluationfunction="RequiredFieldValidatorEvaluateIsValid" data-val-initialvalue="" style="visibility:hidden;">Requerido</span>
                     
                   </div>
-               <div class="col-12 text-right">
+                
+             
+                     <div class="captcha-chat" style="padding:10px;box-shadow:2px 2px 10px gray;border-radius:10px;">
+                         <p class="security p-3" style='color:gray'>Requerimiento de Seguridad</p>    
+                        <div class="captcha-container media p-4 m-4">
+                            <div class="media-body">
+                                            
+                            </div>
+                            <div id="captcha" class="col-12 mt-2">
+                                <div class="controls">
+                                    <input class="form-control form-control-rounded user-text btn-common" placeholder="Digite aquí" type="text" />
+                                    <div style="display:flex; padding:5px;">
+                                    <div class="validate btn-common btn btn-outline-secondary m-1" style="font-size:18px;padding:5px;color:white">
+                                        <!-- this image should be converted into inline svg -->
+                                        Validar Captcha
+                                    </div>
+                                    <div class="refresh btn-common btn btn-outline-secondary m-1" style="font-size:18px;padding:5px;color:white">
+                                        <!-- this image should be converted into inline svg -->
+                                        <i class="fa-solid fa-rotate"></i>
+                                    </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+               <div class="col-12 text-right mt-4">
                       <input type="submit" name="" value="Enviar" onclick="" id="" class="btn btn-outline-primary-2" />
                   </div>
               
@@ -145,9 +171,18 @@ class contacto{
    }
    ?>
 <script>
+    var validateCaptcha = false;
+    $(document).ready(function(){
+$("#reloadCaptcha").click(function(){
+var captchaImage = $('#captcha').attr('src');
+captchaImage = captchaImage.substring(0,captchaImage.lastIndexOf("?"));
+captchaImage = captchaImage+"?rand="+Math.random()*1000;
+$('#captcha').attr('src', captchaImage);
+});
+});
 $( "#formInfo" ).on( "submit", function( event ) {
   event.preventDefault();
-  
+  if(validateCaptcha){
   $.ajax({
     type : 'POST',
     url : './email/controllerForm.php',
@@ -175,8 +210,42 @@ $( "#formInfo" ).on( "submit", function( event ) {
             }
         } 
 })
+  } else {
+      
+  }
   //href="<?=base_url?>?pag=checkout&&step=shipping"
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+        document.body.scrollTop; //force css repaint to ensure cssom is ready
+
+        var timeout; //global timout variable that holds reference to timer
+
+        var captcha = new $.Captcha({
+            onFailure: function() {
+                validateCaptcha = false;
+                Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'La información ingresada es incorrecta'
+              
+              })
+
+            },
+
+            onSuccess: function() {
+                validateCaptcha = true;
+                Swal.fire({
+                                                   icon: 'success',
+                                                   title: 'Éxito',
+                                                   text: 'Información validada con éxito, puede continuar con su compra'
+
+                                                 });
+            }
+        });
+
+        captcha.generate();
+    });
 </script>
-        
+        <script src="<?=base_url?>assets/js/client_captcha.js" defer></script>
 

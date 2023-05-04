@@ -1,4 +1,5 @@
 <?php
+
 ?>
 <div style="width:80%;margin-top:100px; min-width:320px;min-height:90vh;margin-bottom:100px;">
     <h2 class="text-center">Configuracion General</h2>
@@ -25,6 +26,22 @@
                                 <img style="height:10em;width:auto;" id="slider" src="<?=base_url?>/images/admin/config/slider.jpg">
                                 <img style="height:10em;width:auto;" id="simple" src="<?=base_url?>/images/admin/config/simple.jpg">
                                 <img style="height:10em;width:auto;" id="categories" src="<?=base_url?>/images/admin/config/categories.jpg">
+                            </div>
+                        </div>
+                        <div class="col-12"> 
+                            <div class="form-group">
+                                <label for="sliderType">Tipo de Slider</label>
+                                <select id="sliderType" name="sliderType" class="form-control selectpicker show-tick">
+                                    <option style="border-radius:15px;" value='-1'>Seleccione</option>
+                                    <option style="border-radius:15px;" value='Desktop' <?=$respuestaDatos['sliderType']== 'Desktop' ? 'selected': ''; ?>>Escritorio</option>
+                                    <option style="border-radius:15px;" value='Move' <?=$respuestaDatos['sliderType']== 'Move' ? 'selected': ''; ?>>Escritorio con Movimiento</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="padding-left: 5%;">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" value='1' <?=$respuestaDatos['sliderMobile']=='1'? ' checked="checked"' : '';?> name='sliderMobile' type="checkbox" id="sliderMobile">
+                                <label class="form-check-label" for="blog">Habilitar Slider Móvil</label>
                             </div>
                         </div>
                         <div class="col-md-12">

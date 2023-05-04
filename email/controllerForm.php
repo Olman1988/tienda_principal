@@ -1,5 +1,14 @@
 <?php 
-
+if (isset($_POST['submit'])) {
+    if ($_POST['captcha'] == $_SESSION['cap_code']) {
+        // Captcha verification is Correct. Do something here!
+        echo '<p>El captcha introducido es correcto</p>';
+    }
+    else {
+        // Captcha verification is wrong. Take other action
+        echo '<p>El captcha introducido no es correcto</p>';
+    }
+}
 //GET VARS
 $nombre = addslashes($_POST['nombre']);
 if(isset($_POST['nameBusiness'])){
