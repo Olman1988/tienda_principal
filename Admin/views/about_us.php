@@ -37,7 +37,13 @@ td{
                             <td><?= $respuesta['orden'] ?></td>
                             <td style="min-width:120px;" class="text-center">
                                 <a href='<?= base_url ?>Admin/?seccion=about_us&&action=edit&&id=<?= $respuesta['codigo'] ?>'><i class="fa-solid fa-pen-to-square" style="cursor:pointer;color:white;font-size:20px;margin-left:10px;"></i></a>
-                           <i class="fa-solid fa-trash" style="cursor:pointer;color:white;font-size:20px; margin-left:10px;" onclick="eliminarPage('<?= $respuesta['codigo'] ?>')"></i>
+                           <?php
+                           if($respuesta['codigo']!='POLITICAS'&&$respuesta['codigo']!='QUIENESSOMOS'){
+                           ?><i class="fa-solid fa-trash" style="cursor:pointer;color:white;font-size:20px; margin-left:10px;" onclick="eliminarPage('<?= $respuesta['codigo'] ?>')"></i>
+                           <?php
+                    }
+                           ?>
+                                
                             </td>
                         </tr>
                     <?php }} ?>
