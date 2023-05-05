@@ -5,7 +5,7 @@ class userSecurity{
     public function isAdmin(){
         $usuario = Array();
         
-        if(isset($_SESSION['email'])&&$_SESSION['email']!=''){
+        if(isset($_SESSION['email'])&&$_SESSION['email']!=''&&isset($_SESSION['password'])&&$_SESSION['password']!=''){
             $correo = $_SESSION['email'];
                 try {
 

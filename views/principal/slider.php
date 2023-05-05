@@ -206,4 +206,4 @@ if($sliderDesktopAvailable){
         
         ?>        
 
-
+</div>

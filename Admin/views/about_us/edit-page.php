@@ -35,6 +35,7 @@
             </div>
         </div>
         <input class="btn btn-primary mt-4" type="submit" value="Guardar">
+        </div>
     </form>
 </section>
 <script>

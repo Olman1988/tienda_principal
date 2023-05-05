@@ -757,6 +757,9 @@ $securityAdmin = $security->isAdmin();
                                                     require_once 'views/about_us/edit-page.php'; 
                                                 }
                                             break;
+                                            case "add":
+                                                    require_once 'views/about_us/add-page.php'; 
+                                            break;
                                             case "action-edit":
                                                 require_once "../controllers/aboutusController.php";
                                             break;
