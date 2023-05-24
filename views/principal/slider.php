@@ -16,11 +16,7 @@ if($sliderDesktopAvailable){
 				<div  class="myslider fdd">
 					<a href="<?= $arrayValues['url'] ?>">
 						<div class="image_slider home" style="background-image:url(<?= base_url . $arrayValues['sliderPath']?>);height: 37em !important;"></div>
-						<div class="txt_slider" style="margin-bottom:50px">
-							<div class="div_slider">  
-								<div class="slider_container-buttons"></div>
-							</div>
-						</div>
+						
 					</a>
 				</div>
 			</div>
@@ -99,11 +95,7 @@ if($sliderDesktopAvailable){
 				<div  class="">
 					<a href="<?= $arrayValues['url'] ?>">
                                             <img style="width:100%;" src="<?= base_url . $arrayValues['sliderPath']?>" alt="alt"/>	
-                                            <div class="txt_slider" style="margin-bottom:50px">
-							<div class="div_slider">  
-								<div class="slider_container-buttons"></div>
-							</div>
-						</div>
+                                          
 					</a>
 				</div>
 			</div>

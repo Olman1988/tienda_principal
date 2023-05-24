@@ -165,6 +165,9 @@
    <script src="./assets/js/distribucion-cr.js"></script>
     <script src="./assets/js/formulario.js"></script>   
     <script>
+         $("#contenedor-mensaje").css("display","block");
+           $("#mensajePassword").html("<ul><li>Las contraseña debe tener al menos 8 caracteres</li><li>Las contraseña debe tener al menos una minúscula y una mayúscula</li><li>Las contraseña debe tener al menos un caracter especial ?¿@#\$%</li></ul>");
+           
         
             let visiblePass=false;
             let visiblePass2=false;

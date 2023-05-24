@@ -4,6 +4,7 @@ ini_set('display_errors',1);
 ini_set('log_errors',1);
 ini_set("error_log","C:/xampp/htdocs/proyectos_2021/errores/logs");
  session_start(); 
+
 require_once "config/parameters.php";
 require_once "config/conexion.php";
 require_once "models/generalModel.php";

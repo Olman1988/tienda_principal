@@ -92,7 +92,7 @@ public function getGeneralShippingCost(){
     
     
 }
-    
+    var_dump($_POST);
 if(isset($_POST['action'])){
    
     switch ($_POST['action']) {
@@ -103,6 +103,7 @@ if(isset($_POST['action'])){
            $promo= new generalController();
            $idgen=$promo->codeGenerator();
            $nombrefinal = '';
+           var_dump($_FILES['file']);
            if(isset($_FILES['file']['name'])){
                $archivo = $_FILES['file']['name'];
            } else {
@@ -114,7 +115,7 @@ if(isset($_POST['action'])){
             $estado = !empty($_POST['estado'])? $_POST['estado']:false;
            
        if (isset($archivo) && $archivo != "" && $nombre && $descripcion) {
-           
+           var_dump("IN");
            $tipo = $_FILES['file']['type'];
            $tamano = $_FILES['file']['size'];
            $temp = $_FILES['file']['tmp_name'];

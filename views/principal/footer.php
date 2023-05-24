@@ -114,7 +114,7 @@ if($profile->infoEmail!=''){
         
         let elemento=document.getElementById("info-up");
         let pos=elemento.getBoundingClientRect().bottom;
-        let sliderP=document.getElementById("sliderP");
+        let sliderP=document.getElementById("info-up");
         let posSlider=sliderP.getBoundingClientRect().bottom;       
         
        if(pos<=0){

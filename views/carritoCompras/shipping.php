@@ -151,13 +151,13 @@ if(isset($_SESSION['orden']['tipoEnvio'])&&$_SESSION['orden']['tipoEnvio']['radi
     
     
     function evaluarInfo(array,infoValidar){
-    for(let i=0;i<array.length;i++){
-        let valoraComparar=removeAccents(array[i].value);
-        if(valoraComparar==infoValidar){
-          //  $("#slt-provincias").val(provinciaSesion);
-          array[i].setAttribute("selected",true);
+        for(let i=0;i<array.length;i++){
+            let valoraComparar=removeAccents(array[i].value);
+            if(valoraComparar==infoValidar){
+              //  $("#slt-provincias").val(provinciaSesion);
+              array[i].setAttribute("selected",true);
+            }
         }
-    }
     }
     
      var provinciaSesion="<?=$provincia?>";
@@ -195,7 +195,6 @@ if(isset($_SESSION['orden']['tipoEnvio'])&&$_SESSION['orden']['tipoEnvio']['radi
           } else {
               $("#requiredProvincia").css("display","none");
           }
-          console.log(canton);
           if(canton===''||canton.includes('Seleccione') ||canton==null||canton==0){
               $("#requiredCanton").css("display","block");
               enviar = false;
@@ -322,7 +321,12 @@ if(isset($_SESSION['orden']['tipoEnvio'])&&$_SESSION['orden']['tipoEnvio']['radi
          //  e.preventDefault();
            
            if(e.currentTarget.firstElementChild.firstElementChild.value=='Ubicacion'){
-               $('input:radio[name=modoEnvio]')[1].checked = true;
+			   if($('input:radio[name=modoEnvio]').length>1){
+				    $('input:radio[name=modoEnvio]')[1].checked = true;
+			   } else {
+			    $('input:radio[name=modoEnvio]')[0].checked = true;
+			   }
+              
            }else {
                $('input:radio[name=modoEnvio]')[0].checked = true;
            }
@@ -353,7 +357,7 @@ if(isset($_SESSION['orden']['tipoEnvio'])&&$_SESSION['orden']['tipoEnvio']['radi
                                                           text: 'Información de costo de envío guardada'
                                                           });
                                                      window.setTimeout(function () {
-                                                                  window.location.href = "./?pag=checkout&&step=payment"
+                                                      window.location.href = "./?pag=checkout&&step=payment"
                                                               }, 2000);
                                                   } else {
                                                       Swal.fire({

@@ -211,7 +211,12 @@ $( "#formInfo" ).on( "submit", function( event ) {
         } 
 })
   } else {
-      
+    Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Debe realizar la validación de Captcha correctamente, ingrese en el espacio indicado los números y letras que aparecen en la imagen'
+              
+              })  
   }
   //href="<?=base_url?>?pag=checkout&&step=shipping"
 });

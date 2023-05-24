@@ -47,7 +47,7 @@
                     foreach ($respuestaMetodos as $respuestaMetodosValue) {
                         $counter++;
                         $tipo = '';
-                        if(isset($_SESSION['orden'])){
+                        if(isset($_SESSION['orden']['tipoPago'])){
                             $tipo = $_SESSION['orden']['tipoPago'];
                         }
                     ?>

@@ -133,7 +133,17 @@ $(document).ready(function(){
         $('#modalAgregar')
         .on('shown.bs.modal', (e) => {
             if(!editorAdded){
-              CKEDITOR.replace('descripcion');
+              tinymce.init({
+        selector: 'textarea',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name',
+        mergetags_list: [
+            { value: 'First.Name', title: 'First Name' },
+            { value: 'Email', title: 'Email' },
+        ]
+    });
               editorAdded = true;
              }
         }); 
@@ -208,10 +218,14 @@ var file_data = '';
      }
      form_data.append("idEditar", $("#id").val());
      form_data.append("nombre", $("#nombre").val());
-     form_data.append("descripcion", $("#descripcion").val());
+     let descrip =$(".cke_editable").html();
+     console.log(descrip);
+     form_data.append("descripcion", descrip);
+     
      form_data.append("file", file_data);
      form_data.append("action", $("#action").val());
      form_data.append("estado", $("#estado").val());
+     console.log(form_data);
        $.ajax({
         type:'POST',    
         url:'../controllers/generalController.php',
@@ -221,7 +235,7 @@ var file_data = '';
     processData: false,
         data:form_data,
         success:function(dat){
-          
+          console.log(dat);
             if(dat==1){
                 if($("#tituloModal").html()=='Editar'){
                     Swal.fire({
@@ -239,7 +253,7 @@ var file_data = '';
                                                  });
                 }
                window.setTimeout(function () {
-                            window.location.href = "./?seccion=promociones"
+                        //    window.location.href = "./?seccion=promociones"
                         }, 2000);
                     } else {
                        Swal.fire({
@@ -248,7 +262,7 @@ var file_data = '';
                 text: 'Datos incorrectos'
               });
                window.setTimeout(function () {
-                            window.location.href = "./?seccion=promociones"
+                       //     window.location.href = "./?seccion=promociones"
                         }, 2000);  
                     }
     }
